@@ -1,6 +1,6 @@
 <?php 
 
-    class ServicosDao {
+    class FacadeServicosDao {
 
         private $usuarioDao;
         private $produtoDao;
@@ -33,11 +33,16 @@
 
                     $nome = $dados['nome'];
                     $imagem = $dados['imagem'];
+                    $valor = $dados['valor'];
+                    $quantidade = $dados['quantidade'];
+                    $tipoProduto = $dados['tipoProduto'];
+                    $categoria = $dados['categoria'];
+                    $descricao = $dados['descricao'];
 
                     $fabricaArduino = new ArduinoConcreteCreator();
-                    $fabricaArduino->criarProduto();
+                    $arduino = $fabricaArduino->criarProduto($imagem, $nome, $valor, $quantidade, $categoria, $tipoProduto, $descricao);
 
-                    return $this->produtoDao->createProduto($fabricaArduino);
+                    return $this->produtoDao->createProduto($arduino);
 
                 default:
                     
