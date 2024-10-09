@@ -16,12 +16,12 @@ class SensoresConcreteCreator extends ProdutoCreator {
             case 'Sensor de áudio':  
                 
                 // Retornando a instância do produto instanciado.
-                return new SensorAudioConcreteProduto($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new SensorAudioConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             case 'Sensor de temperatura':
 
                 // Retornando a instância do produto instanciado.
-                return new SensorTemperaturaConcreteProduto($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new SensorTemperaturaConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             // Conforme for inserindo mais produtos concretos de Arduino futuramente, será acrescentado aqui a instancia desse produto.
             

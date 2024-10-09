@@ -16,12 +16,12 @@ class MotoresConcreteCreator extends ProdutoCreator {
             case 'Bomba':  
                 
                 // Retornando a instância do produto instanciado.
-                return new BombaMotorConcreteProduto($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new BombaMotorConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             case 'Motor DC':
 
                 // Retornando a instância do produto instanciado.
-                return new MotorDcConcreteProduto($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new MotorDcConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             // Conforme for inserindo mais produtos concretos de Arduino futuramente, será acrescentado aqui a instancia desse produto.
             

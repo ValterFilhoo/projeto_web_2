@@ -18,10 +18,10 @@ class RaspberryPiConcreteCreator extends ProdutoCreator {
                 // Retornando a instância do produto instanciado.
                 return new PlacaRaspberryPiConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
-            case 'Acessórios para RaspberryPi':
+            case 'Acessório para RaspberryPi':
 
                 // Retornando a instância do produto instanciado.
-                return new AcessoriosRaspberryPiConcretPoduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new AcessorioRaspberryPiConcretePoduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             // Conforme for inserindo mais produtos concretos de Arduino futuramente, será acrescentado aqui a instancia desse produto.
             
