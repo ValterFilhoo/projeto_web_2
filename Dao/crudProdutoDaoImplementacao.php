@@ -54,7 +54,7 @@
 
             } else {
 
-                return 'Produto não encontrado.';
+                return null;
 
             }
 

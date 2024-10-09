@@ -44,6 +44,53 @@
 
         }
 
+        public function readEntidade($tipoEntidade, $id) {
+
+            switch ($tipoEntidade) {
+
+                case "usuario": 
+
+                    $usuarioRetornado = $this->usuarioDao->readUsuario($id);
+
+                    if ($usuarioRetornado != null) {
+
+                        //$usuario = new Usuario();
+                        //$usuario->setId($usuarioRetornado['id']);
+                        //return $usuario;
+
+                    } else {
+
+                       // return null;
+
+                    }
+                
+                case "arduino":
+
+                    $fabricaArduino = new ArduinoConcreteCreator();
+
+                    $produtoRetornado = $this->produtoDao->readProduto($id);
+
+                    if ($produtoRetornado != null) {
+                        
+                        $arduino = $fabricaArduino->criarProduto($produtoRetornado['imagem'], $produtoRetornado['nome'], $produtoRetornado['valor'], $produtoRetornado['quantidade'], $produtoRetornado['categoria'], $produtoRetornado['tipo'], $produtoRetornado['descricao']);
+
+                        return $arduino;
+
+                    } else {
+
+                        return null;
+
+                    }
+
+
+            }
+
+
+
+
+
+        }
+
     }
 
 ?>
