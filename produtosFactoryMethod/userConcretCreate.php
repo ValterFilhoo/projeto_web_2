@@ -9,19 +9,14 @@ require '/xampp/htdocs/projeto_web_2/produtosFactoryMethod/placaArduinoConcreteP
 class UserConcreteCreator extends UserCreator {
 
     // Implementando o método do padrão de projeto para criação do produto especifico dessa fábrica.
-    public function factoryMethod($nome, $email, $senha, $endereco, $tipo, $telefone, $cidade, $estado): AcessoriosRaspberryPiConcretPoduct|PlacaRaspberryPiConcreteProduct {
+    public function factoryMethod($nome, $email, $senha, $endereco, $tipo, $telefone, $cidade, $estado): UserClienteConcrete {
         
     switch ($tipo) {
 
-            case 'Placa para RaspberryPi':  
+            case 'Cliente':  
                 
                 // Retornando a instância do produto instanciado.
-                return new PlacaRaspberryPiConcreteProduct($nome, $email, $senha, $endereco, $tipo, $telefone, $cidade, $estado);
-
-            case 'Acessórios para RaspberryPi':
-
-                // Retornando a instância do produto instanciado.
-                return new AcessoriosRaspberryPiConcretPoduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new UserClienteConcrete($nome, $email, $senha, $endereco, $tipo, $telefone, $cidade, $estado);
 
             // Conforme for inserindo mais produtos concretos de Arduino futuramente, será acrescentado aqui a instancia desse produto.
             

@@ -4,7 +4,7 @@
 require 'product.php';
 
 // Classe concreta do produto de Arduino (ConcreteProduto) recebe todos os atributos e métodos da classe abstrata "Product".
-class SensorTemperaturaConcreteProduto extends Product {
+class MotorDcConcreteProduct extends Product {
     
     // Contrutor da classe "SensorArduinoConcreteProduct".
     public function __construct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto) {

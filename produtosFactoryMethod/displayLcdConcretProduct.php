@@ -3,7 +3,7 @@
 // Importando o arquivo da classe abstrata "Product", do padrão "FactoryMethod".
 
 // Classe concreta do produto de Arduino (ConcreteProduto) recebe todos os atributos e métodos da classe abstrata "Product".
-class  DisplayLcdConcretProduct extends Product {
+class  DisplayLcdConcreteProduct extends Product {
     
     // Contrutor da classe "PlacaArduinoConcreteProduct".
     public function __construct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto) {
