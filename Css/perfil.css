@@ -1,0 +1,270 @@
+body {
+  background-color: #f8f8f8;
+  overflow-x: hidden;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os itens se movam para a próxima linha */
+  justify-content: space-between;
+  padding: 10px;
+  max-width: 97%;
+}
+.cabecalho {
+  display: flex;
+  justify-content: right;
+  margin: 0;
+}
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.perfil a {
+  text-decoration: none;
+}
+.logo {
+  display: flex;
+  margin-left: 5rem;
+  align-items: center;
+  gap: 30px;
+}
+
+.search-bar {
+  margin-top: 14px;
+  position: relative;
+  width: 30%;
+}
+.search-bar input {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.search-bar img {
+  position: absolute; /* Posiciona a imagem dentro do input */
+  right: -15px; /* Alinha a imagem à direita */
+  top: 40%;
+  transform: translateY(-50%); /* Centraliza verticalmente a imagem */
+  pointer-events: none; /* Impede que a imagem seja clicável */
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-right select, .nav-right a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+  padding: 8px;
+}
+
+.navegacao-topicos {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  list-style: none;
+  padding: 10px 0;
+  margin: 10px;
+}
+
+.navegacao-topicos li {
+  position: relative; /* Necessário para o posicionamento da barra */
+  padding: 0 15px;
+}
+
+.navegacao-topicos li:not(:last-child) {
+  border-right: 1px solid #ccc; /* Barra separadora */
+}
+
+.navegacao-topicos a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.navegacao-topicos a:hover {
+  color: #007BFF;
+}
+.acesso {
+  background-color: #0056b3;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  gap: 40px;
+}
+
+.login, .cadastro {
+  display: grid;
+  place-items: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  width: 30%;
+  height: auto; /* Allow height to adjust based on content */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.acesso-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.acesso img {
+  margin-right: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+  width: 100%; /* Full width for better layout */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.acesso a {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  width: 200px;
+}
+
+.acesso a:hover {
+  background-color: #0056b3;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 20px;
+}
+contact {
+  background-color: #f9f9f9;
+  padding: 40px;
+  text-align: center;
+}
+.depoimentos h1 {
+  text-align: center;
+  margin: 2rem;
+}
+
+.contact-container {
+  position: absolute;
+  right: 100px;
+  bottom: -300px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+#contact h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #218838;
+}
+footer {
+  background-color: #f8f8f8;
+  color: black;
+  padding: 20px 0;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+.footer-section {
+  flex: 1;
+  padding: 10px;
+}
+
+.footer-section h3 {
+  color: black;
+}
+
+.footer-section a {
+  color: black;
+  text-decoration: none;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0px 0px 0px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .acesso {
+      flex-direction: column;
+      gap: 20px;
+  }
+
+  .login, .cadastro {
+      width: 100%;
+  }
+}

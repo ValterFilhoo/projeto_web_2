@@ -1,0 +1,209 @@
+body {
+  background-color: #f8f8f8;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: #f8f8f8;
+  overflow-x: hidden;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os itens se movam para a próxima linha */
+  justify-content: space-between;
+  padding: 10px;
+  max-width: 97%;
+}
+.cabecalho {
+  display: flex;
+  justify-content: right;
+  margin: 0;
+}
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.perfil a {
+  text-decoration: none;
+}
+.logo {
+  display: flex;
+  margin-left: 5rem;
+  align-items: center;
+  gap: 30px;
+}
+
+.search-bar {
+  margin-top: 14px;
+  position: relative;
+  width: 30%;
+}
+.search-bar input {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.search-bar img {
+  position: absolute; /* Posiciona a imagem dentro do input */
+  right: -15px; /* Alinha a imagem à direita */
+  top: 40%;
+  transform: translateY(-50%); /* Centraliza verticalmente a imagem */
+  pointer-events: none; /* Impede que a imagem seja clicável */
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-right select, .nav-right a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+  padding: 8px;
+}
+
+.navegacao-topicos {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  list-style: none;
+  padding: 10px 0;
+  margin: 10px;
+}
+
+.navegacao-topicos li {
+  position: relative; /* Necessário para o posicionamento da barra */
+  padding: 0 15px;
+}
+
+.navegacao-topicos li:not(:last-child) {
+  border-right: 1px solid #ccc; /* Barra separadora */
+}
+
+.navegacao-topicos a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.navegacao-topicos a:hover {
+  color: #007BFF;
+}
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 50px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 20px;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px; 
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s; /* Transição suave na borda */
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+select:focus {
+  border-color: #007bff; /* Muda a cor da borda quando em foco */
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.termos {
+  margin-bottom: 30px;
+}
+footer {
+  background-color: #f8f8f8;
+  color: black;
+  padding: 20px 0;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+.footer-section {
+  flex: 1;
+  padding: 10px;
+}
+
+.footer-section h3 {
+  color: black;
+}
+
+.footer-section a {
+  color: black;
+  text-decoration: none;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0px 0px 0px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer-bottom p {
+  margin: 0;
+}

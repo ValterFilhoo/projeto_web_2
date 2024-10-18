@@ -21,6 +21,13 @@ class ConexaoBDSingleton {
 
         $this -> conexao = new mysqli($this -> host, $this -> usuario, $this -> senhaBD, $this -> esquema, $this -> porta);
 
+        // Verifica se a conexão não houve erro.
+        if ($this->conexao->connect_error) {
+
+            die("<br>Ocorreu uma falha na conexão com o banco: " . $this->conexao->connect_error);
+            
+        }
+
     }
 
     public function setUsuario($usuarioBD) {

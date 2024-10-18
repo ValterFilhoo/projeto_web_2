@@ -1,12 +1,15 @@
 <?php
 
+    require_once __DIR__ . "/../bdSingleton/conexaoBDSingleton.php";
+    require_once __DIR__ . "/../bdSingleton/configConexao.php";
+
     abstract class CrudTemplateMethod {
 
         private $conexaoBD;
 
         public function __construct() {
 
-            $this->conexaoBD = ConexaoBDSingleton::getInstancia("localhost", "root", "96029958va", "panorama_catuense", 3306)->getConexao();
+            $this->conexaoBD = ConexaoBDSingleton::getInstancia(BD_HOST, BD_USERNAME, BD_PASSWORD, BD_ESCHEMA, BD_PORTA)->getConexao();
 
         }
 
@@ -16,13 +19,12 @@
             $sql = $this->sqlCreate($entidade);
 
 
-            $resultadoInsert = $this->conexaoBD->query($sql);
+            $resultadoInsert = mysqli_query($this->conexaoBD, $sql);
 
             // Verificando se realmente cadastrou o produto no banco.
             // Vai retornar true se a query deu certo.
             if ($resultadoInsert) {
 
-                echo "Cadastro realizado com sucesso.";
 
                 return true;
 
@@ -30,8 +32,8 @@
             } else {
 
 
-                echo "Erro no cadastro: " . $this->conexaoBD->error;
-
+                echo "Erro no cadastro: " . mysqli_error($this->conexaoBD);
+                
                 return false;
 
             }

@@ -1,0 +1,149 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: #007BFF;
+}
+
+header nav a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #007BFF;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+.carrinho {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+.carrinho h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.tabela-carrinho {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.tabela-carrinho th, 
+.tabela-carrinho td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabela-carrinho th {
+  background-color: #007BFF;
+  color: white;
+}
+
+.produto-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.produto-info img {
+  border-radius: 5px;
+}
+
+input[type="number"] {
+  width: 50px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button.remover {
+  background-color: #FF4136;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button.remover:hover {
+  background-color: #E3342F;
+}
+
+.resumo-carrinho {
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: right;
+}
+
+.resumo-carrinho h3 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.resumo-carrinho p {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.resumo-carrinho p strong {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+button.finalizar-compra {
+  background-color: #28A745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+button.finalizar-compra:hover {
+  background-color: #218838;
+}
+
+a.continuar-comprando {
+  display: inline-block;
+  margin-top: 15px;
+  text-decoration: none;
+  color: #007BFF;
+}
+
+a.continuar-comprando:hover {
+  text-decoration: underline;
+}
+
+footer {
+  margin-top: 20px;
+  text-align: center;
+  color: #777;
+}
