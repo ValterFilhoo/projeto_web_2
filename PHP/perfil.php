@@ -7,26 +7,26 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./Css/perfil.css">
-    <script async src="/loja.js"></script>
+    <link rel="stylesheet" href="../Css/perfil.css">
+    <script async src="../js/loja.js"></script>
 </head>
 <body>
   <nav class="cabecalho">
     <div class="perfil">
-      <a href=""><img src="./img/perfil.png" alt="perfil" width="20px"></a>
+      <a href=""><img src="../img/perfil.png" alt="perfil" width="20px"></a>
       <a href="">Minha conta</a>
     </div>
   </nav>
   
   <nav>
     <div class="logo">
-      <img src="./img/eletronico.png" alt="logo" width="40px">
+      <img src="../img/eletronico.png" alt="logo" width="40px">
       <h1>Eletrowonka</h1>
     </div>
     
     <div class="search-bar">
       <input type="text" placeholder="Faça sua pesquisa">
-      <img src="./img/lupa.png" alt="lupa" height="30px">
+      <img src="../img/lupa.png" alt="lupa" height="30px">
     </div>
     
     <div class="nav-right">
@@ -51,7 +51,7 @@
   <section class="acesso">
     <div class="login">
       <div class="acesso-div">
-        <img src="./img/add.png" alt="" width="30px">
+        <img src="../img/add.png" alt="" width="30px">
         <p>Já sou cadastrado</p>
       </div>
       <div>
@@ -65,7 +65,7 @@
     </div>
     <div class="cadastro">
       <div class="acesso-div">
-        <img src="./img/register.png" alt="" width="40px">
+        <img src="../img/register.png" alt="" width="40px">
         <p>Ainda não possuo cadastro</p>
       </div>
       <div>
@@ -80,7 +80,7 @@
     <h1>Depoimentos de clientes</h1>
   </section>
   <div>
-    <img src="./img/Banner 2.png" alt="Banner">
+    <img src="../img/Banner 2.png" alt="Banner">
   </div>
 </section>
 <div class="contact-container">

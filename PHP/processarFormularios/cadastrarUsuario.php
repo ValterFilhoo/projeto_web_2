@@ -15,7 +15,7 @@
             $cpf = $_POST['cpf'];
             $celular = $_POST['celular'];
             $sexo = $_POST['sexo'];
-            $senha = $_POST['senha'];
+            $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT); // Hashing da senha, para poder "criptografar" a senha."
             $dataNascimento = $_POST['data-nascimento'];
             $cep = $_POST['cep'];
             $endereco = $_POST['endereco'];
@@ -25,15 +25,13 @@
             $bairro = $_POST['bairro'];
             $cidade = $_POST['cidade'];
             $estado = $_POST['estado'];
-            $email = 'inexistente'; // Alterar conforme necessário
+            $email = 'inexistente'; // Quando tiver o campo email, será alterado.
 
             $fabricaUsuario = new UserConcreteCreator();
-            
 
             $usuario = $fabricaUsuario->criarUsuario($nome, $email, $cpf, $celular, $sexo, $senha, $dataNascimento, $cep, $endereco, $numeroEndereco, $complemento, $referencia, $bairro, $cidade, $estado, 'Cliente');
 
-            echo 'Número Endereço: ' . $usuario->getNumeroEndereco() . '<br>';
-
+            
             $crudUsuario = new CrudUsuario();
             $resultadoCadastroUsuario = $crudUsuario->createEntidade($usuario);
 

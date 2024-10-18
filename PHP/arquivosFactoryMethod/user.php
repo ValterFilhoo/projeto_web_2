@@ -22,7 +22,7 @@ abstract class User {
     protected string $estado;
     protected string $tipoConta = "cliente";
 
-    public function __construct(string $nomeCompleto, string $email, string $cpf, string $celular, string $sexo, string $senha, string $dataNascimento, string $cep, string $endereco, int $numeroEndereco, string $complemento, string $referencia, string $bairro, $cidade, string $estado) {
+    public function __construct(string $nomeCompleto, string $email, string $cpf, string $celular, string $sexo, string $senha, string $dataNascimento, string $cep, string $endereco, int $numeroEndereco, string $complemento, string $referencia, string $bairro, string $cidade, string $estado) {
 
         $this->nomeCompleto = $nomeCompleto;
         $this->email = $email;
@@ -110,7 +110,7 @@ abstract class User {
         $this->endereco = $endereco;
     }
     public function getNumeroEndereco(): string { 
-        return $this->endereco;
+        return $this->numeroEndereco;
     }
     public function setNumeroEndereco(int $numeroEndereco): void { 
         $this->numeroEndereco = $numeroEndereco;

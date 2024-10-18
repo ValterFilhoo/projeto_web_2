@@ -5,7 +5,7 @@
 
     abstract class CrudTemplateMethod {
 
-        private $conexaoBD;
+        protected $conexaoBD;
 
         public function __construct() {
 
@@ -14,26 +14,28 @@
         }
 
         public function createEntidade($entidade) {
+        
+            // Pegando a parte do método que varia entre as subclasses, nesse caso a string do Insert.
+            $sql = $this->sqlCreate();
             
-            // Parte do código que varia entre as subclasses de CRUD das entidades produto, pedido e usuario.
-            $sql = $this->sqlCreate($entidade);
+            // Usando o método de preparação da declaração da operação que será feita.
+            $stmt = $this->conexaoBD->prepare($sql);
 
+            // Binding dos parâmetros.
+            $this->bindParams($stmt, $entidade);
+            
+            // Pegando o resultado da inserção no banco de dados.
+            $resultadoInsert = $stmt->execute();
 
-            $resultadoInsert = mysqli_query($this->conexaoBD, $sql);
-
-            // Verificando se realmente cadastrou o produto no banco.
+            // Verificando se realmente cadastrou a entidade no banco.
             // Vai retornar true se a query deu certo.
             if ($resultadoInsert) {
 
-
                 return true;
-
 
             } else {
 
-
-                echo "Erro no cadastro: " . mysqli_error($this->conexaoBD);
-                
+                echo "Erro no cadastro: " . $stmt->error;
                 return false;
 
             }
@@ -114,13 +116,16 @@
         }
 
 
-        abstract public function sqlCreate($entidade);
+        abstract public function sqlCreate();
 
         abstract public function sqlRead($id);
 
         abstract public function sqlUpdate($id, $entidade);
 
         abstract public function sqlDelete($id);
+
+        abstract protected function bindParams($stmt, $entidade);
+
 
     }
 
