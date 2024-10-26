@@ -6,6 +6,7 @@
     // Verificando se o método da requisição acionada pelo formulário de cadastro do usuário é POST.
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+        // Definindo que o cabeçalho da requisição será um arquivo json.
         header('Content-Type: application/json');
 
         try {
@@ -33,13 +34,12 @@
 
             
             $crudUsuario = new CrudUsuario();
-            $resultadoCadastroUsuario = $crudUsuario->createEntidade($usuario);
+            $resultadoCadastroUsuario = $crudUsuario->criarEntidade($usuario);
 
-            
-
+            // Verificando se o resultado é verdadeiro.
             if ($resultadoCadastroUsuario) {
 
-
+                // Envia para o front o status do cadastro.
                 echo json_encode(['status' => 'success', 'message' => 'Cadastro realizado com sucesso.']);
 
             } else {
