@@ -13,16 +13,18 @@
 
         }
 
-        public function createEntidade($entidade) {
-        
+        public function criarEntidade($entidade) {
+            
+            $operacao = "Criar";
+            
             // Pegando a parte do método que varia entre as subclasses, nesse caso a string do Insert.
-            $sql = $this->sqlCreate();
+            $sql = $this->sqlCriar();
             
             // Usando o método de preparação da declaração da operação que será feita.
             $stmt = $this->conexaoBD->prepare($sql);
 
-            // Binding dos parâmetros.
-            $this->bindParams($stmt, $entidade);
+            // Vinculação dos parâmetros dos valores que serão inseridos na tabela do banco de dados.
+            $this->vincularParametros($stmt, $entidade, $operacao);
             
             // Pegando o resultado da inserção no banco de dados.
             $resultadoInsert = $stmt->execute();
@@ -42,10 +44,10 @@
 
         }
 
-        public function readEntidade($id) {
+        public function lerEntidade($id) {
 
             // Parte do código que variam entre as subclasses.
-            $sql = $this->sqlRead($id);
+            $sql = $this->sqlLer($id);
             
             $resultadoDaBusca = $this->conexaoBD->query($sql);
 
@@ -67,10 +69,10 @@
 
         }
 
-        public function updateEntidade($id, $entidade) {
+        public function atualizarEntidade($id, $entidade) {
 
             // Parte do código que variam entre as subclasses.
-            $sql = $this->sqlUpdate($id, $entidade);
+            $sql = $this->sqlAtualizar($id, $entidade);
 
             $resultadoEdicao = $this->conexaoBD->query($sql);
 
@@ -91,10 +93,10 @@
 
         }
 
-        public function deleteEntidade($id) {
+        public function deletarEntidade($id) {
 
             // Parte do código que variam entre as subclasses.
-            $sql = $this->sqlDelete($id);
+            $sql = $this->sqlDeletar($id);
 
             $resultadoExclusao = $this->conexaoBD->query($sql);
 
@@ -115,16 +117,21 @@
 
         }
 
+        public function listarEntidades() {
 
-        abstract public function sqlCreate();
+        }
 
-        abstract public function sqlRead($id);
+        abstract public function sqlCriar(): string;
 
-        abstract public function sqlUpdate($id, $entidade);
+        abstract public function sqlLer(): string;
 
-        abstract public function sqlDelete($id);
+        abstract public function sqlAtualizar(): string;
 
-        abstract protected function bindParams($stmt, $entidade);
+        abstract public function sqlDeletar(): string;
+
+        abstract public function sqlListar(): string;
+
+        abstract public function vincularParametros($declaracao, $entidade, $operacao): void;
 
 
     }

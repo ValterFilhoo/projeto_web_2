@@ -2,36 +2,58 @@
 
     class CrudProduto extends CrudTemplateMethod  {
 
-        public function sqlCreate($entidade) {
+        public function sqlCriar(): string {
             
             // Criando o comando INSERT para cadastrar o produto no banco de dados.
-           return  $sql = "
-           INSERT INTO produto (imagem, nome, valor, quantidade, categoria, tipo, descricao) 
-           VALUES ('$entidade->imagem', '$entidade->nome', $entidade->valor, '$entidade->quantidade', '$entidade->categoria', '$entidade->tipo', '$entidade->descricao')";
+           return  $sql = " INSERT INTO Produto (imagem, nome, valor, quantidade, categoria, tipo, descricao) 
+           VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         }
 
-        public function sqlRead($id) {
+        public function sqlLer(): string {
 
-            return $sql = "SELECT * FROM produto WHERE id = $id";
-
-        }
-
-        public function sqlUpdate($id, $entidade) {
-
-            return $sql = "
-            UPDATE produto SET imagem = '$$entidade->imagem', 
-            nome = '$entidade->nome', valor = $entidade->valor, 
-            categoria = '$entidade->categoria', tipo = '$entidade->tipo',
-            descricao = '$entidade->descricao' WHERE idProduto = $id
-            ";
+            return $sql = "SELECT * FROM Produto WHERE id = ?";
 
         }
 
-        public function sqlDelete($id) {
+        public function sqlAtualizar(): string {
 
-            return $sql = "DELETE FROM produto WHERE idProduto = $id";
+            return $sql = "UPDATE produto SET imagem = ?, nome = ?, valor = ?, categoria = ?, tipo = ?, descricao = ? WHERE idProduto = ?";
 
+        }
+        
+
+        public function sqlDeletar(): string {
+
+            return $sql = "DELETE FROM produto WHERE idProduto = ?";
+
+        }
+
+        public function sqlListar(): string {
+
+            return $sql = "SELECT * FROM Produto";
+
+        }
+
+
+        public function vincularParametros($declaracao, $entidade, $operacao): void {
+
+            switch ($operacao) {
+
+                case "Criar":
+
+                    
+                    
+                    // Vinculando os parãmetros dos valores da string sql, passando os tipos dos valores e seus valores.
+                   
+
+                case "Ler":
+
+
+
+            }
+
+           
         }
 
     }
