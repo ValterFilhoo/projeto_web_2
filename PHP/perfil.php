@@ -55,14 +55,14 @@
         <p>Já sou cadastrado</p>
       </div>
       <div>
-        <form class="formLogin" id="formularioDeLogin">
+        <form class="formLogin" id="formularioDeLogin" method="POST">
           <label for="login-email">E-mail:</label>
           <input type="email" id="login-email" name="email" required placeholder="Digite seu e-mail">
           <label for="login-password">Senha:</label>
           <input type="password" id="login-password" name="senha" required placeholder="Digite sua senha">
           <a href="">Esqueceu a senha?</a>
-          <a href="">Entrar</a>
-      </form>
+          <button type="submit">Entrar</button>
+        </form>
         
       </div>
     </div>
@@ -86,7 +86,7 @@
 </section>
 <div class="contact-container">
 <h2>Contato</h2>
-<form action="#" method="post">
+<form >
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" placeholder="Digite seu email" required>
     <label for="password">Senha:</label>
@@ -121,6 +121,8 @@
       <p>&copy; 2024 Empresa | Todos os direitos reservados.</p>
   </div>
   </footer>
+
+  <script src="../js/autenticacao/autenticacao.js"></script>
 </body>
 </html>
 </body>

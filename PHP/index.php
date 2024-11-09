@@ -1,3 +1,10 @@
+<?php 
+
+  session_start();
+
+  
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -14,7 +21,10 @@
   <nav class="cabecalho">
     <div class="perfil">
       <a href="perfil.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
-      <a href="perfil.php">Minha conta</a>
+      <a href="perfil.php">
+      <?php 
+      echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta'; ?>  
+      </a>
     </div>
   </nav>
   <nav>

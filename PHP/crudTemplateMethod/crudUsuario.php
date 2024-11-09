@@ -1,7 +1,7 @@
 <?php 
 
-    require_once __DIR__ . "/./crudAbstractTemplateMethod.php";
-    require_once "../arquivosFactoryMethod/fabricaUser/userConcretCreate.php";
+require_once __DIR__ . '/../arquivosFactoryMethod/fabricaUser/userConcretCreate.php'; // Caminho corrigido 
+require_once __DIR__ . '/crudAbstractTemplateMethod.php';
 
     class CrudUsuario extends CrudTemplateMethod  {
 
@@ -82,7 +82,9 @@
                     $fabricaUsuario = new UserConcreteCreator();
 
                     // Instanciando um usuário com os valores retornados da autenticação.
-                    $usuarioAutenticado = $fabricaUsuario->criarUsuario($resultado['id'], $resultado['email'], $resultado['cpf'], $resultado['celular'], $resultado['sexo'], $resultado['senha'], $resultado['dataNascimento'], $resultado['cep'], $resultado['endereco'], $resultado['numeroEndereco'], $resultado['complemento'], $resultado['referencia'], $resultado['bairro'], $resultado['cidade'], $resultado['estado'], $resultado['tipoConta']);
+                    $usuarioAutenticado = $fabricaUsuario->criarUsuario($resultado['nomeCompleto'], $resultado['email'], $resultado['cpf'], $resultado['celular'], $resultado['sexo'], $resultado['senha'], $resultado['dataNascimento'], $resultado['cep'], $resultado['endereco'], $resultado['numeroEndereco'], $resultado['complemento'], $resultado['referencia'], $resultado['bairro'], $resultado['cidade'], $resultado['estado'], $resultado['tipoConta']);
+
+                    $usuarioAutenticado->setId($resultado['id']);
 
                     // Retornando o objeto do usuário autenticado..
                     return $usuarioAutenticado;

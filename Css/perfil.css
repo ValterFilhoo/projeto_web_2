@@ -140,6 +140,8 @@ input[type="text"], input[type="password"], input[type="email"] {
   border-radius: 5px;
 }
 
+
+
 .acesso a {
   display: block;
   text-align: center;
@@ -150,6 +152,22 @@ input[type="text"], input[type="password"], input[type="email"] {
   border-radius: 5px;
   margin-top: 10px;
   width: 200px;
+}
+
+.acesso button {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  width: 200px;
+}
+
+.acesso button:hover {
+  background-color: #0056b3;
 }
 
 .acesso a:hover {

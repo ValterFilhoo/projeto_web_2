@@ -1,54 +1,54 @@
 <?php
 
-    require_once "../arquivosFactoryMethod/fabricaUser/userConcretCreate.php";
-    require_once "../crudTemplateMethod/crudUsuario.php";
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+    require_once __DIR__ . '/../../arquivosFactoryMethod/fabricaUser/userConcretCreate.php';
+    require_once __DIR__ . '/../../crudTemplateMethod/crudUsuario.php';
 
     session_start();
 
-    // Verificando se o método da requisição acionada pelo formulário de cadastro do usuário é POST.
+    header('Content-Type: application/json');
+
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        header('Content-Type: application/json');
-
         try {
-
+        
             $email = $_POST['email'];
             $senha = $_POST['senha'];
 
             $crudUsuario = new CrudUsuario();
-
             $resultadoAutenticacao = $crudUsuario->autenticarUsuario($email, $senha);
 
-            $fabricaUsuario = new UserConcreteCreator();
-
-            // Se o email e a senha informa confere com o usuário no banco de dados (retornado true).
             if ($resultadoAutenticacao != null) {
-
-                // Istanciando um objeto do tipo usuário, sem passar seu id.
-                $usuarioAutenticado = $fabricaUsuario->criarUsuario($resultadoAutenticacao['nomeCompleto'], $resultadoAutenticacao['email'], $resultadoAutenticacao['cpf'], $resultadoAutenticacao['celular'], $resultadoAutenticacao['sexo'], $resultadoAutenticacao['senha'], $resultadoAutenticacao['dataNascimento'], $resultadoAutenticacao['cep'], $resultadoAutenticacao['endereco'], $resultadoAutenticacao['numeroEndereco'], $resultadoAutenticacao['complemento'], $resultadoAutenticacao['referencia'], $resultadoAutenticacao['bairro'], $resultadoAutenticacao['cidade'], $resultadoAutenticacao['estado'], 'cliente');
-
-                // Atribuindo id do usuário.
-                $usuarioAutenticado->setId($resultadoAutenticacao['id']);
+                
+                $usuarioAutenticado = $resultadoAutenticacao;
 
                 $_SESSION['id'] = $usuarioAutenticado->getId();
-                $_SESSION['nome'] = $usuarioAutenticado->getNome();
+                $_SESSION['nome'] = $usuarioAutenticado->getNomeCompleto();
                 $_SESSION['tipoConta'] = $usuarioAutenticado->getTipoConta();
                 $_SESSION['autenticado'] = true;
 
-                echo json_encode(['status' => 'sucesso', 'mensagem' => 'Usuario autenticado com sucesso.']);
+                echo json_encode(['status' => 'sucesso', 'mensagem' => 'Usuário autenticado com sucesso.']);
 
             } else {
 
-                echo json_encode(['status' => 'erro', 'mensagem' => 'Erro na autenticacao.']);
+                echo json_encode(['status' => 'erro', 'mensagem' => 'Erro na autenticação.']);
 
             }
-
         } catch (Exception $excecao) {
 
-            echo json_encode(['status' => 'erro', 'mensagem' => 'Ocorreu um erro na autenticacao: ' . $excecao->getMessage()]);
+            echo json_encode(['status' => 'erro', 'mensagem' => 'Ocorreu um erro na autenticação: ' . $excecao->getMessage()]);
 
         }
 
-    }
+        exit;
 
-?>
+    } else {
+
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Método de requisição inválido.']);
+        exit;
+
+    }
