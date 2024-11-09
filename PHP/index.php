@@ -23,14 +23,17 @@
       <a href="perfil.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
       <a href="perfil.php">
       <?php 
-      echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta'; ?>  
+      // Verificando se a chave nome da sessão foi iniciada (quando o usuário é autenticado é criado essa chave). Então exibe o nome do usuário.
+      echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta';
+       ?> 
+      </a>
       </a>
     </div>
   </nav>
   <nav>
     <div class="logo">
-      <img src="../img/eletronico.png" alt="logo" width="40px">
-      <h1>Eletrowonka</h1>
+    <a href="./index.php"> <img src="../img/eletronico.png" alt="logo" width="40px"> </a>
+    <h1>Eletrowonka</h1>
     </div>
     <div class="search-bar">
       <input type="text" placeholder="Faça sua pesquisa">

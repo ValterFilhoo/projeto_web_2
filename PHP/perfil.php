@@ -1,3 +1,10 @@
+<?php 
+
+  session_start();
+
+  
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -14,13 +21,18 @@
   <nav class="cabecalho">
     <div class="perfil">
       <a href=""><img src="../img/perfil.png" alt="perfil" width="20px"></a>
-      <a href="">Minha conta</a>
+      <a href="">
+      <?php 
+      // Verificando se a chave nome da sessão foi iniciada (quando o usuário é autenticado é criado essa chave). Então exibe o nome do usuário.
+      echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta';
+       ?> 
+      </a>
     </div>
   </nav>
   
   <nav>
     <div class="logo">
-      <img src="../img/eletronico.png" alt="logo" width="40px">
+      <a href="./index.php"> <img src="../img/eletronico.png" alt="logo" width="40px"> </a>
       <h1>Eletrowonka</h1>
     </div>
     
