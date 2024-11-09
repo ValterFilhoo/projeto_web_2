@@ -46,7 +46,7 @@
   </nav>
     <div class="container">
         <h1>Cadastrar-se</h1>
-        <form action="./processarFormularios/cadastrarUsuario.php" method="post">
+        <form action="./processarFormularios/cadastrarUsuario.php" id="formularioDeCadastro" method="post">
             <div class="grid-container">
                 <div class="grid-item">
                     <label for="nome">Nome completo:</label>
@@ -71,6 +71,11 @@
                         <option value="feminino">Feminino</option>
                         <option value="outro">Outro</option>
                     </select>
+                </div>
+
+                <div class="grid-item">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" required>
                 </div>
 
                 <div class="grid-item">
@@ -123,7 +128,7 @@
 
                 <div class="grid-item">
                     <label for="estado">Estado:</label>
-                    <input type="text" id="estado" name="estado" required>
+                    <input type="text" id="estado" name="estado" maxlength="2" required>
                 </div>
             </div>
 
@@ -162,5 +167,7 @@
         <p>&copy; 2024 Empresa | Todos os direitos reservados.</p>
     </div>
     </footer>
+
+    <script src="../js/cadastro/cadastrarUsuario.js"></script>
 </body>
 </html>

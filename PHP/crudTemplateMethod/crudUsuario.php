@@ -2,6 +2,7 @@
 
     require_once "../bdSingleton/instanciarConexaoBD.php";
     require_once __DIR__ . "/./crudAbstractTemplateMethod.php";
+    require_once "../arquivosFactoryMethod/fabricaUser/userConcretCreate.php";
 
     class CrudUsuario extends CrudTemplateMethod  {
 
@@ -56,33 +57,38 @@
         public function autenticarUsuario(string $email, string $senha) {
 
             // Verificando primeiro se existe um usuário com aquele email.
-            $sql = "SELECT * FROM Usuario WHERE email = $email";
-
+            $sql = "SELECT * FROM Usuario WHERE email = ?";
+            
             // Preparando a consulta.
             $stmt = $this->conexaoBD->prepare($sql);
-
+            
             // Passando o tipo do argumento "?" da string sql e seu valor.
             $stmt->bind_param("s", $email);
-
+            
             // Executando a operação do Select.
             $stmt->execute();
-
+            
             // Pegando o resultado da operação.
             $resultado = $stmt->get_result();
-            
+
             // Verificando se encontrou pelo menos um usuário com aquele email cadastrado.
             if ($resultado->num_rows > 0) {
+                
+                // Transformando o registro do usuário encontrado em uma estrutura de par de chave e valor.
+                $resultado = $resultado->fetch_assoc();
 
-                // Transformando o resultado retornado pelo banco em um array associativo (par de chaves e valores) e atribuindo a uma variável.
-                $usuario = $resultado->fetch_assoc();
+                // Verificando a senha digitada com a senha armazenada.
+                if ($senha === $resultado['senha']) {
+            
+                    $fabricaUsuario = new UserConcreteCreator();
 
-                // Verificando agora a senha, descriptografando e verificando se é igual a senha digitada no front-end.
-                if (password_verify($senha, $usuario['senha'])) {
-                    
-                    // Retornando o array associativo com os dados do usuário.
-                    return $usuario;
+                    // Instanciando um usuário com os valores retornados da autenticação.
+                    $usuarioAutenticado = $fabricaUsuario->criarUsuario($resultado['id'], $resultado['email'], $resultado['cpf'], $resultado['celular'], $resultado['sexo'], $resultado['senha'], $resultado['dataNascimento'], $resultado['cep'], $resultado['endereco'], $resultado['numeroEndereco'], $resultado['complemento'], $resultado['referencia'], $resultado['bairro'], $resultado['cidade'], $resultado['estado'], $resultado['tipoConta']);
 
-                } else {
+                    // Retornando o objeto do usuário autenticado..
+                    return $usuarioAutenticado;
+
+                } else { //se a senha digitada não corresponder a senha armazenada no banco.
 
                     return null;
 
@@ -95,9 +101,8 @@
             }
         
             $stmt->close();
-
             $this->conexaoBD->close();
-            
+
         }
         
         

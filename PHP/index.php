@@ -7,24 +7,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./Css/style.css">
+    <link rel="stylesheet" href="../Css/style.css">
     <script async src="../js/loja.js"></script>
 </head>
 <body>
   <nav class="cabecalho">
     <div class="perfil">
-      <a href="perfil.php"><img src="./img/perfil.png" alt="perfil" width="20px"></a>
+      <a href="perfil.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
       <a href="perfil.php">Minha conta</a>
     </div>
   </nav>
   <nav>
     <div class="logo">
-      <img src="./img/eletronico.png" alt="logo" width="40px">
+      <img src="../img/eletronico.png" alt="logo" width="40px">
       <h1>Eletrowonka</h1>
     </div>
     <div class="search-bar">
       <input type="text" placeholder="Faça sua pesquisa">
-      <img src="./img/lupa.png" alt="lupa" height="30px"> <!-- Ajuste a altura conforme necessário -->
+      <img src="../img/lupa.png" alt="lupa" height="30px"> <!-- Ajuste a altura conforme necessário -->
     </div>
     
     <div class="nav-right">
@@ -49,54 +49,54 @@
   </nav>
   
     <section class="banner">
-      <img src="./img/Banner.jpg" alt="Banner">
+      <img src="../img/Banner.jpg" alt="Banner">
       <div class="saiba-mais">
         <div class="garantia">
-          <img src="./img/icone-garantia.svg" alt="garantia">
+          <img src="../img/icone-garantia.svg" alt="garantia">
           <p>Garantia de 90 dias <br>contra defeitos de fabricação</p>
         </div>
         <div class="qualidade">
-          <img src="./img/icone-polegar de qualidade.svg" alt="qualidade">
+          <img src="../img/icone-polegar de qualidade.svg" alt="qualidade">
           <p>Satisfação garantida: <br>7 dias para troca ou devolução.</p>
         </div>
         <div class="cadeado">
-          <img src="./img/icone-cadeado.svg" alt="cadeado">
+          <img src="../img/icone-cadeado.svg" alt="cadeado">
           <p>Blog completo com especialistas<br> para tirar as suas dúvidas</p>
         </div>
         <div class="medalha">
-          <img src="./img/icone-medalha.svg" alt="medalha">
+          <img src="../img/icone-medalha.svg" alt="medalha">
           <p>referências em Arduíno há <br>mais de 10 anos no mercado!</p>
         </div>
         <div class="coracao">
-          <img src="./img/icone-coração.svg" alt="coracao">
+          <img src="../img/icone-coração.svg" alt="coracao">
           <p>Mais de 80.000 clientes satisfeitos!<br>Conheça e comprove.</p>
         </div>
       </div>
     </section>
     <section class="produtos">
       <div class="notebook">
-        <img src="./img/notebook.svg" alt="notebook">
+        <img src="../img/notebook.svg" alt="notebook">
           <h1>Notebook Acer</h1>
           <p>R$ 2,000</p>
           <p>até 12x de R$166</p>
           <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
       </div>
       <div class="notebook">
-        <img src="./img/notebook.svg" alt="notebook">
+        <img src="../img/notebook.svg" alt="notebook">
           <h1>Notebook Acer</h1>
           <p>R$ 2,000</p>
           <p>até 12x de R$166</p>
           <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
       </div>
       <div class="notebook">
-        <img src="./img/notebook.svg" alt="notebook">
+        <img src="../img/notebook.svg" alt="notebook">
           <h1>Notebook Acer</h1>
           <p>R$ 2,000</p>
           <p>até 12x de R$166</p>
           <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
       </div>
       <div class="notebook">
-        <img src="./img/notebook.svg" alt="notebook">
+        <img src="../img/notebook.svg" alt="notebook">
           <h1>Notebook Acer</h1>
           <p>R$ 2,000</p>
           <p>até 12x de R$166</p>
@@ -105,28 +105,28 @@
     </section>
     <div class="produtos">
       <div class="notebook">
-        <img src="./img/notebook.svg" alt="notebook">
+        <img src="../img/notebook.svg" alt="notebook">
           <h1>Notebook Acer</h1>
           <p>R$ 2,000</p>
           <p>até 12x de R$166</p>
           <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
       </div>
       <div class="notebook">
-        <img src="./img/notebook.svg" alt="notebook">
+        <img src="../img/notebook.svg" alt="notebook">
           <h1>Notebook Acer</h1>
           <p>R$ 2.000</p>
           <p>até 12x de R$180</p>
           <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
       </div>
       <div class="notebook">
-        <img src="./img/notebook.svg" alt="notebook">
+        <img src="../img/notebook.svg" alt="notebook">
           <h1>Notebook Acer</h1>
           <p>R$ 2.000</p>
           <p>até 12x de R$180</p>
           <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
       </div>
       <div class="notebook">
-        <img src="./img/notebook.svg" alt="notebook">
+        <img src="../img/notebook.svg" alt="notebook">
           <h1>Notebook Acer</h1>
           <p>R$ 2.000</p>
           <p>até 12x de R$180</p>
@@ -137,7 +137,7 @@
       <h1>Depoimentos de clientes</h1>
     </section>
     <div>
-      <img src="./img/Banner 2.png" alt="Banner">
+      <img src="../img/Banner 2.png" alt="Banner">
     </div>
 </section>
 <div class="contact-container">

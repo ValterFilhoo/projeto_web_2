@@ -55,12 +55,15 @@
         <p>Já sou cadastrado</p>
       </div>
       <div>
-        <label for="login-email">E-mail:</label>
-        <input type="email" id="login-email" placeholder="Digite seu e-mail">
-        <label for="login-password">Senha:</label>
-        <input type="password" id="login-password" placeholder="Digite sua senha">
-        <a href="">Esqueceu a senha?</a>
-        <a href="">Entrar</a>
+        <form class="formLogin" id="formularioDeLogin">
+          <label for="login-email">E-mail:</label>
+          <input type="email" id="login-email" name="email" required placeholder="Digite seu e-mail">
+          <label for="login-password">Senha:</label>
+          <input type="password" id="login-password" name="senha" required placeholder="Digite sua senha">
+          <a href="">Esqueceu a senha?</a>
+          <a href="">Entrar</a>
+      </form>
+        
       </div>
     </div>
     <div class="cadastro">
@@ -70,8 +73,6 @@
       </div>
       <div>
         <h2>Primeiro acesso?</h2>
-        <label for="register-email">E-mail:</label>
-        <input type="email" id="register-email" placeholder="Digite seu e-mail">
         <a href="cadastro.php">Cadastre-se</a>
       </div>
     </div>
