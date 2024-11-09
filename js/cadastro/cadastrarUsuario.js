@@ -1,5 +1,4 @@
 document.getElementById('formularioDeCadastro').addEventListener('submit', async (evento) => {
-
     evento.preventDefault();
 
     const dadosFormulario = new FormData(evento.target);
@@ -20,7 +19,6 @@ document.getElementById('formularioDeCadastro').addEventListener('submit', async
     const estado = dadosFormulario.get('estado');
 
     try {
-
         const resposta = await fetch('./processarFormularios/cadastrarUsuario.php', {
             method: 'POST',
             headers: {
@@ -46,24 +44,35 @@ document.getElementById('formularioDeCadastro').addEventListener('submit', async
         });
 
         const textoResposta = await resposta.text();
-        const resultado = JSON.parse(textoResposta); // Parse da resposta para JSON.
 
-        if (resultado.status === 'sucesso') {
+        try {
 
-            alert(resultado.mensagem);
-            window.location.href = './index.php'; 
+            const resultado = JSON.parse(textoResposta); 
 
-        } else {
+            // Verificando se a resposta do servidor foi sucesso.
+            if (resultado.sucesso) {
 
-            alert(resultado.mensagem);
+                alert(resultado.mensagem);
+                window.location.href = './index.php'; // Redireciona para a página principal.
+
+            } else {
+
+                alert(resultado.mensagem);
+
+            }
+
+        } catch (erroParse) {
+
+            console.error('Erro ao parsear JSON:', erroParse);
+            alert('Erro no formato da resposta do servidor. Consulte o console para mais detalhes.');
 
         }
 
     } catch (erro) {
 
         console.error('Erro no cadastro:', erro);
-        alert('Ocorreu um erro no cadastro. Tente novamente mais tarde.');
+        alert('Ocorreu um erro no cadastro. Tente novamente');
 
     }
-    
+
 });

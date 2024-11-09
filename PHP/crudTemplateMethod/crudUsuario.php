@@ -1,6 +1,5 @@
 <?php 
 
-    require_once "../bdSingleton/instanciarConexaoBD.php";
     require_once __DIR__ . "/./crudAbstractTemplateMethod.php";
     require_once "../arquivosFactoryMethod/fabricaUser/userConcretCreate.php";
 
@@ -117,7 +116,7 @@
                     $cpf = $entidade->getCpf();
                     $celular = $entidade->getCelular();
                     $sexo = $entidade->getSexo();
-                    $senha = password_hash($entidade->getSenha(), PASSWORD_DEFAULT); // Hashing da senha
+                    $senha = $entidade->getSenha(); 
                     $dataNascimento = $entidade->getDataNascimento();
                     $cep = $entidade->getCep();
                     $endereco = $entidade->getEndereco();
@@ -135,7 +134,7 @@
                         $cep, $endereco, $complemento, $referencia, $bairro, 
                         $cidade, $estado, $tipoConta, $numeroEndereco);
 
-                case "Ler":
+                
 
 
 
