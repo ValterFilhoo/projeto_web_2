@@ -133,7 +133,7 @@ label {
   display: flex;
   flex-direction: column;
 }
-
+input[[type="email"],
 input[type="text"],
 input[type="password"],
 input[type="date"],
