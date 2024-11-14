@@ -1,9 +1,7 @@
 <?php 
 
 // Importando os arquivos das classes utilizadas aqui.
-require '/xampp/htdocs/projeto_web_2/produtosfactoryMethod/produtoCreator.php';
-require '/xampp/htdocs/projeto_web_2/produtosFactoryMethod/sensorArduinoConcreteProduct.php';
-require '/xampp/htdocs/projeto_web_2/produtosFactoryMethod/placaArduinoConcreteProduct.php';
+require_once "../produtoCreator.php";
 
 // A classe concreta da Fábrica de Arduino, herdando o comportamento da fábrica abstrata (Creator).
 class ArduinoConcreteCreator extends ProdutoCreator {
@@ -30,8 +28,6 @@ class ArduinoConcreteCreator extends ProdutoCreator {
             default: // Se o tipo do produto não for igual a um dos casos acima.
 
                 throw new Exception("Erro. Tipo de Arduino inválido.");
-
-            
 
         }
        
