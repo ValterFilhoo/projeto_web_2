@@ -3,13 +3,13 @@
 // Classe abstrata em vez da interface, do padrão FactoryMethod, pois existem atributos em comum entre todos os produtos do nosso site.
 abstract class Product {
 
-    protected $imagem;
-    protected $nome;
-    protected $valor;
-    protected $quantidade;
-    protected $categoria;
-    protected $tipo;
-    protected $descricao;
+    protected string $imagem;
+    protected string $nome;
+    protected float $valor;
+    protected int $quantidade;
+    protected string $categoria;
+    protected string $tipo;
+    protected string $descricao;
 
     // Construtor da classe.
     public function __construct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto) {
@@ -23,9 +23,6 @@ abstract class Product {
         $this->descricao = $descricaoProduto;
         
     }
-
-    // Método abstrato que irá iniciar a instanciação do produto.
-    public abstract function instanciarProduto();
 
     public function setImagem($imagemProduto): void {
         $this->imagem = $imagemProduto;
@@ -55,34 +52,32 @@ abstract class Product {
         $this->descricao = $descricaoProduto;
     }
 
-    public function getImagem(): mixed {
+    public function getImagem(): string {
         return $this->imagem;
     }
 
-    public function getNome(): mixed {
+    public function getNome(): string {
         return $this->nome;
     }
 
-    public function getValor(): mixed {
+    public function getValor(): float {
         return $this->valor;
     }
 
-    public function getQuantidade(): mixed {
+    public function getQuantidade(): int {
         return $this->quantidade;
     }
 
-    public function getCategoria(): mixed {
+    public function getCategoria(): string {
         return $this->categoria;
     }
 
-    public function getTipo(): mixed {
+    public function getTipo(): string {
         return $this->tipo;
     }
 
-    public function getDescricao(): mixed {
+    public function getDescricao(): string {
         return $this->descricao;
     }
 
 }
-
-?>

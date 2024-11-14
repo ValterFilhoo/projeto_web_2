@@ -18,6 +18,10 @@
                     return new UserClienteConcrete($nomeCompleto, $email, $cpf, $celular, $sexo, $senha, $dataNascimento, $cep, $endereco, $numeroEndereco, $complemento, $referencia, $bairro, $cidade, $estado);
 
                 // Conforme for inserindo mais produtos concretos de Arduino futuramente, será acrescentado aqui a instancia desse produto.
+
+                default: // Se o tipo do produto não for igual a um dos casos acima.
+
+                throw new Exception("Erro. Tipo de usuário inválido.");
                 
             }
         

@@ -10,7 +10,7 @@ require '/xampp/htdocs/projeto_web_2/produtosFactoryMethod/displayOledConcretePr
 class DisplayConcreteCreator extends ProdutoCreator {
 
     // Implementando o método do padrão de projeto para criação do produto especifico dessa fábrica.
-    public function factoryMethod($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto) {
+    public function factoryMethod($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto): Product {
         
         switch ($tipoProduto) {
 
@@ -31,6 +31,10 @@ class DisplayConcreteCreator extends ProdutoCreator {
                 return new DisplayLcdConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
     
             // Conforme for inserindo mais produtos concretos de Arduino futuramente, será acrescentado aqui a instancia desse produto.
+
+            default: // Se o tipo do produto não for igual a um dos casos acima.
+
+                throw new Exception("Erro. Tipo de Display inválido.");
             
         }
        

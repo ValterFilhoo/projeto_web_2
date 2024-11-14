@@ -1,9 +1,11 @@
 <?php 
 
-// Importando o arquivo da classe abstrata "Product", do padrão "FactoryMethod".
+// Importando o arquivo da classe abstrata "Product", do padrão "FactoryMethod" e da interface do "Composite".
+require_once "../product.php";
+require_once "../../composite/itemPedidoComponent.php";
 
 // Classe concreta do produto de Arduino (ConcreteProduto) recebe todos os atributos e métodos da classe abstrata "Product".
-class  DisplayLcdConcreteProduct extends Product {
+class DisplayLcdConcreteProduct extends Product implements ItemPedidoComponent {
     
     // Contrutor da classe "PlacaArduinoConcreteProduct".
     public function __construct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto) {
@@ -13,13 +15,9 @@ class  DisplayLcdConcreteProduct extends Product {
 
     }
 
-    // Implementação do método abstrato, mas só utilizando uma string como teste apenas.
-    public function instanciarProduto(): void {
-
-        echo "Instanciando o produto: " . $this->nome;
-
+    // Retornando o valor do produto, que é o método que a interface "ItemPedidoComponent" do Composite obriga implementar.
+    public function calcularValorPedido(): float {
+        return $this->getValor();
     }
 
 }
-
-?>
