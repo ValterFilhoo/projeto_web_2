@@ -3,7 +3,8 @@
 class PedidoComposite implements ItemPedidoComponent {
 
     private $itensPedido = [];
-    private $pagamentoStrategy;
+    private FormaPagamentoStrategy $pagamentoStrategy;
+    private float $valorTotalPedido;
 
     public function adicionarItem(ItemPedidoComponent $item) {
         $this->itensPedido[] = $item;
@@ -32,19 +33,20 @@ class PedidoComposite implements ItemPedidoComponent {
     }
     
 
-    public function setpagamentoStrategy(FormaPagamentoStrategy $strategy) {
+    public function definirFormaPagamento(FormaPagamentoStrategy $strategy) {
         $this->pagamentoStrategy = $strategy;
     }
 
+
     public function calcularValorPedido(): float {
         
-        $valorTotalPedido = 0;
+        $valorBasePedido = 0;
 
         // Itera na lista de itens do pedido para calcular recursivamente os valores de cada item contidos na lista.
         foreach ($this->itensPedido as $item) {
 
             // Cada item que está na lista de itens do pedido, executará esse mesmo método e retornar seu preço individual, sendo assim somado cada um deles.
-            $valorTotalPedido += $item->calcularValorPedido();
+            $valorBasePedido += $item->calcularValorPedido();
 
         }
 
@@ -52,13 +54,23 @@ class PedidoComposite implements ItemPedidoComponent {
         if ($this->pagamentoStrategy !== null) {
 
             // Descontando no valor total do pedido o valor do pagamento conforme a forma de pagamento escolhida.
-            $valorTotalPedido = $this->pagamentoStrategy->calcularDesconto($valorTotalPedido);
+            $this->valorTotalPedido = $this->pagamentoStrategy->calcularvalorFinal($valorBasePedido);
 
+        } else {
+
+            throw new Exception("Erro. A estratégia de pagamento está nula.");
+            
         }
 
-        return $valorTotalPedido;
+        return $this->getValorTotalPedido();
 
     }
+
+
+    public function getValorTotalPedido(): float {
+        return $this->valorTotalPedido;
+    }
+
 
     
 }
