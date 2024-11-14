@@ -6,4 +6,3 @@
     define("BD_ESCHEMA", "eletrowonka");
     define("BD_PORTA", 3306);
 
-?>
