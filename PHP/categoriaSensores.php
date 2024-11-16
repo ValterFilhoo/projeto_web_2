@@ -116,6 +116,6 @@
     </div>
     </footer>
 
-    <script src="../js/categoriaArduino/produtosArduino.js"></script>
+    <script src="../js/categoriaSensores/produtosSensores.js"></script>
 </body>
 </html>

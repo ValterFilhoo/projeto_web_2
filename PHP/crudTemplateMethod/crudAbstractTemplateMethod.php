@@ -52,30 +52,47 @@
         }
 
         public function lerEntidade($id) {
-
-            // Parte do código que variam entre as subclasses.
-            $sql = $this->sqlLer($id);
             
-            $resultadoDaBusca = $this->conexaoBD->query($sql);
+            $operacao = "Ler";
+        
+            // Parte do código que variam entre as subclasses.
+            $sql = $this->sqlLer();
+        
+            // Preparar a declaração
+            if ($stmt = $this->conexaoBD->prepare($sql)) {
 
-            if ($resultadoDaBusca->num_rows > 0) {
+                // Vinculação dos parâmetros
+                $this->vincularParametros($stmt, $id, $operacao);
+        
+                // Executar a declaração
+                $stmt->execute();
+        
+                // Obter o resultado
+                $resultadoDaBusca = $stmt->get_result();
+        
+                if ($resultadoDaBusca->num_rows > 0) {
+                    $entidadeEncontrada = $resultadoDaBusca->fetch_assoc();
+        
+                    echo "Entidade encontrada.";
+        
+                    return $entidadeEncontrada;
 
-                $entidadeEncontrada = $resultadoDaBusca->fetch_assoc();
-
-                echo "Entidade encontrada.";
-
-                return $entidadeEncontrada;
+                } else {
+                    echo 'Entidade não encontrada.';
+        
+                    return null;
+                }
 
             } else {
 
-                echo 'Entidade não encontrada.';
-
+                echo "Erro na preparação da declaração: " . $this->conexaoBD->error;
                 return null;
 
             }
 
         }
 
+        
         public function atualizarEntidade($id, $entidade) {
 
             // Parte do código que variam entre as subclasses.
@@ -125,46 +142,65 @@
         }
 
         public function listarEntidades($tipo) {
+
             $sql = $this->sqlListar();
             $resultadoDaBusca = $this->conexaoBD->query($sql);
         
             if (!$resultadoDaBusca) {
+
                 echo "Erro na consulta: " . $this->conexaoBD->error;
                 return null;
+
             }
         
             $entidadesEncontradas = [];
         
             if ($resultadoDaBusca->num_rows > 0) {
+
                 while ($row = $resultadoDaBusca->fetch_assoc()) {
+
                     $fabricaConcreta = $this->getFactory($tipo, $row);
+
                     if (!$fabricaConcreta) {
+
                         throw new Exception("Tipo de entidade desconhecido: $tipo");
+
                     }
         
                     // Processa o registro com base no tipo
                     $entidadesEncontradas[] = $this->processarRegistro($tipo, $fabricaConcreta, $row);
+
                 }
         
                 return $entidadesEncontradas; // Retornar as entidades concretas como arrays
+
             } else {
+
                 echo 'Nenhuma entidade encontrada.';
                 return null;
-            }
-        }
 
+            }
+
+        }
         
-        private function processarRegistro($tipo, $fabricaConcreta, $row) {
+        protected function processarRegistro($tipo, $fabricaConcreta, $row) {
+
             if ($tipo === 'Produtos') {
+
                 return $this->processarProduto($fabricaConcreta, $row);
+
             } else if ($tipo === 'Usuários') {
+
                 return $this->processarUsuario($fabricaConcreta, $row);
+
             }
+
             throw new Exception("Tipo de entidade desconhecido: $tipo");
+
         }
 
         
-        private function processarProduto($fabricaConcreta, $row) {
+        protected function processarProduto($fabricaConcreta, $row) {
 
             $entidade = $fabricaConcreta->factoryMethod(
                 $row['id'], $row['imagemProduto'], $row['nomeProduto'], $row['valorProduto'], 
@@ -184,7 +220,8 @@
         }
 
         
-        private function processarUsuario($fabricaConcreta, $row) {
+        protected function processarUsuario($fabricaConcreta, $row) {
+
             $entidade = $fabricaConcreta->criarUsuario(
                 $row['id'], $row['nomeCompleto'], $row['cpf'], $row['celular'], $row['sexo'], 
                 $row['email'], $row['senha'], $row['dataNascimento'], $row['cep'], $row['endereco'], 
@@ -215,7 +252,7 @@
         
         
         
-        private function getFactory($tipo, $dados): ProdutoCreator|UserCreator {
+        protected function getFactory($tipo, $dados): ProdutoCreator|UserCreator {
 
             if ($tipo === 'Produtos') {
 

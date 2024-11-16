@@ -43,7 +43,7 @@
   
     
     <ul class="navegacao-topicos">
-      <li><a href="#">Categorias</a></li>
+    <li><a href="#">Categorias</a></li>
       <li><a href="./categoriaArduino.php">Arduino</a></li>
       <li><a href="./categoriaDisplay.php">Display</a></li>
       <li><a href="./categoriaMotor.php">Motor</a></li>
@@ -116,6 +116,6 @@
     </div>
     </footer>
 
-    <script src="../js/categoriaArduino/produtosArduino.js"></script>
+    <script src="../js/categoriaRaspberryPI/produtosRaspberryPI.js"></script>
 </body>
 </html>
