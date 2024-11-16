@@ -9,19 +9,19 @@ require_once __DIR__ . "/../productSensores/sensorTemperaturaConcreteProduct.php
 class SensoresConcreteCreator extends ProdutoCreator {
 
     // Implementando o método do padrão de projeto para criação do produto especifico dessa fábrica.
-    public function factoryMethod($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto): Product {
+    public function factoryMethod(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): Product {
         
         switch ($tipoProduto) {
 
             case 'Sensor de áudio':  
                 
                 // Retornando a instância do produto instanciado.
-                return new SensorAudioConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new SensorAudioConcreteProduct($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             case 'Sensor de temperatura':
 
                 // Retornando a instância do produto instanciado.
-                return new SensorTemperaturaConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new SensorTemperaturaConcreteProduct($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             // Conforme for inserindo mais produtos concretos de Arduino futuramente, será acrescentado aqui a instancia desse produto.
 

@@ -82,18 +82,24 @@ try {
                 }
 
                 // Criar o produto usando a fábrica correta.
-                $produto = $fabrica->criarProduto($caminhoRelativoBanco, $nome, $valor, $quantidade, $categoria, $tipo, $descricao);
+                $produto = $fabrica->criarProduto(-1, $caminhoRelativoBanco, $nome, $valor, $quantidade, $categoria, $tipo, $descricao);
 
                 $crudProduto = new CrudProduto();
 
                 if ($crudProduto->criarEntidade($produto)) {
+
                     $mensagem = "Produto cadastrado com sucesso.";
+
                 } else {
+
                     throw new Exception("Erro ao cadastrar o produto no banco de dados.");
+
                 }
 
             } else {
+
                 throw new Exception("Erro ao enviar a imagem.");
+                
             }
 
         } else {
@@ -102,7 +108,7 @@ try {
         
         // Exibir mensagem de sucesso
         echo json_encode(["status" => "sucesso", "mensagem" => $mensagem]);
-        
+
     }
 
 } catch (Exception $excecao) {

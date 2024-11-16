@@ -9,19 +9,19 @@ require_once __DIR__ . "/../productRaspberryPI/acessorioRaspberryPiConcreteProdu
 class RaspberryPiConcreteCreator extends ProdutoCreator {
 
     // Implementando o método do padrão de projeto para criação do produto especifico dessa fábrica.
-    public function factoryMethod($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto): Product {
+    public function factoryMethod(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): Product {
         
         switch ($tipoProduto) {
 
             case 'Placa para RaspberryPi':  
                 
                 // Retornando a instância do produto instanciado.
-                return new PlacaRaspberryPiConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new PlacaRaspberryPiConcreteProduct($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             case 'Acessório para RaspberryPi':
 
                 // Retornando a instância do produto instanciado.
-                return new AcessorioRaspberryPiConcretePoduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new AcessorioRaspberryPiConcretePoduct($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             // Conforme for inserindo mais produtos concretos de Arduino futuramente, será acrescentado aqui a instancia desse produto.
 

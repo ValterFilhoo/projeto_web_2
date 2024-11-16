@@ -1,10 +1,3 @@
-<?php 
-
-  session_start();
-
-  
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -26,7 +19,6 @@
       // Verificando se a chave nome da sessão foi iniciada (quando o usuário é autenticado é criado essa chave). Então exibe o nome do usuário.
       echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta';
        ?> 
-      </a>
       </a>
     </div>
   </nav>
@@ -86,66 +78,9 @@
         </div>
       </div>
     </section>
-    <section class="produtos">
-      <div class="notebook">
-        <img src="../img/notebook.svg" alt="notebook">
-          <h1>Notebook Acer</h1>
-          <p>R$ 2,000</p>
-          <p>até 12x de R$166</p>
-          <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
-      </div>
-      <div class="notebook">
-        <img src="../img/notebook.svg" alt="notebook">
-          <h1>Notebook Acer</h1>
-          <p>R$ 2,000</p>
-          <p>até 12x de R$166</p>
-          <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
-      </div>
-      <div class="notebook">
-        <img src="../img/notebook.svg" alt="notebook">
-          <h1>Notebook Acer</h1>
-          <p>R$ 2,000</p>
-          <p>até 12x de R$166</p>
-          <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
-      </div>
-      <div class="notebook">
-        <img src="../img/notebook.svg" alt="notebook">
-          <h1>Notebook Acer</h1>
-          <p>R$ 2,000</p>
-          <p>até 12x de R$166</p>
-          <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
-      </div>
+    <section class="produtos" id="produtos">
+      <!-- Produtos dinâmicos serão carregados aqui -->
     </section>
-    <div class="produtos">
-      <div class="notebook">
-        <img src="../img/notebook.svg" alt="notebook">
-          <h1>Notebook Acer</h1>
-          <p>R$ 2,000</p>
-          <p>até 12x de R$166</p>
-          <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
-      </div>
-      <div class="notebook">
-        <img src="../img/notebook.svg" alt="notebook">
-          <h1>Notebook Acer</h1>
-          <p>R$ 2.000</p>
-          <p>até 12x de R$180</p>
-          <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
-      </div>
-      <div class="notebook">
-        <img src="../img/notebook.svg" alt="notebook">
-          <h1>Notebook Acer</h1>
-          <p>R$ 2.000</p>
-          <p>até 12x de R$180</p>
-          <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
-      </div>
-      <div class="notebook">
-        <img src="../img/notebook.svg" alt="notebook">
-          <h1>Notebook Acer</h1>
-          <p>R$ 2.000</p>
-          <p>até 12x de R$180</p>
-          <a href="https://encurtador.com.br/PlaZq">Comprar agora</a>
-      </div>
-    </div>
     <section class="depoimentos">
       <h1>Depoimentos de clientes</h1>
     </section>
@@ -153,18 +88,7 @@
       <img src="../img/Banner 2.png" alt="Banner">
     </div>
 </section>
-<div class="contact-container">
-  <h2>Contato</h2>
-  <form action="#" method="post">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" placeholder="Digite seu email" required>
 
-      <label for="password">Senha:</label>
-      <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
-
-      <button type="submit">Enviar</button>
-  </form>
-</div>
     <footer>
       <div class="footer-content">
         <div class="footer-section about">
@@ -192,5 +116,7 @@
         <p>&copy; 2024 Empresa | Todos os direitos reservados.</p>
     </div>
     </footer>
+
+    <script src="../js/paginaInicial/index.js"></script>
 </body>
 </html>

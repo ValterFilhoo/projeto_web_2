@@ -8,10 +8,10 @@ require_once __DIR__ . "/../../composite/itemPedidoComponent.php";
 class AcessorioRaspberryPiConcretePoduct extends Product implements ItemPedidoComponent {
     
     // Contrutor da classe "PlacaArduinoConcreteProduct".
-    public function __construct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto) {
+    public function __construct(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto) {
         
         // Instanciando o construtor da classe pai (classe Product), pois os atributos gerais do produto estão nela.
-        parent::__construct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+        parent::__construct($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
     }
 

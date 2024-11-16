@@ -2,6 +2,13 @@
 
     require_once __DIR__ . "/../bdSingleton/conexaoBDSingleton.php";
     require_once __DIR__ . "/../bdSingleton/configConexao.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaArduino/arduinoConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaDisplay/displayConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaMotor/motoresConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaRaspberryPI/raspberryPiConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaSensores/sensoresConcreteCreator.php";
+
+
 
     abstract class CrudTemplateMethod {
 
@@ -117,9 +124,135 @@
 
         }
 
-        public function listarEntidades() {
+        public function listarEntidades($tipo) {
+            $sql = $this->sqlListar();
+            $resultadoDaBusca = $this->conexaoBD->query($sql);
+        
+            if (!$resultadoDaBusca) {
+                echo "Erro na consulta: " . $this->conexaoBD->error;
+                return null;
+            }
+        
+            $entidadesEncontradas = [];
+        
+            if ($resultadoDaBusca->num_rows > 0) {
+                while ($row = $resultadoDaBusca->fetch_assoc()) {
+                    $fabricaConcreta = $this->getFactory($tipo, $row);
+                    if (!$fabricaConcreta) {
+                        throw new Exception("Tipo de entidade desconhecido: $tipo");
+                    }
+        
+                    // Processa o registro com base no tipo
+                    $entidadesEncontradas[] = $this->processarRegistro($tipo, $fabricaConcreta, $row);
+                }
+        
+                return $entidadesEncontradas; // Retornar as entidades concretas como arrays
+            } else {
+                echo 'Nenhuma entidade encontrada.';
+                return null;
+            }
+        }
+
+        
+        private function processarRegistro($tipo, $fabricaConcreta, $row) {
+            if ($tipo === 'Produtos') {
+                return $this->processarProduto($fabricaConcreta, $row);
+            } else if ($tipo === 'Usuários') {
+                return $this->processarUsuario($fabricaConcreta, $row);
+            }
+            throw new Exception("Tipo de entidade desconhecido: $tipo");
+        }
+
+        
+        private function processarProduto($fabricaConcreta, $row) {
+
+            $entidade = $fabricaConcreta->factoryMethod(
+                $row['id'], $row['imagemProduto'], $row['nomeProduto'], $row['valorProduto'], 
+                $row['quantidade'], $row['categoria'], $row['tipoProduto'], $row['descricaoProduto']
+            );
+        
+            return [
+                'id' => $entidade->getId(),
+                'imagemProduto' => $entidade->getImagem(),
+                'nomeProduto' => $entidade->getNome(),
+                'valorProduto' => $entidade->getValor(),
+                'quantidade' => $entidade->getQuantidade(),
+                'categoria' => $entidade->getCategoria(),
+                'tipoProduto' => $entidade->getTipo(),
+                'descricaoProduto' => $entidade->getDescricao()
+            ];
+        }
+
+        
+        private function processarUsuario($fabricaConcreta, $row) {
+            $entidade = $fabricaConcreta->criarUsuario(
+                $row['id'], $row['nomeCompleto'], $row['cpf'], $row['celular'], $row['sexo'], 
+                $row['email'], $row['senha'], $row['dataNascimento'], $row['cep'], $row['endereco'], 
+                $row['numeroEndereco'], $row['complemento'], $row['referencia'], $row['bairro'], 
+                $row['cidade'], $row['estado'], $row['tipoConta']
+            );
+        
+            return [
+                'id' => $entidade->id,
+                'nomeCompleto' => $entidade->nomeCompleto,
+                'cpf' => $entidade->cpf,
+                'celular' => $entidade->celular,
+                'sexo' => $entidade->sexo,
+                'email' => $entidade->email,
+                'senha' => $entidade->senha,
+                'dataNascimento' => $entidade->dataNascimento,
+                'cep' => $entidade->cep,
+                'endereco' => $entidade->endereco,
+                'numeroEndereco' => $entidade->numeroEndereco,
+                'complemento' => $entidade->complemento,
+                'referencia' => $entidade->referencia,
+                'bairro' => $entidade->bairro,
+                'cidade' => $entidade->cidade,
+                'estado' => $entidade->estado,
+                'tipoConta' => $entidade->tipoConta
+            ];
+        }
+        
+        
+        
+        private function getFactory($tipo, $dados): ProdutoCreator|UserCreator {
+
+            if ($tipo === 'Produtos') {
+
+                // Verificar o subtipo de produto
+                switch ($dados['categoria']) {
+
+                    case 'Arduino':
+                        return new ArduinoConcreteCreator();
+                    case 'Display':
+                        return new DisplayConcreteCreator;
+                    case 'Motor':
+                        return new MotoresConcreteCreator();
+                    case 'RaspberryPI':
+                        return new RaspberryPiConcreteCreator();
+                    case 'Sensores':
+                        return new SensoresConcreteCreator();
+                    default:
+                        throw new Exception("Subtipo de produto desconhecido: " . $dados['tipoProduto']);
+                }
+
+            }
+        
+            // Verificações para outros tipos de entidades
+            switch ($tipo) {
+
+                case 'Usuários':
+                    return new UserConcreteCreator();
+                //case 'pedido':
+                   // return new PedidoFactory();
+                default:
+                    throw new Exception("Tipo de entidade desconhecido: $tipo");
+            }
 
         }
+        
+        
+        
 
         abstract public function sqlCriar(): string;
 
@@ -135,5 +268,3 @@
 
 
     }
-
-?>

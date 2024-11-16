@@ -3,6 +3,7 @@
 // Classe abstrata em vez da interface, do padrão FactoryMethod, pois existem atributos em comum entre todos os produtos do nosso site.
 abstract class Product {
 
+    protected int $id;
     protected string $imagem;
     protected string $nome;
     protected float $valor;
@@ -12,8 +13,9 @@ abstract class Product {
     protected string $descricao;
 
     // Construtor da classe.
-    public function __construct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto) {
+    public function __construct(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto) {
 
+        $this->id = $id;
         $this->imagem = $imagemProduto;
         $this->nome = $nomeProduto;
         $this->valor = $valorProduto;
@@ -22,6 +24,10 @@ abstract class Product {
         $this->tipo = $tipoProduto;
         $this->descricao = $descricaoProduto;
         
+    }
+
+    public function setId(int $id) {
+        $this->id = $id;
     }
 
     public function setImagem($imagemProduto): void {
@@ -50,6 +56,10 @@ abstract class Product {
 
     public function setDescricao($descricaoProduto): void {
         $this->descricao = $descricaoProduto;
+    }
+
+    public function getId(): int {
+        return $this->id;
     }
 
     public function getImagem(): string {

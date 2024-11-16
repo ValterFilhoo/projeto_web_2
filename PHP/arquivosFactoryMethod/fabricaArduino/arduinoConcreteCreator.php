@@ -10,19 +10,19 @@ class ArduinoConcreteCreator extends ProdutoCreator {
 
 
     // Implementando o método do padrão de projeto para criação do produto especifico dessa fábrica.
-    public function factoryMethod($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto): Product {
+    public function factoryMethod(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): Product {
         
         switch ($tipoProduto) {
 
             case 'Sensor':  
                 
                 // Retornando a instância do produto instanciado.
-                return new SensorArduinoConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new SensorArduinoConcreteProduct($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             case 'Placa':
 
                 // Retornando a instância do produto instanciado.
-                return new PlacaArduinoConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new PlacaArduinoConcreteProduct($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             // Conforme for inserindo mais produtos concretos de Arduino futuramente, será acrescentado aqui a instancia desse produto.
 

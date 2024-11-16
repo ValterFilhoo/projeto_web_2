@@ -10,25 +10,25 @@ require_once __DIR__ . "/../productDisplay/displayOledConcretProduct.php";
 class DisplayConcreteCreator extends ProdutoCreator {
 
     // Implementando o método do padrão de projeto para criação do produto especifico dessa fábrica.
-    public function factoryMethod($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto): Product {
+    public function factoryMethod(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): Product {
         
         switch ($tipoProduto) {
 
             case 'LED':  
                 
                 // Retornando a instância do produto instanciado.
-                return new DisplayLedConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new DisplayLedConcreteProduct($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
             case 'OLED':
 
                 // Retornando a instância do produto instanciado.
-                return new DisplayOledConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new DisplayOledConcreteProduct($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
     
             case 'LCD':
 
 
                 // Retornando a instância do produto instanciado.
-                return new DisplayLcdConcreteProduct($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+                return new DisplayLcdConcreteProduct($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
     
             // Conforme for inserindo mais produtos concretos de Arduino futuramente, será acrescentado aqui a instancia desse produto.
 
