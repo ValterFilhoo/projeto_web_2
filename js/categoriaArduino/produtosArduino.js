@@ -1,14 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Faz uma requisição para buscar produtos da categoria "Display" no servidor.
+
+    // Faz uma requisição para buscar produtos da categoria "Arduino" no servidor.
     fetch('../PHP/buscarProdutos/buscarProdutosCategoria.php?categoria=Arduino')
         .then(resposta => {
 
             // Verifica se a resposta HTTP é bem-sucedida.
             if (!resposta.ok) {
+
                 // Se a resposta não for ok, tenta ler o texto da resposta e lança um erro com a mensagem.
                 return resposta.text().then(text => {
                     throw new Error(`Erro na resposta: ${text}`);
                 });
+
             }
 
             // Se a resposta for ok, converte a resposta para JSON.
@@ -55,8 +58,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Adiciona eventos de clique aos botões de remover
                         document.querySelectorAll('.btn-remover').forEach(button => {
                             button.addEventListener('click', function() {
+
                                 const produtoId = this.getAttribute('data-id');
-                                console.log('Remover produto com ID:', produtoId);
+                                // Adiciona alerta de confirmação. 
+                                const confirmarRemocao = confirm('Você realmente deseja excluir este produto?'); 
+                                
+                                if (confirmarRemocao) { 
+                                    removerProduto(produtoId); 
+                                }
+
                             });
                         });
 
@@ -75,7 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem informada pelo servidor
 
                 }
-                
             } else {
 
                 containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem de erro informada pelo servidor
@@ -89,5 +98,51 @@ document.addEventListener('DOMContentLoaded', function() {
             containerProdutos.innerHTML = `<p>${erro.message}</p>`; // Exibe a mensagem de erro informada pelo servidor
 
         });
-        
+
 });
+
+// Função para remover um produto
+function removerProduto(produtoId) {
+
+    fetch('../PHP/excluirProduto/excluirProduto.php?', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `id=${produtoId}`
+    })
+    .then(resposta => {
+
+        if (!resposta.ok) {
+            return resposta.text().then(text => {
+                throw new Error(`Erro na resposta: ${text}`);
+            });
+        }
+
+        return resposta.json();
+
+    })
+    .then(dados => {
+
+
+        if (dados.status === 'sucesso') {
+
+            alert('Produto removido com sucesso.');
+
+            // Opcional: Remova o produto do DOM sem recarregar a página
+            document.querySelector(`.btn-remover[data-id="${produtoId}"]`).closest('.notebook').remove();
+
+        } else {
+
+            alert('Erro ao remover o produto: ' + dados.mensagem);
+
+        }
+
+    })
+    .catch(erro => {
+
+        alert('Erro ao tentar remover o produto: ' + erro.message);
+
+    });
+
+}

@@ -145,4 +145,13 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
            
         }
 
+
+        public function obterCaminhoImagemSeNecessario($id) {
+            throw new Exception("Esta classe não pode usar este método.");
+        }
+        
+        public function excluirImagemSeExistir($caminhoImagem) {
+            throw new Exception("Esta classe não pode usar este método.");
+        }
+
 }

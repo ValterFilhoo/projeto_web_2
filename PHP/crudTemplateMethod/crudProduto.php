@@ -18,7 +18,7 @@ class CrudProduto extends CrudTemplateMethod {
     }
 
     public function sqlDeletar(): string {
-        return "DELETE FROM produto WHERE idProduto = ?";
+        return "DELETE FROM produto WHERE id = ?";
     }
 
     public function sqlListar(): string {
@@ -80,6 +80,7 @@ class CrudProduto extends CrudTemplateMethod {
     }
 
     public function vincularParametros($declaracao, $entidade, $operacao): void {
+        
         switch ($operacao) {
             case "Criar":
                 $imagem = $entidade->getImagem();
@@ -122,5 +123,60 @@ class CrudProduto extends CrudTemplateMethod {
             default:
                 throw new Exception("Operação desconhecida: $operacao");
         }
+
     }
+
+    // Método para obter o caminho da imagem do produto
+    public function obterCaminhoImagemSeNecessario($id) {
+
+        $sqlBuscarImagem = "SELECT imagemProduto FROM NomeDaTabelaProdutos WHERE id = ?";
+        
+        if ($stmt = $this->conexaoBD->prepare($sqlBuscarImagem)) {
+
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+            
+            if ($resultado->num_rows > 0) {
+
+                $produto = $resultado->fetch_assoc();
+                $caminhoRelativo = $produto['imagemProduto'];
+                $caminhoAbsoluto = $_SERVER['DOCUMENT_ROOT'] . '/' . $caminhoRelativo;
+                return $caminhoAbsoluto;
+
+            } else {
+
+                echo 'Produto não encontrado.';
+                return null;
+
+            }
+
+        } else {
+
+            echo "Erro na preparação da declaração: " . $this->conexaoBD->error;
+            return null;
+
+        }
+
+    }
+    
+
+    public function excluirImagemSeExistir($caminhoImagem) {
+
+    echo 'Tentando excluir a imagem: ' . $caminhoImagem;
+    
+    if (!empty($caminhoImagem) && file_exists($caminhoImagem)) {
+        if (unlink($caminhoImagem)) {
+            echo 'Imagem do produto excluída com sucesso.';
+        } else {
+            echo 'Erro ao excluir a imagem do produto.';
+        }
+    } else {
+        echo 'Caminho da imagem inválido ou arquivo não encontrado.';
+    }
+}
+
+    
+    
+
 }

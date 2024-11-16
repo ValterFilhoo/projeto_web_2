@@ -119,28 +119,61 @@
 
         public function deletarEntidade($id) {
 
-            // Parte do código que variam entre as subclasses.
-            $sql = $this->sqlDeletar($id);
+            $caminhoImagem = null;
+        
+            try {
+                // Parte do código que varia entre as subclasses.
+                $caminhoImagem = $this->obterCaminhoImagemSeNecessario($id);
+            } catch (Exception $e) {
+                // Se ocorrer uma exceção, definimos caminhoImagem como null e continuamos
+                $caminhoImagem = null;
+            }
+        
+            // Parte do código que varia entre as subclasses.
+            $sql = $this->sqlDeletar(); // Método que retorna a declaração SQL de exclusão
+        
+            // Preparar a declaração
+            if ($stmt = $this->conexaoBD->prepare($sql)) {
 
-            $resultadoExclusao = $this->conexaoBD->query($sql);
+                // Vinculação dos parâmetros
+                $this->vincularParametros($stmt, $id, "Deletar");
+        
+                // Executar a declaração
+                $resultadoExecucao = $stmt->execute();
+        
+                if ($resultadoExecucao) {
 
-            if ($resultadoExclusao) {
-                
-                echo 'Entidade excluida com sucesso.';
+                    // Exclui a imagem do diretório de imagens do projeto se houver uma
+                    if ($caminhoImagem !== null) {
 
-                return true;
+                        try {
+                            
+                            $this->excluirImagemSeExistir($caminhoImagem);
 
+                        } catch (Exception $e) {
+                            // Tratamento de exceção para exclusão de imagem
+                            echo 'Erro ao tentar excluir a imagem: ' . $e->getMessage();
+                        }
+
+                    }
+        
+                    return true;
+
+                } else {
+
+                    echo 'Erro na exclusão da entidade: ' . $stmt->error;
+                    return false;
+                }
 
             } else {
 
-                echo 'Erro na exclusão da entidade: ' . $this->conexaoBD->error;
-
+                echo 'Erro na preparação da declaração: ' . $this->conexaoBD->error;
                 return false;
 
             }
 
         }
-
+    
         public function listarEntidades($tipo) {
 
             $sql = $this->sqlListar();
@@ -302,6 +335,10 @@
         abstract public function sqlListar(): string;
 
         abstract public function vincularParametros($declaracao, $entidade, $operacao): void;
+
+        abstract public function obterCaminhoImagemSeNecessario($id); 
+        
+        abstract public function excluirImagemSeExistir($caminhoImagem);
 
 
     }
