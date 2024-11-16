@@ -1,10 +1,10 @@
 <?php 
 
 // Importando os arquivos das classes utilizadas aqui.
-require '/xampp/htdocs/projeto_web_2/produtosfactoryMethod/produtoCreator.php';
-require '/xampp/htdocs/projeto_web_2/produtosFactoryMethod/displayLcdConcreteProduct.php';
-require '/xampp/htdocs/projeto_web_2/produtosFactoryMethod/displayOledConcreteProduct.php';
-require '/xampp/htdocs/projeto_web_2/produtosFactoryMethod/displayOledConcreteProduct.php';
+require_once __DIR__ . "/../produtoCreator.php";
+require_once __DIR__ . "/../productDisplay/displayLcdConcretProduct.php"; 
+require_once __DIR__ . "/../productDisplay/displayLedConcretProduct.php"; 
+require_once __DIR__ . "/../productDisplay/displayOledConcretProduct.php"; 
 
 // A classe concreta da Fábrica de Arduino, herdando o comportamento da fábrica abstrata (Creator).
 class DisplayConcreteCreator extends ProdutoCreator {
@@ -43,4 +43,3 @@ class DisplayConcreteCreator extends ProdutoCreator {
 
 }
 
-?>

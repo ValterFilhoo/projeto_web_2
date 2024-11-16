@@ -1,7 +1,9 @@
 <?php 
 
 // Importando os arquivos das classes utilizadas aqui.
-require_once "../produtoCreator.php";
+require_once __DIR__ . "/../produtoCreator.php";
+require_once __DIR__ . "/../productRaspberryPI/placaRaspberryPiConcretProduct.php"; 
+require_once __DIR__ . "/../productRaspberryPI/acessorioRaspberryPiConcreteProduct.php"; 
 
 // A classe concreta da Fábrica de Arduino, herdando o comportamento da fábrica abstrata (Creator).
 class RaspberryPiConcreteCreator extends ProdutoCreator {

@@ -1,7 +1,9 @@
 <?php 
 
 // Importando os arquivos das classes utilizadas aqui.
-require_once "../produtoCreator.php";
+require_once __DIR__ . "/../produtoCreator.php";
+require_once __DIR__ . "/../productMotor/bombaMotorConcreteProduct.php"; 
+require_once __DIR__ . "/../productMotor/motorDcConcreteProduct.php"; 
 
 // A classe concreta da Fábrica de Arduino, herdando o comportamento da fábrica abstrata (Creator).
 class MotoresConcreteCreator extends ProdutoCreator {
@@ -34,4 +36,3 @@ class MotoresConcreteCreator extends ProdutoCreator {
 
 }
 
-?>

@@ -1,8 +1,8 @@
 <?php 
 
 // Importando o arquivo da classe abstrata "Product", do padrão "FactoryMethod" e da interface do "Composite".
-require_once "../product.php";
-require_once "../../composite/itemPedidoComponent.php";
+require_once __DIR__ .  "/../product.php";
+require_once __DIR__ . "/../../composite/itemPedidoComponent.php";
 
 // Classe concreta do produto de Arduino (ConcreteProduto) recebe todos os atributos e métodos da classe abstrata "Product".
 class DisplayLcdConcreteProduct extends Product implements ItemPedidoComponent {
