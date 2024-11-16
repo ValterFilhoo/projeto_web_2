@@ -1,3 +1,12 @@
+<?php 
+
+  session_start();
+
+  echo $_SESSION['tipoConta']
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>

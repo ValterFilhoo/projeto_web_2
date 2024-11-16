@@ -1,17 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
-
-    // Faz uma requisição para buscar produtos da categoria de Display no servidor.
+    // Faz uma requisição para buscar produtos da categoria "Display" no servidor.
     fetch('../PHP/buscarProdutos/buscarProdutosCategoria.php?categoria=Arduino')
         .then(resposta => {
 
             // Verifica se a resposta HTTP é bem-sucedida.
             if (!resposta.ok) {
-
                 // Se a resposta não for ok, tenta ler o texto da resposta e lança um erro com a mensagem.
                 return resposta.text().then(text => {
                     throw new Error(`Erro na resposta: ${text}`);
                 });
-
             }
 
             // Se a resposta for ok, converte a resposta para JSON.
@@ -20,65 +17,76 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(dados => {
 
-            // Obtém o contêiner onde os produtos serão exibidos.
-            const containerProdutos = document.getElementById('produtos');
+            const containerProdutos = document.getElementById('produtos'); // Contêiner onde os produtos serão exibidos
+            containerProdutos.innerHTML = ''; // Limpa o contêiner antes de adicionar novos produtos
 
-            // Limpa o contêiner antes de adicionar novos produtos.
-            containerProdutos.innerHTML = '';
-
-            // Verifica se o status da resposta JSON é 'sucesso'.
+            // Verifica se o status da resposta JSON é 'sucesso'
             if (dados.status === 'sucesso') {
 
-                // Verifica se há produtos retornados na resposta JSON.
+                const tipoConta = dados.tipoConta; // Armazena o tipo de conta do usuário autenticado
+                
                 if (dados.produtos.length > 0) {
 
-                    // Itera sobre cada produto retornado.
                     dados.produtos.forEach(produto => {
 
-                        // Calcula o valor da parcela em 6x.
-                        const valorParcela = (produto.valorProduto / 6).toFixed(2);
-                        // Cria um novo elemento div para o produto.
+                        const valorParcela = (produto.valorProduto / 6).toFixed(2); // Calcula o valor da parcela em 6x
                         const produtoDiv = document.createElement('div');
-
-                        // Adiciona a classe CSS 'notebook' ao elemento div.
-                        produtoDiv.classList.add('notebook');
-
-                        // Define o HTML interno do elemento div com as informações do produto.
+                        produtoDiv.classList.add('notebook'); // Adiciona a classe CSS 'notebook' ao elemento div
+                        
+                        // Define o HTML interno do elemento div com as informações do produto
                         produtoDiv.innerHTML = `
                             <img src="../${produto.imagemProduto}" alt="${produto.nomeProduto}">
                             <h1>${produto.nomeProduto}</h1>
                             <p>R$ ${produto.valorProduto.toFixed(2)}</p>
                             <p>até 6x de R$ ${valorParcela}</p>
                             <a href="produtoDetalhes.php?id=${produto.id}">Comprar agora</a>
+                            ${tipoConta === 'Admin' ? `
+                            <div class="botoes-acoes">
+                                <button class="btn-remover" data-id="${produto.id}">Remover</button>
+                                <button class="btn-editar" data-id="${produto.id}">Editar</button>
+                            </div>` : ''}
                         `;
-
-                        // Adiciona o elemento div ao contêiner de produtos.
-                        containerProdutos.appendChild(produtoDiv);
+                        containerProdutos.appendChild(produtoDiv); // Adiciona o elemento div ao contêiner de produtos
 
                     });
 
+                    if (tipoConta === 'Admin') {
+
+                        // Adiciona eventos de clique aos botões de remover
+                        document.querySelectorAll('.btn-remover').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const produtoId = this.getAttribute('data-id');
+                                console.log('Remover produto com ID:', produtoId);
+                            });
+                        });
+
+                        // Adiciona eventos de clique aos botões de editar
+                        document.querySelectorAll('.btn-editar').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const produtoId = this.getAttribute('data-id');
+                                console.log('Editar produto com ID:', produtoId);
+                            });
+                        });
+
+                    }
+
                 } else {
 
-                    // Se não há produtos retornados, exibe a mensagem informada pelo servidor.
-                    containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`;
+                    containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem informada pelo servidor
 
                 }
-
-            } else {
                 
-                // Se o status da resposta JSON não for 'sucesso', exibe a mensagem de erro informada pelo servidor.
-                containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`;
+            } else {
+
+                containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem de erro informada pelo servidor
 
             }
 
         })
         .catch(erro => {
 
-            // Captura e trata qualquer erro de rede ou de resposta.
-            const containerProdutos = document.getElementById('produtos');
-
-            // Exibe a mensagem de erro informada pelo servidor
-            containerProdutos.innerHTML = `<p>${erro.message}</p>`;
+            const containerProdutos = document.getElementById('produtos'); // Contêiner onde os produtos serão exibidos
+            containerProdutos.innerHTML = `<p>${erro.message}</p>`; // Exibe a mensagem de erro informada pelo servidor
 
         });
         

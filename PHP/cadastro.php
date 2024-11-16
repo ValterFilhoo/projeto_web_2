@@ -6,6 +6,7 @@
     <title>Cadastrar - Eletrowonka</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../Css/cadastro.css">
+    <link rel="stylesheet" href="../Css/style.css">
 </head>
 <body>
   <nav class="cabecalho">

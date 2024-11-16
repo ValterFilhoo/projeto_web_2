@@ -1,5 +1,8 @@
 <?php 
 
+
+require_once __DIR__ . "/user.php";
+
 // Classe abstrata da fábrica de produtos (Creator), é a partir dela que as classes concretas responsáveis por criar um produto irá instanciar seus produtos.
 abstract class UserCreator {
     

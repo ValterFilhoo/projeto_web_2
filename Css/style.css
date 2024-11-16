@@ -187,6 +187,44 @@ nav {
 }
 
 
+/* Estilo para o contêiner dos botões */
+.botoes-acoes {
+  display: flex;
+  justify-content: space-between; /* Espaçamento entre os botões */
+  margin-top: 10px; /* Margem superior para separar do restante do conteúdo */
+}
+
+/* Estilo individual para os botões, se necessário */
+.botoes-acoes button {
+  padding: 1vw;
+  width: 40%;
+  margin: 0 5px; /* Margem entre os botões */
+  font-weight: bold;
+  color: #000000;
+}
+
+.btn-remover {
+  background-color: #EB1E1E;
+}
+
+.btn-editar {
+  background-color: #30E738;
+}
+
+
+/* Estilo para os botões de remover e editar */ 
+.btn-remover, .btn-editar { 
+
+  cursor: pointer; 
+ 
+} 
+
+/* Estilo dos botões ao passar o mouse */ 
+.btn-remover:hover, .btn-editar:hover { 
+  opacity: 0.7; 
+  /* Opacidade total ao passar o mouse */ 
+}
+
 
 contact {
   background-color: #f9f9f9;
@@ -242,9 +280,7 @@ button {
   font-size: 16px;
 }
 
-button:hover {
-  background-color: #218838;
-}
+
 footer {
   background-color: #f8f8f8;
   color: black;

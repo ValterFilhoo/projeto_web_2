@@ -20,9 +20,9 @@ abstract class User {
     protected string $bairro;
     protected string $cidade;
     protected string $estado;
-    protected string $tipoConta = "cliente";
+    protected string $tipoConta;
 
-    public function __construct(string $nomeCompleto, string $email, string $cpf, string $celular, string $sexo, string $senha, string $dataNascimento, string $cep, string $endereco, int $numeroEndereco, string $complemento, string $referencia, string $bairro, string $cidade, string $estado) {
+    public function __construct(string $nomeCompleto, string $email, string $cpf, string $celular, string $sexo, string $senha, string $dataNascimento, string $cep, string $endereco, int $numeroEndereco, string $complemento, string $referencia, string $bairro, string $cidade, string $estado, string $tipoConta) {
 
         $this->nomeCompleto = $nomeCompleto;
         $this->email = $email;
@@ -39,6 +39,7 @@ abstract class User {
         $this->bairro = $bairro;
         $this->cidade = $cidade;
         $this->estado = $estado;
+        $this->tipoConta = $tipoConta;
 
     }
 
