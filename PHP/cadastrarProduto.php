@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../Css/style.css">
     <link rel="stylesheet" href="../Css/cadastrarProduto.css">
 </head>
 <body>
@@ -50,12 +51,11 @@
 
     <ul class="navegacao-topicos">
       <li><a href="#">Categorias</a></li>
-      <li><a href="#">Kits Didáticos</a></li>
-      <li><a href="#">Arduino</a></li>
-      <li><a href="#">Robótica</a></li>
-      <li><a href="#">Automação</a></li>
-      <li><a href="#">Apostilas</a></li>
-      <li><a href="#">Robótica nas Escolas</a></li>
+      <li><a href="./categoriaArduino.php">Arduino</a></li>
+      <li><a href="./categoriaDisplay.php">Display</a></li>
+      <li><a href="./categoriaMotor.php">Motor</a></li>
+      <li><a href="./categoriaRaspberryPI.php">RaspberryPI</a></li>
+      <li><a href="./categoriaSensores.php">Sensores</a></li>
     </ul>
   </nav>
 

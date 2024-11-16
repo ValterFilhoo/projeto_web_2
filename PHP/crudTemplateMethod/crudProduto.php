@@ -22,11 +22,11 @@ class CrudProduto extends CrudTemplateMethod {
     }
 
     public function sqlListar(): string {
-        return "SELECT * FROM Produto";
+        return "SELECT * FROM Produto ORDER BY id DESC"; // Ordenando por id decrescente/mais recente.
     }
-
+    
     public function sqlBuscarPorCategoria(): string {
-        return "SELECT * FROM Produto WHERE categoria = ?";
+        return "SELECT * FROM Produto WHERE categoria = ? ORDER BY id DESC";
     }
 
     public function buscarProdutosPorCategoria($categoria) {

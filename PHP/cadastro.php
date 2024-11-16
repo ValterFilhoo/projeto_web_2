@@ -35,12 +35,12 @@
     </div>
 
     <ul class="navegacao-topicos">
-    <li><a href="#">Categorias</a></li>
-      <li><a href="./categoriaArduino.php">Arduino</a></li>
-      <li><a href="./categoriaDisplay.php">Display</a></li>
-      <li><a href="./categoriaMotor.php">Motor</a></li>
-      <li><a href="./categoriaRaspberryPI.php">RaspberryPI</a></li>
-      <li><a href="./categoriaSensores.php">Sensores</a></li>
+        <li><a href="#">Categorias</a></li>
+        <li><a href="./categoriaArduino.php">Arduino</a></li>
+        <li><a href="./categoriaDisplay.php">Display</a></li>
+        <li><a href="./categoriaMotor.php">Motor</a></li>
+        <li><a href="./categoriaRaspberryPI.php">RaspberryPI</a></li>
+        <li><a href="./categoriaSensores.php">Sensores</a></li>
     </ul>
   </nav>
     <div class="container">
