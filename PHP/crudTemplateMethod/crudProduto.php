@@ -1,11 +1,14 @@
 <?php 
 
+    require_once __DIR__ . '/../arquivosFactoryMethod/product.php'; // Caminho corrigido 
+    require_once __DIR__ . '/crudAbstractTemplateMethod.php';
+
     class CrudProduto extends CrudTemplateMethod  {
 
         public function sqlCriar(): string {
             
             // Criando o comando INSERT para cadastrar o produto no banco de dados.
-           return  $sql = " INSERT INTO Produto (imagem, nome, valor, quantidade, categoria, tipo, descricao) 
+           return  $sql = " INSERT INTO Produto (imagemProduto, nomeProduto, valorProduto, quantidade, categoria, tipoProduto, descricaoProduto) 
            VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         }
@@ -42,10 +45,16 @@
 
                 case "Criar":
 
-                    
+                    $imagem = $entidade->getImagem();
+                    $nome = $entidade->getNome();
+                    $valor = $entidade->getValor();
+                    $quantidade = $entidade->getQuantidade();
+                    $categoria = $entidade->getCategoria();
+                    $tipo = $entidade->getTipo();
+                    $descricao = $entidade->getDescricao();
                     
                     // Vinculando os parãmetros dos valores da string sql, passando os tipos dos valores e seus valores.
-                   
+                    $declaracao->bind_param("ssdisss", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao);
 
                 case "Ler":
 

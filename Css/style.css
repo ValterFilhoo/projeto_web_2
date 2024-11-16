@@ -1,3 +1,4 @@
+/* Estilos Globais */
 * {
   margin: 0;
   padding: 0;
@@ -12,26 +13,31 @@ body {
   font-style: normal;
 }
 
+/* Estilos de Navegação */
 nav {
   display: flex;
-  flex-wrap: wrap; /* Permite que os itens se movam para a próxima linha */
+  flex-wrap: wrap;
   justify-content: space-between;
   padding: 10px;
   max-width: 97%;
 }
+
 .cabecalho {
   display: flex;
   justify-content: right;
   margin: 0;
 }
+
 .perfil {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .perfil a {
   text-decoration: none;
 }
+
 .logo {
   display: flex;
   margin-left: 5rem;
@@ -41,23 +47,23 @@ nav {
 
 .search-bar {
   margin-top: 14px;
-  position: relative; /* Define o contêiner como relativo */
+  position: relative;
 }
+
 .search-bar input {
   padding: 8px 40px 8px 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
   height: 50px;
   width: 500px;
-
 }
 
 .search-bar img {
-  position: absolute; /* Posiciona a imagem dentro do input */
-  right: 10px; /* Alinha a imagem à direita */
+  position: absolute;
+  right: 10px;
   top: 40%;
-  transform: translateY(-50%); /* Centraliza verticalmente a imagem */
-  pointer-events: none; /* Impede que a imagem seja clicável */
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 
 .nav-right {
@@ -65,7 +71,8 @@ nav {
   align-items: center;
 }
 
-.nav-right select, .nav-right a {
+.nav-right select,
+.nav-right a {
   margin-left: 15px;
   text-decoration: none;
   color: #333;
@@ -84,12 +91,12 @@ nav {
 }
 
 .navegacao-topicos li {
-  position: relative; /* Necessário para o posicionamento da barra */
+  position: relative;
   padding: 0 15px;
 }
 
 .navegacao-topicos li:not(:last-child) {
-  border-right: 1px solid #ccc; /* Barra separadora */
+  border-right: 1px solid #ccc;
 }
 
 .navegacao-topicos a {
@@ -103,79 +110,84 @@ nav {
   color: #007BFF;
 }
 
-
+/* Estilos do Banner */
 .banner {
   display: grid;
   place-items: center;
 }
-.banner img{
+
+.banner img {
   margin-top: 2rem;
   max-width: 90%;
-
 }
+
+/* Estilos Saiba Mais */
 .saiba-mais {
-  display: 	flex;
+  display: flex;
   gap: 30px;
   font-size: 15px;
   text-align: center;
 }
 
+.saiba-mais > div::before {
+  content: attr(data-info);
+  margin-right: 10px;
+  color: #555;
+  font-weight: bold;
+}
 
-.saiba-mais > div::before {
-  content: attr(data-info); 
-  margin-right: 10px; 
-  color: #555;
-  font-weight: bold;
-}
-.saiba-mais > div::before {
-  content: attr(data-info); /* Insere o conteúdo com o atributo data-info */
-  margin-right: 10px; /* Espaço entre o conteúdo inserido e a imagem */
-  color: #555;
-  font-weight: bold;
-}
+/* Estilos dos Produtos */
 .produtos {
   margin-top: 4rem;
   display: flex;
+  flex-wrap: wrap; /* Permite que os itens se movam para a próxima linha */
   gap: 30px;
   justify-content: center;
-}
-
-.notebook img {
-  display: grid;
-  place-items: center;
 }
 
 .notebook {
   display: grid;
   padding: 20px;
-  height: 400px;
+  max-width: 300px; /* Limitar a largura do container */
   background: #FFFFFF;
   box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animação suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.notebook img {
+  max-width: 100%; /* Garantir que a imagem não ultrapasse o tamanho do container */
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 .notebook:hover {
-  transform: scale(1.05); /* Aumenta o tamanho da div em 5% */
-  box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.2); /* Aumenta a sombra */
+  transform: scale(1.05);
+  box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.2);
 }
 
-.notebook h1, .notebook p, .notebook a {
+.notebook h1,
+.notebook p,
+.notebook a {
   text-align: center;
 }
 
 .notebook a {
-  display: grid;
-  place-items: center;
+  display: inline-block;
   text-decoration: none;
   color: #f8f8f8;
   font-weight: bold;
   background: #007BFF;
   border-radius: 4px;
+  padding: 10px 20px;
 }
 
 .notebook a:hover {
-  color: #0056b3;
+  background: #0056b3;
 }
+
+
+
 contact {
   background-color: #f9f9f9;
   padding: 40px;

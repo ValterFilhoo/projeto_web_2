@@ -1,6 +1,6 @@
 <?php 
 
-require_once "./product.php";
+require_once __DIR__ .  "/./product.php";
 
 // Classe abstrata da fábrica de produtos (Creator), é a partir dela que as classes concretas responsáveis por criar um produto irá instanciar seus produtos.
 abstract class ProdutoCreator {
@@ -9,12 +9,12 @@ abstract class ProdutoCreator {
     private Product $produto;
 
     // Método abstrato do padrão FactoryMethod, que será responsável por instanciar um produto e retornar ele instanciado.
-    abstract public function factoryMethod($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto): Product;
+    abstract public function factoryMethod(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): Product;
 
     // Método de operação que ajudará a criar e retornar o produto.
-    public function criarProduto($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto): Product {
+    public function criarProduto(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): Product {
 
-        $this->produto = $this->factoryMethod($imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+        $this->produto = $this->factoryMethod($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
         return $this->produto;
 
