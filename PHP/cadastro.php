@@ -35,13 +35,12 @@
     </div>
 
     <ul class="navegacao-topicos">
-      <li><a href="#">Categorias</a></li>
-      <li><a href="#">Kits Didáticos</a></li>
-      <li><a href="#">Arduino</a></li>
-      <li><a href="#">Robótica</a></li>
-      <li><a href="#">Automação</a></li>
-      <li><a href="#">Apostilas</a></li>
-      <li><a href="#">Robótica nas Escolas</a></li>
+    <li><a href="#">Categorias</a></li>
+      <li><a href="./categoriaArduino.php">Arduino</a></li>
+      <li><a href="./categoriaDisplay.php">Display</a></li>
+      <li><a href="./categoriaMotor.php">Motor</a></li>
+      <li><a href="./categoriaRaspberryPI.php">RaspberryPI</a></li>
+      <li><a href="./categoriaSensores.php">Sensores</a></li>
     </ul>
   </nav>
     <div class="container">
