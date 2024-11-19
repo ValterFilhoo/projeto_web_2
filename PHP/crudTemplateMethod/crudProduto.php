@@ -14,7 +14,7 @@ class CrudProduto extends CrudTemplateMethod {
     }
 
     public function sqlAtualizar(): string {
-        return "UPDATE produto SET imagem = ?, nome = ?, valor = ?, categoria = ?, tipo = ?, descricao = ? WHERE idProduto = ?";
+        return "UPDATE produto SET imagemProduto = ?, nomeProduto = ?, valorProduto = ?, quantidade = ?, categoria = ?, tipoProduto = ?, descricaoProduto = ? WHERE id = ?";
     }
 
     public function sqlDeletar(): string {
@@ -82,6 +82,7 @@ class CrudProduto extends CrudTemplateMethod {
     public function vincularParametros($declaracao, $entidade, $operacao): void {
         
         switch ($operacao) {
+
             case "Criar":
                 $imagem = $entidade->getImagem();
                 $nome = $entidade->getNome();
@@ -99,6 +100,7 @@ class CrudProduto extends CrudTemplateMethod {
                 break;
 
             case "Atualizar":
+
                 $imagem = $entidade->getImagem();
                 $nome = $entidade->getNome();
                 $valor = $entidade->getValor();
@@ -108,6 +110,7 @@ class CrudProduto extends CrudTemplateMethod {
                 $descricao = $entidade->getDescricao();
                 $id = $entidade->getId();
                 $declaracao->bind_param("ssdisssi", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $id);
+                
                 break;
 
             case "Deletar":

@@ -51,71 +51,92 @@
 
         }
 
-        public function lerEntidade($id) {
-            
+        public function lerEntidade(int $id, string $tipo) {
+
             $operacao = "Ler";
-        
+            
             // Parte do código que variam entre as subclasses.
             $sql = $this->sqlLer();
-        
+            
             // Preparar a declaração
             if ($stmt = $this->conexaoBD->prepare($sql)) {
-
+                
                 // Vinculação dos parâmetros
                 $this->vincularParametros($stmt, $id, $operacao);
-        
+                
                 // Executar a declaração
                 $stmt->execute();
-        
+                
                 // Obter o resultado
                 $resultadoDaBusca = $stmt->get_result();
-        
+                
                 if ($resultadoDaBusca->num_rows > 0) {
-                    $entidadeEncontrada = $resultadoDaBusca->fetch_assoc();
+                    $row = $resultadoDaBusca->fetch_assoc();
+                    $fabricaConcreta = $this->getFactory($tipo, $row);
         
-                    echo "Entidade encontrada.";
+                    if (!$fabricaConcreta) {
+                        throw new Exception("Tipo de entidade desconhecido: $tipo");
+                    }
         
+                    // Processar o registro com base no tipo
+                    $entidadeEncontrada = $this->processarRegistro($tipo, $fabricaConcreta, $row);
+                    
+                    
                     return $entidadeEncontrada;
-
+        
                 } else {
                     echo 'Entidade não encontrada.';
-        
                     return null;
                 }
-
+        
             } else {
-
                 echo "Erro na preparação da declaração: " . $this->conexaoBD->error;
                 return null;
-
             }
 
         }
-
         
-        public function atualizarEntidade($id, $entidade) {
+        
+        
+        public function atualizarEntidade($entidade): bool {
 
-            // Parte do código que variam entre as subclasses.
-            $sql = $this->sqlAtualizar($id, $entidade);
+            try {
 
-            $resultadoEdicao = $this->conexaoBD->query($sql);
+                $operacao = "Atualizar";
+        
+                // Pegando a parte do método que varia entre as subclasses, nesse caso a string do Update.
+                $sql = $this->sqlAtualizar();
+        
+                // Usando o método de preparação da declaração da operação que será feita.
+                $stmt = $this->conexaoBD->prepare($sql);
+        
+                // Vinculação dos parâmetros dos valores que serão atualizados na tabela do banco de dados.
+                $this->vincularParametros($stmt, $entidade, $operacao);
+        
+                // Pegando o resultado da atualização no banco de dados.
+                $resultadoUpdate = $stmt->execute();
+        
+                // Verificando se realmente atualizou a entidade no banco.
+                if ($resultadoUpdate) {
 
-            if ($resultadoEdicao) {
-                
-                echo 'Entidade editada com sucesso.';
+                    return true;
 
-                return true;
+                } else {
 
+                    throw new Exception('Erro na edição da entidade: ' . $stmt->error);
 
-            } else {
+                }
 
-                echo 'Erro na edição da entidade: ' . $this->conexaoBD->error;
+            } catch (Exception $excecao) {
 
+                // Captura e exibe a mensagem de erro
+                echo 'Exceção capturada: ' . $excecao->getMessage();
                 return false;
 
             }
 
         }
+        
 
         public function deletarEntidade($id) {
 

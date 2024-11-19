@@ -72,9 +72,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         // Adiciona eventos de clique aos botões de editar
                         document.querySelectorAll('.btn-editar').forEach(button => {
+                            
                             button.addEventListener('click', function() {
+
                                 const produtoId = this.getAttribute('data-id');
-                                console.log('Editar produto com ID:', produtoId);
+
+                                // Enviando o id do produto para a página de edição do produto.
+                                window.location.href = `./editarProduto.php?id=${produtoId}`;
+
                             });
                         });
 
