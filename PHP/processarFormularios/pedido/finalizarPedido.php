@@ -6,9 +6,8 @@ require_once __DIR__ . '/../../strategy/pixStrategy.php';
 require_once __DIR__ . '/../../strategy/boletoStrategy.php';
 require_once __DIR__ . '/../../composite/pedidoComposite.php';
 require_once __DIR__ . '/../../arquivosFactoryMethod/produtoCreator.php';
+require_once __DIR__ . '/../../encontrarFabricaEspecifica/gerenciadorFabrica.php';
 
-// Suponha que a conexão com o banco de dados esteja em $conexao
-$conexao = new mysqli('host', 'username', 'password', 'database');
 
 // Receber os dados do pedido enviado do front end
 $dadosPedido = json_decode(file_get_contents('php://input'), true);
@@ -24,9 +23,13 @@ $produtos = $dadosPedido['produtos'];
 // Cria uma instância de PedidoComposite
 $pedido = new PedidoComposite();
 
-// Adicionar itens ao pedido
+// Cria uma instância do Gerenciador de Fábricas
+$gerenciadorDeFabrica = new GerenciadorDeFabrica();
+
+// Adicionar itens ao pedido utilizando a fábrica correta
 foreach ($produtos as $produto) {
-    $produtoItem = new ProdutoItem($produto['id'], $produto['quantidade'], $produto['valorProduto']);
+    $fabrica = $gerenciadorDeFabrica->obterFabrica($produto['tipoProduto']);
+    $produtoItem = $fabrica->criarProduto($produto['id'], $produto['quantidade'], $produto['valorProduto']);
     $pedido->adicionarItem($produtoItem);
 }
 
@@ -52,4 +55,4 @@ $pedido->calcularValorPedido();
 $idPedido = $pedido->salvarPedido($conexao, $userId, $metodoPagamento);
 
 echo json_encode(["status" => "sucesso", "idPedido" => $idPedido]);
-
+?>
