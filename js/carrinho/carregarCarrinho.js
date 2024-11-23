@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     function getUserId() {
-        // Esta função deve ser substituída pela lógica real para obter o ID do usuário autenticado
-        // Por exemplo, você pode obtê-lo de um cookie, de uma variável JavaScript global ou de uma chamada de API
-        return 'usuario123'; // Exemplo de ID de usuário
+        return document.body.getAttribute('data-user-id'); // Pega o ID do atributo data
     }
 
     const userId = getUserId();
+    console.log(`Usuário autenticado com ID: ${userId}`);
+
     carregarItensDoCarrinho(userId);
 });
 
@@ -27,48 +27,57 @@ function carregarItensDoCarrinho(userId) {
         carrinho.forEach(produto => {
             console.log('Produto encontrado no carrinho:', produto);
 
-            const produtoTr = document.createElement('tr');
-            produtoTr.classList.add('cart-product');
-            produtoTr.innerHTML = `
-                <td>
-                    <div class="produto-info">
-                        <img src="../${produto.imagem}" alt="${produto.nome}" width="60">
-                        <span>${produto.nome}</span>
-                    </div>
-                </td>
-                <td class="produto-preco">R$ ${produto.valor.toFixed(2)}</td>
-                <td class="produto-quantidade">
-                    <button class="diminuir" data-id="${produto.id}">-</button>
-                    <input type="number" value="${produto.quantidade}" min="1" class="input-preco" data-id="${produto.id}">
-                    <button class="aumentar" data-id="${produto.id}">+</button>
-                </td>
-                <td>
-                    <button class="remover" data-id="${produto.id}">Remover</button>
-                </td>
-            `;
-            carrinhoProdutos.appendChild(produtoTr);
+            if (produto && typeof produto.valorProduto === 'number' && typeof produto.quantidade === 'number') {
+                const produtoTr = document.createElement('tr');
+                produtoTr.classList.add('cart-product');
+                produtoTr.innerHTML = `
+                    <td>
+                        <div class="produto-info">
+                            <img src="../${produto.imagemProduto}" alt="${produto.nomeProduto}" width="60">
+                            <span>${produto.nomeProduto}</span>
+                        </div>
+                    </td>
+                    <td class="produto-preco">R$ ${produto.valorProduto.toFixed(2)}</td>
+                    <td class="produto-quantidade">
+                        <button class="diminuir" data-id="${produto.id}">-</button>
+                        <input type="number" value="${produto.quantidade}" min="1" class="input-preco" data-id="${produto.id}">
+                        <button class="aumentar" data-id="${produto.id}">+</button>
+                    </td>
+                    <td>
+                        <button class="remover" data-id="${produto.id}">Remover</button>
+                    </td>
+                `;
+                carrinhoProdutos.appendChild(produtoTr);
 
-            total += produto.valor * produto.quantidade;
+                total += produto.valorProduto * produto.quantidade;
 
-            // Adiciona evento ao botão "Remover"
-            produtoTr.querySelector('.remover').addEventListener('click', function() {
-                removerDoCarrinho(userId, produto.id);
-            });
+                // Adiciona evento ao botão "Remover"
+                produtoTr.querySelector('.remover').addEventListener('click', function() {
+                    removerDoCarrinho(userId, produto.id);
+                });
 
-            // Adiciona evento ao botão "Diminuir"
-            produtoTr.querySelector('.diminuir').addEventListener('click', function() {
-                alterarQuantidadeProduto(userId, produto.id, -1);
-            });
+                // Adiciona evento ao botão "Diminuir"
+                produtoTr.querySelector('.diminuir').addEventListener('click', function() {
+                    alterarQuantidadeProduto(userId, produto.id, -1);
+                });
 
-            // Adiciona evento ao botão "Aumentar"
-            produtoTr.querySelector('.aumentar').addEventListener('click', function() {
-                alterarQuantidadeProduto(userId, produto.id, 1);
-            });
+                // Adiciona evento ao botão "Aumentar"
+                produtoTr.querySelector('.aumentar').addEventListener('click', function() {
+                    alterarQuantidadeProduto(userId, produto.id, 1);
+                });
 
-            // Adiciona evento ao input de quantidade
-            produtoTr.querySelector('.input-preco').addEventListener('change', function() {
-                alterarQuantidadeProduto(userId, produto.id, parseInt(this.value) - produto.quantidade);
-            });
+                // Adiciona evento ao input de quantidade
+                produtoTr.querySelector('.input-preco').addEventListener('change', function() {
+                    alterarQuantidadeProduto(userId, produto.id, parseInt(this.value) - produto.quantidade);
+                });
+            } else {
+                console.error('Produto inválido ou propriedades ausentes:', produto);
+                console.log('ID:', produto.id);
+                console.log('Nome:', produto.nomeProduto);
+                console.log('Valor:', produto.valorProduto);
+                console.log('Quantidade:', produto.quantidade);
+                console.log('Imagem:', produto.imagemProduto);
+            }
         });
 
         totalCarrinho.textContent = `Total: R$ ${total.toFixed(2)}`;
@@ -87,7 +96,7 @@ function removerDoCarrinho(userId, id) {
         if (index !== -1) {
             carrinho.splice(index, 1); // Remove o produto do carrinho
             localStorage.setItem(chaveCarrinho, JSON.stringify(carrinho)); // Atualiza o localStorage
-            carregarItensDoCarrinho(userId); // Atualiza a exibição do carrinho no modal
+            carregarItensDoCarrinho(userId); // Atualiza a exibição do carrinho
         }
     }
 }

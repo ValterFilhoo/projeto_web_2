@@ -17,11 +17,11 @@
     <link rel="stylesheet" href="../Css/style.css">
     <script async src="../js/loja.js"></script>
 </head>
-<body>
+<body data-user-id="<?php echo htmlspecialchars($_SESSION['id']); ?>">
   <nav class="cabecalho">
     <div class="perfil">
       <a href="login.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
-      <a href="perfil.php">
+      <a href="login.php">
       <?php 
       // Verificando se a chave nome da sessão foi iniciada (quando o usuário é autenticado é criado essa chave). Então exibe o nome do usuário.
       echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta';

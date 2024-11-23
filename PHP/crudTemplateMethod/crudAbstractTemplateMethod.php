@@ -55,7 +55,7 @@
 
             $operacao = "Ler";
             
-            // Parte do código que variam entre as subclasses.
+            // Parte do código que varia entre as subclasses.
             $sql = $this->sqlLer();
             
             // Preparar a declaração
@@ -71,6 +71,7 @@
                 $resultadoDaBusca = $stmt->get_result();
                 
                 if ($resultadoDaBusca->num_rows > 0) {
+
                     $row = $resultadoDaBusca->fetch_assoc();
                     $fabricaConcreta = $this->getFactory($tipo, $row);
         
@@ -80,7 +81,6 @@
         
                     // Processar o registro com base no tipo
                     $entidadeEncontrada = $this->processarRegistro($tipo, $fabricaConcreta, $row);
-                    
                     
                     return $entidadeEncontrada;
         
@@ -95,6 +95,7 @@
             }
 
         }
+        
         
         
         
@@ -275,34 +276,55 @@
 
         
         protected function processarUsuario($fabricaConcreta, $row) {
-
+            // Converte os campos apropriados para os tipos corretos
+            $numeroEndereco = (int) $row['numeroEndereco']; // Converte para int
+        
+            // Cria o usuário sem o ID
             $entidade = $fabricaConcreta->criarUsuario(
-                $row['id'], $row['nomeCompleto'], $row['cpf'], $row['celular'], $row['sexo'], 
-                $row['email'], $row['senha'], $row['dataNascimento'], $row['cep'], $row['endereco'], 
-                $row['numeroEndereco'], $row['complemento'], $row['referencia'], $row['bairro'], 
-                $row['cidade'], $row['estado'], $row['tipoConta']
+                $row['nomeCompleto'],
+                $row['email'],
+                $row['cpf'],
+                $row['celular'],
+                $row['sexo'],
+                $row['senha'],
+                $row['dataNascimento'],
+                $row['cep'],
+                $row['endereco'],
+                $numeroEndereco,
+                $row['complemento'],
+                $row['referencia'],
+                $row['bairro'],
+                $row['cidade'],
+                $row['estado'],
+                $row['tipoConta']
             );
         
+            // Define o ID usando um método set
+            $entidade->setId($row['id']);
+        
             return [
-                'id' => $entidade->id,
-                'nomeCompleto' => $entidade->nomeCompleto,
-                'cpf' => $entidade->cpf,
-                'celular' => $entidade->celular,
-                'sexo' => $entidade->sexo,
-                'email' => $entidade->email,
-                'senha' => $entidade->senha,
-                'dataNascimento' => $entidade->dataNascimento,
-                'cep' => $entidade->cep,
-                'endereco' => $entidade->endereco,
-                'numeroEndereco' => $entidade->numeroEndereco,
-                'complemento' => $entidade->complemento,
-                'referencia' => $entidade->referencia,
-                'bairro' => $entidade->bairro,
-                'cidade' => $entidade->cidade,
-                'estado' => $entidade->estado,
-                'tipoConta' => $entidade->tipoConta
+                'id' => $entidade->getId(), // Use o getter aqui
+                'nomeCompleto' => $entidade->getNomeCompleto(),
+                'cpf' => $entidade->getCpf(),
+                'celular' => $entidade->getCelular(),
+                'sexo' => $entidade->getSexo(),
+                'email' => $entidade->getEmail(),
+                'senha' => $entidade->getSenha(),
+                'dataNascimento' => $entidade->getDataNascimento(),
+                'cep' => $entidade->getCep(),
+                'endereco' => $entidade->getEndereco(),
+                'numeroEndereco' => $entidade->getNumeroEndereco(),
+                'complemento' => $entidade->getComplemento(),
+                'referencia' => $entidade->getReferencia(),
+                'bairro' => $entidade->getBairro(),
+                'cidade' => $entidade->getCidade(),
+                'estado' => $entidade->getEstado(),
+                'tipoConta' => $entidade->getTipoConta()
             ];
         }
+        
+        
+
         
         
         
@@ -341,8 +363,6 @@
             }
 
         }
-        
-        
         
 
         abstract public function sqlCriar(): string;

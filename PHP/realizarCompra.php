@@ -1,3 +1,9 @@
+<?php 
+
+    session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -6,16 +12,8 @@
     <title>Finalizar Compra</title>
     <link rel="stylesheet" href="../Css/realizarCompra.css">
 </head>
-<body>
-    <header>
-        <h1>Finalizar Compra</h1>
-        <nav>
-            <a href="#">Início</a> |
-            <a href="#">Produtos</a> |
-            <a href="#">Contato</a>
-        </nav>
-    </header>
-
+<body data-user-id="<?php echo htmlspecialchars($_SESSION['id']); ?>" data-api-usuario-url="../PHP/buscarUsuarios/buscarUsuarioPorId.php">
+    
     <section class="resumo-produtos">
         <h2>Resumo dos Produtos</h2>
         <table class="tabela-produtos">
@@ -40,6 +38,9 @@
         <section class="informacoes-usuario">
             <h2>Informações do Usuário</h2>
             <form id="form-usuario">
+
+                <label for="">Id</label>
+                <input type="number" value="<?php echo $_SESSION['id'];?>">
                 <label for="nome">Nome Completo:</label>
                 <input type="text" id="nome" name="nome" required>
 

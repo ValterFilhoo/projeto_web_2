@@ -4,6 +4,8 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . "/../crudTemplateMethod/crudProduto.php";
 
+session_start(); // Inicia a sessão
+
 try {
 
     // Verifique o tipo solicitado pela query string
@@ -24,8 +26,10 @@ try {
         echo json_encode(["status" => "erro", "mensagem" => "Nenhuma entidade encontrada."]);
 
     } else {
+        // Verifica se a conta autenticada é "Admin"
+        $tipoConta = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : 'Guest';
 
-        echo json_encode(["status" => "sucesso", "entidades" => $entidades]);
+        echo json_encode(["status" => "sucesso", "entidades" => $entidades, "tipoConta" => $tipoConta]);
 
     }
 

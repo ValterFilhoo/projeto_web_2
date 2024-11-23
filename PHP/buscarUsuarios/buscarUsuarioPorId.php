@@ -2,22 +2,22 @@
 
 header('Content-Type: application/json');
 
-require_once __DIR__ . "/../crudTemplateMethod/crudProduto.php";
+require_once __DIR__ . "/../crudTemplateMethod/crudUsuario.php";
 
 try {
 
     // Verifique se o ID foi especificado na query string
     if (!isset($_GET['id'])) {
-        throw new Exception("ID do produto não especificado.");
+        throw new Exception("ID do usuário não especificado.");
     }
 
     $id = (int)$_GET['id']; // Converta o ID para inteiro
 
     // Crie uma instância da sua classe que contém os métodos
-    $crudProduto = new CrudProduto();
+    $crudUsuario = new CrudUsuario();
 
-    // Chame o método lerEntidade com o ID e o tipo 'Produtos'
-    $entidade = $crudProduto->lerEntidade($id, 'Produtos');
+    // Chame o método lerEntidade com o ID e o tipo 'Usuários'
+    $entidade = $crudUsuario->lerEntidade($id, 'Usuários');
 
     if ($entidade === null) {
         echo json_encode(["status" => "erro", "mensagem" => "Entidade não encontrada."]);

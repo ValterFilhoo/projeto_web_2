@@ -6,11 +6,11 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
 class CrudProduto extends CrudTemplateMethod {
 
     public function sqlCriar(): string {
-        return "INSERT INTO Produto (imagemProduto, nomeProduto, valorProduto, quantidade, categoria, tipoProduto, descricaoProduto) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO produto (imagemProduto, nomeProduto, valorProduto, quantidade, categoria, tipoProduto, descricaoProduto) VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
     public function sqlLer(): string {
-        return "SELECT * FROM Produto WHERE id = ?";
+        return "SELECT * FROM produto WHERE id = ?";
     }
 
     public function sqlAtualizar(): string {
@@ -22,11 +22,11 @@ class CrudProduto extends CrudTemplateMethod {
     }
 
     public function sqlListar(): string {
-        return "SELECT * FROM Produto ORDER BY id DESC"; // Ordenando por id decrescente/mais recente.
+        return "SELECT * FROM produto ORDER BY id DESC"; // Ordenando por id decrescente/mais recente.
     }
     
     public function sqlBuscarPorCategoria(): string {
-        return "SELECT * FROM Produto WHERE categoria = ? ORDER BY id DESC";
+        return "SELECT * FROM produto WHERE categoria = ? ORDER BY id DESC";
     }
 
     public function buscarProdutosPorCategoria($categoria) {

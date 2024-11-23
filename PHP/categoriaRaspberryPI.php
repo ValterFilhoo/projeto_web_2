@@ -1,3 +1,9 @@
+<?php 
+
+  session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,7 +16,7 @@
     <link rel="stylesheet" href="../Css/style.css">
     <script async src="../js/loja.js"></script>
 </head>
-<body>
+<body data-user-id="<?php echo htmlspecialchars($_SESSION['id']); ?>">
   <nav class="cabecalho">
     <div class="perfil">
       <a href="login.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>

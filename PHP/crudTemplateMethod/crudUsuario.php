@@ -8,14 +8,14 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
         public function sqlCriar(): string {
 
 
-            return "INSERT INTO Usuario (nomeCompleto, email, cpf, celular, sexo, senha, dataNascimento, cep, endereco, complemento, referencia, bairro, cidade, estado, tipoConta, numeroEndereco) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            return "INSERT INTO usuario (nomeCompleto, email, cpf, celular, sexo, senha, dataNascimento, cep, endereco, complemento, referencia, bairro, cidade, estado, tipoConta, numeroEndereco) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
         }        
 
         public function sqlLer(): string {
 
-            return $sql = "SELECT * FROM usuario WHERE idUsuario = ?";
+            return $sql = "SELECT * FROM usuario WHERE id = ?";
 
         }
 
@@ -37,19 +37,19 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
                     cidade = ?,
                     estado = ?,
                     tipo = ?
-                    WHERE idUsuario = ?";
+                    WHERE id = ?";
 
         }
 
         public function sqlDeletar(): string {
 
-            return $sql = "DELETE FROM Usuario WHERE idUsuario = ?";
+            return $sql = "DELETE FROM usuario WHERE id = ?";
 
         }
 
         public function sqlListar(): string {
 
-            return $sql = "SELECT * FROM Usuario";
+            return $sql = "SELECT * FROM usuario";
 
         }
 
@@ -137,7 +137,12 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
                         $cidade, $estado, $tipoConta, $numeroEndereco);
 
                 
-
+                case "Ler":
+                    
+                        $id = $entidade; // Para a operação de leitura, $entidade é o ID
+                        $declaracao->bind_param("i", $id);
+                        break;
+        
 
 
             }
