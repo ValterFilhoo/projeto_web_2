@@ -42,6 +42,7 @@ function carregarItensDoCarrinho(userId) {
                 removerDoCarrinho(userId, produto.id);
                 carregarItensDoCarrinho(userId); // Recarrega os itens do carrinho após a remoção
             });
+            
         });
 
         // Calcula o total do carrinho

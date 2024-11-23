@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
 
                 });
+                
             } else {
                 console.error('Erro ao carregar produtos:', dados.mensagem); // Exibe a mensagem de erro no console
             }

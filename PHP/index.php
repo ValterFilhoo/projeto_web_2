@@ -107,7 +107,7 @@
             <h2>Itens do Carrinho</h2> 
             <div id="carrinho-itens"></div> 
             <div class="total-carrinho">Total: R$ <span id="total-carrinho">0,00</span></div> 
-            <button id="finalizar-compra">Finalizar Compra</button> 
+            <button id="finalizar-compra"> <a href="carrinho.php">Finalizar Compra </a></button> 
           </div> 
         </div>
 
