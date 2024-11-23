@@ -146,23 +146,27 @@ function finalizarCompra(userId) {
     const email = document.getElementById('email').value;
     const telefone = document.getElementById('telefone').value;
     const metodoPagamento = document.querySelector('input[name="pagamento"]:checked').value;
-    const numeroCartao = document.getElementById('numero-cartao').value;
-    const parcelas = parseInt(document.getElementById('parcelas').value) || 1;
 
-    // Validação básica dos dados
-    if (!nome || !cpf || !email || !telefone || !metodoPagamento) {
-        alert('Por favor, preencha todos os campos e selecione uma opção de pagamento.');
-        return;
-    }
-
-    // Aqui você pode adicionar a lógica para salvar o pedido e limpar o carrinho
+    // Obter itens do carrinho
     const chaveCarrinho = `carrinho_${userId}`;
     let carrinho = localStorage.getItem(chaveCarrinho);
-    if (carrinho) {
-        carrinho = JSON.parse(carrinho);
+    carrinho = JSON.parse(carrinho);
+
+    // Coletar detalhes específicos do método de pagamento
+    let detalhesPagamento = {};
+    if (metodoPagamento === 'cartao_credito') {
+        const numeroCartao = document.getElementById('numero-cartao').value;
+        const quantidadeParcelas = parseInt(document.getElementById('parcelas').value);
+        detalhesPagamento = { numeroCartao, quantidadeParcelas };
+    } else if (metodoPagamento === 'pix') {
+        const chavePix = document.getElementById('chave-pix').value;
+        detalhesPagamento = { chavePix };
+    } else if (metodoPagamento === 'boleto') {
+        const numeroBoleto = document.getElementById('numero-boleto').value;
+        detalhesPagamento = { numeroBoleto };
     }
 
-    // Preparar dados do pedido
+    // Preparar os dados do pedido
     const pedido = {
         userId,
         nome,
@@ -170,12 +174,11 @@ function finalizarCompra(userId) {
         email,
         telefone,
         metodoPagamento,
-        numeroCartao,
-        parcelas,
+        detalhesPagamento,
         produtos: carrinho
     };
 
-    // Enviar dados do pedido para o servidor
+    // Enviar os dados para o backend
     fetch('/PHP/finalizarPedido.php', {
         method: 'POST',
         headers: {
@@ -188,7 +191,6 @@ function finalizarCompra(userId) {
         if (data.status === 'sucesso') {
             // Limpar carrinho após finalizar a compra
             localStorage.removeItem(chaveCarrinho);
-
             alert('Compra finalizada com sucesso!');
         } else {
             alert('Erro ao finalizar a compra: ' + data.mensagem);
@@ -198,7 +200,9 @@ function finalizarCompra(userId) {
         console.error('Erro ao finalizar a compra:', error);
         alert('Erro ao finalizar a compra. Tente novamente.');
     });
+
 }
+
 
 // Exemplos de funções de cálculo para os métodos de pagamento
 function calcularValorFinalPix(valorBase) {
