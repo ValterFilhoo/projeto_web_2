@@ -5,7 +5,7 @@ require_once __DIR__ .  "/../product.php";
 require_once __DIR__ . "/../../composite/itemPedidoComponent.php";
 
 // Classe concreta do produto de Arduino (ConcreteProduto) recebe todos os atributos e métodos da classe abstrata "Product".
-class SensorTemperaturaConcreteProduct extends Product {
+class SensorTemperaturaConcreteProduct extends Product implements ItemPedidoComponent {
     
     // Contrutor da classe "SensorArduinoConcreteProduct".
     public function __construct(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto) {

@@ -10,7 +10,7 @@ require_once __DIR__ . "/../arquivosFactoryMethod/fabricaSensores/sensoresConcre
 require_once __DIR__ . "/../crudTemplateMethod/crudProduto.php";
 
 class GerenciadorDeFabrica {
-    
+
     private $fabricaMap = [];
 
     public function __construct() {
@@ -19,15 +19,14 @@ class GerenciadorDeFabrica {
         $this->fabricaMap['Motor'] = new MotoresConcreteCreator;
         $this->fabricaMap['RaspberryPI'] = new RaspberryPiConcreteCreator;
         $this->fabricaMap['Sensores'] = new SensoresConcreteCreator;
-        // Adicione outras fábricas ao mapa conforme necessário
     }
 
-    public function obterFabrica($tipo): ProdutoCreator {
+    public function obterFabrica(string $categoria): ProdutoCreator {
 
-        if (array_key_exists($tipo, $this->fabricaMap)) {
-            return $this->fabricaMap[$tipo];
+        if (array_key_exists($categoria, $this->fabricaMap)) {
+            return $this->fabricaMap[$categoria];
         } else {
-            throw new Exception("Fábrica para o tipo de produto $tipo não encontrada.");
+            throw new Exception("Fábrica para o tipo de produto $categoria não encontrada.");
         }
 
     }

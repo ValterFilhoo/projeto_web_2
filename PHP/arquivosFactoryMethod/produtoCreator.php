@@ -6,13 +6,13 @@ require_once __DIR__ .  "/./product.php";
 abstract class ProdutoCreator {
     
     // Atributo que irá guardar o produto que será instanciado por cada fábrica concreta (ConcreteCreator).
-    private Product $produto;
+    private ItemPedidoComponent $produto;
 
     // Método abstrato do padrão FactoryMethod, que será responsável por instanciar um produto e retornar ele instanciado.
-    abstract public function factoryMethod(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): Product;
+    abstract public function factoryMethod(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): ItemPedidoComponent;
 
     // Método de operação que ajudará a criar e retornar o produto.
-    public function criarProduto(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): Product {
+    public function criarProduto(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): ItemPedidoComponent {
 
         $this->produto = $this->factoryMethod($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
