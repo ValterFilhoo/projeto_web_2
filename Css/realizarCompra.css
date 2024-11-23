@@ -1,0 +1,152 @@
+/* Estilo básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+  }
+  
+  header h1 {
+    font-size: 2rem;
+    color: #007BFF;
+  }
+  
+  header nav a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #007BFF;
+  }
+  
+  header nav a:hover {
+    text-decoration: underline;
+  }
+  
+  section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    max-height: 400px; /* Define a altura máxima */
+    overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+  }
+  
+  section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .tabela-produtos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .tabela-produtos th, 
+  .tabela-produtos td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .tabela-produtos th {
+    background-color: #007BFF;
+    color: white;
+  }
+  
+  .produto-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .produto-info img {
+    border-radius: 5px;
+    width: 60px; /* Ajusta o tamanho das imagens */
+    height: auto; /* Mantém a proporção das imagens */
+  }
+  
+  .resumo-total {
+    text-align: right;
+    margin-top: 20px;
+  }
+  
+  .resumo-total .total {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .dados-pagamento {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .informacoes-usuario, .opcoes-pagamento {
+    flex: 1;
+    max-height: 400px; /* Define a altura máxima */
+    overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  form label {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  form input[type="text"], form input[type="email"], form input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .forma-pagamento {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .opcoes-pagamento label {
+    font-size: 1rem;
+  }
+  
+  button.finalizar-compra {
+    background-color: #28A745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  button.finalizar-compra:hover {
+    background-color: #218838;
+  }
+  
+  footer {
+    margin-top: 20px;
+    text-align: center;
+    color: #777;
+  }
+  
