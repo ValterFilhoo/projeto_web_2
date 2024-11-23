@@ -51,12 +51,11 @@
 
     <ul class="navegacao-topicos">
       <li><a href="#">Categorias</a></li>
-      <li><a href="#">Kits Didáticos</a></li>
-      <li><a href="#">Arduino</a></li>
-      <li><a href="#">Robótica</a></li>
-      <li><a href="#">Automação</a></li>
-      <li><a href="#">Apostilas</a></li>
-      <li><a href="#">Robótica nas Escolas</a></li>
+      <li><a href="./categoriaArduino.php">Arduino</a></li>
+      <li><a href="./categoriaDisplay.php">Display</a></li>
+      <li><a href="./categoriaMotor.php">Motor</a></li>
+      <li><a href="./categoriaRaspberryPI.php">RaspberryPI</a></li>
+      <li><a href="./categoriaSensores.php">Sensores</a></li>
     </ul>
   </nav>
 
@@ -96,16 +95,6 @@
     <img src="../img/Banner 2.png" alt="Banner">
   </div>
 </section>
-<div class="contact-container">
-<h2>Contato</h2>
-<form >
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" placeholder="Digite seu email" required>
-    <label for="password">Senha:</label>
-    <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
-    <button type="submit">Enviar</button>
-  </div>
-</form>
   <footer>
     <div class="footer-content">
       <div class="footer-section about">

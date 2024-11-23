@@ -20,7 +20,7 @@
 <body>
   <nav class="cabecalho">
     <div class="perfil">
-      <a href="perfil.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
+      <a href="login.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
       <a href="perfil.php">
       <?php 
       // Verificando se a chave nome da sessão foi iniciada (quando o usuário é autenticado é criado essa chave). Então exibe o nome do usuário.

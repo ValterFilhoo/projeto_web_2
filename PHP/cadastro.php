@@ -11,7 +11,7 @@
 <body>
   <nav class="cabecalho">
     <div class="perfil">
-      <a href="../"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
+      <a href="login.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
       <a href="perfil.php">Minha conta</a>
     </div>
   </nav>
