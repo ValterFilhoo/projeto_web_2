@@ -2,7 +2,7 @@
 
     abstract class FormaPagamentoStrategy {
         
-        protected float $porcentagemDesconto = null;
+        protected ?float $porcentagemDesconto = null;
 
         public abstract function calcularvalorFinal(float $valorBasePedido): float;
 

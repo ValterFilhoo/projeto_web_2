@@ -1,15 +1,16 @@
 <?php
 
+    require_once __DIR__ . "/formaPagamentoStrategy.php";
     class CartaoCreditoStrategy extends FormaPagamentoStrategy {
 
-        private string $numeroCartao = null;
-        private int $quantidadeParcelas = null;
+        private ?string $numeroCartao = null;
+        private ?int $quantidadeParcelas = null;
 
         public function calcularValorFinal(float $valorBasePedido): float {
 
             // Verificando se o número do cartão foi informado.
             if ($this->getNumeroCartao() === null) {
-                throw new Exception("Erro. O valor da chave pix está nulo.");
+                throw new Exception("Erro. O numero do cartão está nulo.");
             }
         
             // Verificando se a porcentagem de desconto em pagamento em cartão foi informada.
@@ -18,7 +19,7 @@
             }
             
             if ($this->getQuantidadeParcelas() === null) {
-                throw new Exception("Erro. A quantidade das parcelas está nulo.");
+                throw new Exception("Erro. A quantidade das parcelas está nula.");
             }
         
             // Calculando o valor do desconto de acordo com a porcentagem informada e o valor base do pedido.

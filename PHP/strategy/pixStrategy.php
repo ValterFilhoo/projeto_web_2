@@ -1,8 +1,10 @@
 <?php
 
+
+    require_once __DIR__ . "/formaPagamentoStrategy.php";
     class PixStrategy extends FormaPagamentoStrategy {
 
-        private string $chavePix = null;
+        private ?string $chavePix = null;
 
         public function calcularValorFinal(float $valorBasePedido): float {
 

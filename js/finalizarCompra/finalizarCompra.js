@@ -10,18 +10,23 @@ document.addEventListener('DOMContentLoaded', function() {
         input.addEventListener('change', atualizarValorTotal);
     });
 
-    document.getElementById('parcelas').addEventListener('input', atualizarValorTotal);
+    const parcelasInput = document.getElementById('parcelas');
+    if (parcelasInput) {
+        parcelasInput.addEventListener('input', atualizarValorTotal);
+    }
 
     // Adiciona evento ao botão de finalizar compra
-    document.getElementById('botao-finalizar').addEventListener('click', function() {
-        finalizarCompra(userId);
-    });
+    const botaoFinalizar = document.getElementById('botao-finalizar');
+    if (botaoFinalizar) {
+        botaoFinalizar.addEventListener('click', function() {
+            finalizarCompra(userId);
+        });
+    }
 });
 
 function carregarDadosUsuario(userId, apiUsuarioUrl) {
-
-    console.info(userId)
-    console.info(apiUsuarioUrl)
+    console.info(userId);
+    console.info(apiUsuarioUrl);
     
     fetch(`${apiUsuarioUrl}?id=${userId}`)
         .then(response => response.json())
@@ -103,108 +108,117 @@ function adicionarProdutoAoCarrinho(userId, produto) {
 }
 
 function atualizarValorTotal() {
-    const metodoPagamento = document.querySelector('input[name="pagamento"]:checked').value;
-    const valorBase = parseFloat(document.getElementById('total-compra').dataset.valorBase);
-    let valorFinal;
+    const metodoPagamentoInput = document.querySelector('input[name="pagamento"]:checked');
+    if (metodoPagamentoInput) {
+        const metodoPagamento = metodoPagamentoInput.value;
+        const valorBase = parseFloat(document.getElementById('total-compra').dataset.valorBase);
+        let valorFinal;
 
-    switch (metodoPagamento) {
-        case 'pix':
-            valorFinal = calcularValorFinalPix(valorBase);
-            document.getElementById('valor-pix').textContent = `Valor com desconto: R$ ${valorFinal.toFixed(2)}`;
-            document.getElementById('valor-cartao').textContent = '';
-            document.getElementById('valor-boleto').textContent = '';
-            break;
-        case 'cartao':
-            const parcelas = parseInt(document.getElementById('parcelas').value) || 1;
-            valorFinal = calcularValorFinalCartao(valorBase, parcelas);
-            const valorParcelas = (valorFinal / parcelas).toFixed(2);
-            document.getElementById('valor-cartao').textContent = `Total: R$ ${valorFinal.toFixed(2)} (${parcelas}x de R$ ${valorParcelas})`;
-            document.getElementById('valor-pix').textContent = '';
-            document.getElementById('valor-boleto').textContent = '';
-            break;
-        case 'boleto':
-            valorFinal = calcularValorFinalBoleto(valorBase);
-            document.getElementById('valor-boleto').textContent = `Valor: R$ ${valorFinal.toFixed(2)}`;
-            document.getElementById('valor-pix').textContent = '';
-            document.getElementById('valor-cartao').textContent = '';
-            break;
-        default:
-            valorFinal = valorBase;
-            document.getElementById('valor-pix').textContent = '';
-            document.getElementById('valor-cartao').textContent = '';
-            document.getElementById('valor-boleto').textContent = '';
-            break;
+        switch (metodoPagamento) {
+            case 'pix':
+                valorFinal = calcularValorFinalPix(valorBase);
+                document.getElementById('valor-pix').textContent = `Valor com desconto: R$ ${valorFinal.toFixed(2)}`;
+                document.getElementById('valor-cartao').textContent = '';
+                document.getElementById('valor-boleto').textContent = '';
+                break;
+            case 'cartao':
+                const parcelasInput = document.getElementById('parcelas');
+                const parcelas = parcelasInput ? parseInt(parcelasInput.value) || 1 : 1;
+                valorFinal = calcularValorFinalCartao(valorBase, parcelas);
+                const valorParcelas = (valorFinal / parcelas).toFixed(2);
+                document.getElementById('valor-cartao').textContent = `Total: R$ ${valorFinal.toFixed(2)} (${parcelas}x de R$ ${valorParcelas})`;
+                document.getElementById('valor-pix').textContent = '';
+                document.getElementById('valor-boleto').textContent = '';
+                break;
+            case 'boleto':
+                valorFinal = calcularValorFinalBoleto(valorBase);
+                document.getElementById('valor-boleto').textContent = `Valor: R$ ${valorFinal.toFixed(2)}`;
+                document.getElementById('valor-pix').textContent = '';
+                document.getElementById('valor-cartao').textContent = '';
+                break;
+            default:
+                valorFinal = valorBase;
+                document.getElementById('valor-pix').textContent = '';
+                document.getElementById('valor-cartao').textContent = '';
+                document.getElementById('valor-boleto').textContent = '';
+                break;
+        }
+
+        document.getElementById('total-compra').textContent = `Total: R$ ${valorFinal.toFixed(2)}`;
+    } else {
+        console.error('Nenhum método de pagamento selecionado.');
     }
-
-    document.getElementById('total-compra').textContent = `Total: R$ ${valorFinal.toFixed(2)}`;
 }
 
 function finalizarCompra(userId) {
-    
     const nome = document.getElementById('nome').value;
     const cpf = document.getElementById('cpf').value;
     const email = document.getElementById('email').value;
     const telefone = document.getElementById('telefone').value;
-    const metodoPagamento = document.querySelector('input[name="pagamento"]:checked').value;
+    const metodoPagamentoInput = document.querySelector('input[name="pagamento"]:checked');
+    
+    if (metodoPagamentoInput) {
+        const metodoPagamento = metodoPagamentoInput.value;
 
-    // Obter itens do carrinho
-    const chaveCarrinho = `carrinho_${userId}`;
-    let carrinho = localStorage.getItem(chaveCarrinho);
-    carrinho = JSON.parse(carrinho);
+        // Obter itens do carrinho
+        const chaveCarrinho = `carrinho_${userId}`;
+        let carrinho = localStorage.getItem(chaveCarrinho);
+        carrinho = carrinho ? JSON.parse(carrinho) : [];
 
-    // Coletar detalhes específicos do método de pagamento
-    let detalhesPagamento = {};
-    if (metodoPagamento === 'cartao_credito') {
-        const numeroCartao = document.getElementById('numero-cartao').value;
-        const quantidadeParcelas = parseInt(document.getElementById('parcelas').value);
-        detalhesPagamento = { numeroCartao, quantidadeParcelas };
-    } else if (metodoPagamento === 'pix') {
-        const chavePix = document.getElementById('chave-pix').value;
-        detalhesPagamento = { chavePix };
-    } else if (metodoPagamento === 'boleto') {
-        const numeroBoleto = document.getElementById('numero-boleto').value;
-        detalhesPagamento = { numeroBoleto };
-    }
 
-    // Preparar os dados do pedido
-    const pedido = {
-        userId,
-        nome,
-        cpf,
-        email,
-        telefone,
-        metodoPagamento,
-        detalhesPagamento,
-        produtos: carrinho
-    };
+        // Verificar se todos os produtos possuem a chave "categoria"
+         carrinho.forEach(produto => { console.log('Produto:', produto); if (!produto.hasOwnProperty('categoria')) { console.error('Produto sem categoria:', produto); } });
 
-    // Enviar os dados para o backend
-    fetch('/PHP/finalizarPedido.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(pedido)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'sucesso') {
-            // Limpar carrinho após finalizar a compra
-            localStorage.removeItem(chaveCarrinho);
-            alert('Compra finalizada com sucesso!');
-        } else {
-            alert('Erro ao finalizar a compra: ' + data.mensagem);
+        // Coletar detalhes específicos do método de pagamento
+        let detalhesPagamento = {};
+        if (metodoPagamento === 'cartao') {
+            const numeroCartao = document.getElementById('numero-cartao').value;
+            const quantidadeParcelas = parseInt(document.getElementById('parcelas').value);
+            detalhesPagamento = { numeroCartao, quantidadeParcelas };
+        } else if (metodoPagamento === 'pix' || metodoPagamento === 'boleto') {
+            detalhesPagamento = {}; // Pix e Boleto não precisam de detalhes adicionais no frontend
         }
-    })
-    .catch(error => {
-        console.error('Erro ao finalizar a compra:', error);
-        alert('Erro ao finalizar a compra. Tente novamente.');
-    });
 
+        // Preparar os dados do pedido
+        const pedido = {
+            userId,
+            nome,
+            cpf,
+            email,
+            telefone,
+            metodoPagamento,
+            detalhesPagamento,
+            produtos: carrinho
+        };
+
+        // Enviar os dados para o backend
+        fetch('../PHP/processarFormularios/pedido/finalizarPedido.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pedido)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'sucesso') {
+                // Limpar carrinho após finalizar a compra
+                localStorage.removeItem(chaveCarrinho);
+                alert('Compra finalizada com sucesso!');
+            } else {
+                alert('Erro ao finalizar a compra: ' + data.mensagem);
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao finalizar a compra:', error);
+            alert('Erro ao finalizar a compra. Tente novamente.');
+        });
+    } else {
+        alert('Por favor, selecione um método de pagamento.');
+    }
 }
 
-
-// Exemplos de funções de cálculo para os métodos de pagamento
+// Funções de cálculo para os métodos de pagamento
 function calcularValorFinalPix(valorBase) {
     return valorBase - (valorBase * 0.05); // 5% de desconto para PIX
 }

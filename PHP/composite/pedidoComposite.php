@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . "/itemPedidoComponent.php";
 class PedidoComposite implements ItemPedidoComponent {
 
     private $itensPedido = [];
@@ -31,12 +32,10 @@ class PedidoComposite implements ItemPedidoComponent {
         return false;
 
     }
-    
 
     public function definirFormaPagamento(FormaPagamentoStrategy $strategy) {
         $this->pagamentoStrategy = $strategy;
     }
-
 
     public function calcularValorPedido(): float {
         
@@ -45,7 +44,7 @@ class PedidoComposite implements ItemPedidoComponent {
         // Itera na lista de itens do pedido para calcular recursivamente os valores de cada item contidos na lista.
         foreach ($this->itensPedido as $item) {
 
-            // Cada item que está na lista de itens do pedido, executará esse mesmo método e retornar seu preço individual, sendo assim somado cada um deles.
+            // Cada item que está na lista de itens do pedido, executará esse mesmo método e retornará seu preço individual, sendo assim somado cada um deles.
             $valorBasePedido += $item->calcularValorPedido();
 
         }
@@ -63,14 +62,15 @@ class PedidoComposite implements ItemPedidoComponent {
         }
 
         return $this->getValorTotalPedido();
-
     }
-
 
     public function getValorTotalPedido(): float {
         return $this->valorTotalPedido;
     }
 
-
+    public function getItensPedido(): array {
+        return $this->itensPedido;
+    }
     
 }
+

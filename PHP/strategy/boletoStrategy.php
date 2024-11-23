@@ -1,14 +1,15 @@
 <?php
 
+    require_once __DIR__ . "/formaPagamentoStrategy.php";
     class BoletoStrategy extends FormaPagamentoStrategy {
 
-        private string $numeroBoleto = null;
+        private ?string $numeroBoleto = null;
 
         public function calcularValorFinal(float $valorBasePedido): float {
 
             // Verificando se a chave pix foi informada.
             if ($this->getNumeroBoleto() === null) {
-                throw new Exception("Erro. O valor da chave pix está nulo.");
+                throw new Exception("Erro. O valor do número do boleto está nulo.");
             }
         
             // Verificando se a porcentagem de desconto no pix foi informada.

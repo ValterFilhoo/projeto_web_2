@@ -241,18 +241,19 @@
         protected function processarRegistro($tipo, $fabricaConcreta, $row) {
 
             if ($tipo === 'Produtos') {
-
                 return $this->processarProduto($fabricaConcreta, $row);
-
             } else if ($tipo === 'Usuários') {
-
                 return $this->processarUsuario($fabricaConcreta, $row);
-
+            } else if ($tipo === 'Pedidos') {
+                return $this->processarPedido($fabricaConcreta, $row);
+            } else if ($tipo === 'ItensPedido') {
+                return $this->processarItemPedido($fabricaConcreta, $row);
             }
-
+        
             throw new Exception("Tipo de entidade desconhecido: $tipo");
 
         }
+        
 
         
         protected function processarProduto($fabricaConcreta, $row) {
@@ -272,10 +273,73 @@
                 'tipoProduto' => $entidade->getTipo(),
                 'descricaoProduto' => $entidade->getDescricao()
             ];
+
         }
 
+        protected function processarPedido($fabricaConcreta, $row) {
+            $itensPedido = []; // Inicialize o array de itens de pedido
         
+            foreach ($row['itens'] as $itemRow) {
+                $itemPedido = $this->processarItemPedido($fabricaConcreta, $itemRow);
+                $itensPedido[] = $itemPedido;
+            }
+        
+            $entidade = $fabricaConcreta->criarPedido(
+                $row['idUsuario'],
+                $row['dataPedido'],
+                $row['tipoPagamento'],
+                $itensPedido,
+                $row['chavePix'] ?? null,   
+                $row['numeroCartao'] ?? null, 
+                $row['quantidadeParcelas'] ?? null, 
+                $row['numeroBoleto'] ?? null 
+            );
+        
+            $entidade->setId($row['id']);
+        
+            return [
+                'id' => $entidade->getId(),
+                'idUsuario' => $entidade->getIdUsuario(),
+                'dataPedido' => $entidade->getDataPedido(),
+                'tipoPagamento' => $entidade->getTipoPagamento(),
+                'chavePix' => $entidade->getChavePix(),               
+                'numeroCartao' => $entidade->getNumeroCartao(),      
+                'quantidadeParcelas' => $entidade->getQuantidadeParcelas(), 
+                'numeroBoleto' => $entidade->getNumeroBoleto(),
+                'itens' => array_map(function($item) {
+                    return [
+                        'idProduto' => $item->getIdProduto(),
+                        'nomeProduto' => $item->getNomeProduto(),
+                        'quantidade' => $item->getQuantidade(),
+                        'valor' => $item->getValor(),
+                        'categoriaProduto' => $item->getCategoriaProduto(),
+                        'tipoProduto' => $item->getTipoProduto(),
+                        'descricaoProduto' => $item->getDescricaoProduto(),
+                        'imagemProduto' => $item->getImagemProduto()
+                    ];
+                }, $entidade->getItensPedido())
+            ];
+
+        }
+        
+        
+
+        protected function processarItemPedido($fabricaConcreta, $row) {
+
+            $produto = $fabricaConcreta->factoryMethod(
+                $row['id'], $row['imagemProduto'], $row['nomeProduto'], $row['valorProduto'], 
+                $row['quantidade'], $row['categoria'], $row['tipoProduto'], $row['descricaoProduto']
+            );
+        
+            $entidade = $fabricaConcreta->criarItemPedido($produto, $row['quantidade']);
+        
+            return $entidade;
+
+        }
+        
+
         protected function processarUsuario($fabricaConcreta, $row) {
+
             // Converte os campos apropriados para os tipos corretos
             $numeroEndereco = (int) $row['numeroEndereco']; // Converte para int
         
@@ -321,24 +385,20 @@
                 'estado' => $entidade->getEstado(),
                 'tipoConta' => $entidade->getTipoConta()
             ];
-        }
-        
-        
 
+        }
+    
         
-        
-        
-        protected function getFactory($tipo, $dados): ProdutoCreator|UserCreator {
+        protected function getFactory($tipo, $dados): ArduinoConcreteCreator|DisplayConcreteCreator|ItemPedidoConcreteCreator|MotoresConcreteCreator|PedidoConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator|UserConcreteCreator {
 
             if ($tipo === 'Produtos') {
 
                 // Verificar o subtipo de produto
                 switch ($dados['categoria']) {
-
                     case 'Arduino':
                         return new ArduinoConcreteCreator();
                     case 'Display':
-                        return new DisplayConcreteCreator;
+                        return new DisplayConcreteCreator();
                     case 'Motor':
                         return new MotoresConcreteCreator();
                     case 'RaspberryPI':
@@ -350,21 +410,39 @@
                 }
 
             }
-        
+
             // Verificações para outros tipos de entidades
             switch ($tipo) {
 
                 case 'Usuários':
                     return new UserConcreteCreator();
-                //case 'pedido':
-                   // return new PedidoFactory();
+                case 'Pedidos':
+                    return new PedidoConcreteCreator; // Ajuste conforme sua classe concreta de pedido
+                case 'ItensPedido':
+                    return new ItemPedidoConcreteCreator; // Ajuste conforme sua classe concreta de item de pedido
                 default:
                     throw new Exception("Tipo de entidade desconhecido: $tipo");
+
             }
 
         }
-        
 
+
+        public function iniciarTransacao(): void { 
+            $this->conexaoBD->begin_transaction(); 
+        } 
+        public function commitTransacao(): void {
+             $this->conexaoBD->commit(); 
+        } 
+        public function rollbackTransacao(): void {
+             $this->conexaoBD->rollback(); 
+        }
+
+        public function obterUltimoIdInserido(): int|string { 
+            return $this->conexaoBD->insert_id;
+        }
+
+        
         abstract public function sqlCriar(): string;
 
         abstract public function sqlLer(): string;

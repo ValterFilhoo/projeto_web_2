@@ -94,7 +94,6 @@ function alterarQuantidadeProduto(userId, id, quantidade) {
 }
 
 function adicionarAoCarrinho(userId, produto) {
-    
     const chaveCarrinho = `carrinho_${userId}`; // Cria uma chave única para o carrinho do usuário
     let carrinho = localStorage.getItem(chaveCarrinho);
     if (carrinho) {
@@ -108,8 +107,17 @@ function adicionarAoCarrinho(userId, produto) {
     if (produtoExistente) {
         produtoExistente.quantidade += 1; // Incrementa a quantidade se o produto já estiver no carrinho
     } else {
-        // Adiciona o novo produto ao carrinho
-        carrinho.push({ id: produto.id, nomeProduto: produto.nomeProduto, valorProduto: produto.valorProduto, quantidade: 1, imagemProduto: produto.imagemProduto });
+        // Adiciona o novo produto ao carrinho com categoria, tipo e descrição padrão
+        carrinho.push({
+            id: produto.id,
+            nomeProduto: produto.nomeProduto,
+            valorProduto: produto.valorProduto,
+            quantidade: 1,
+            imagemProduto: produto.imagemProduto,
+            categoria: produto.categoria || 'default', // Define uma categoria padrão
+            tipoProduto: produto.tipoProduto || 'geral', // Define um tipo padrão
+            descricaoProduto: produto.descricaoProduto || 'Sem descrição' // Define uma descrição padrão
+        });
     }
 
     // Atualiza o localStorage com o carrinho atualizado
@@ -117,6 +125,9 @@ function adicionarAoCarrinho(userId, produto) {
 
     alert('Produto adicionado ao carrinho com sucesso!');
 }
+
+
+
 
 function removerDoCarrinho(userId, id) {
     const chaveCarrinho = `carrinho_${userId}`; // Chave única para o carrinho do usuário

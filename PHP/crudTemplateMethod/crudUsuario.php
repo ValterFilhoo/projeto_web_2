@@ -108,11 +108,8 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
         
         
         public function vincularParametros($declaracao, $entidade, $operacao): void {
-
             switch ($operacao) {
-
                 case "Criar":
-
                     $nomeCompleto = $entidade->getNomeCompleto();
                     $email = $entidade->getEmail();
                     $cpf = $entidade->getCpf();
@@ -130,25 +127,23 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
                     $tipoConta = $entidade->getTipoConta();
                     $numeroEndereco = $entidade->getNumeroEndereco();
                     
-                    // Vinculando os parãmetros dos valores da string sql, passando os tipos dos valores e seus valores.
-                    $declaracao->bind_param("sssssssssssssssi", 
+                    // Vinculando os parâmetros dos valores da string SQL, passando os tipos dos valores e seus valores.
+                    $declaracao->bind_param("ssssssssssssssss", 
                         $nomeCompleto, $email, $cpf, $celular, $sexo, $senha, $dataNascimento, 
                         $cep, $endereco, $complemento, $referencia, $bairro, 
                         $cidade, $estado, $tipoConta, $numeroEndereco);
-
-                
-                case "Ler":
-                    
-                        $id = $entidade; // Para a operação de leitura, $entidade é o ID
-                        $declaracao->bind_param("i", $id);
-                        break;
         
-
-
+                    break;
+        
+                case "Ler":
+                case "Deletar":
+                    $id = $entidade; // Para as operações de leitura e exclusão, $entidade é o ID
+                    $declaracao->bind_param("i", $id);
+                    break;
+        
             }
-
-           
         }
+        
 
 
         public function obterCaminhoImagemSeNecessario($id) {
