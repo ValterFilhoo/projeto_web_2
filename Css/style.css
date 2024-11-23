@@ -168,11 +168,11 @@ nav {
 
 .notebook h1,
 .notebook p,
-.notebook a {
+.notebook button {
   text-align: center;
 }
 
-.notebook a {
+.notebook button {
   display: inline-block;
   text-decoration: none;
   color: #f8f8f8;
@@ -182,25 +182,45 @@ nav {
   padding: 10px 20px;
 }
 
-.notebook a:hover {
+.notebook button:hover {
   background: #0056b3;
 }
 
 
-/* Estilo para o contêiner dos botões */
-.botoes-acoes {
-  display: flex;
-  justify-content: space-between; /* Espaçamento entre os botões */
-  margin-top: 10px; /* Margem superior para separar do restante do conteúdo */
+/* Estilo para o botão de adicionar ao carrinho */
+.adicionar-carrinho {
+  display: inline-block;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+  background: #28a745;
+  border-radius: 4px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px; /* Margem superior para espaçamento */
 }
 
-/* Estilo individual para os botões, se necessário */
+.adicionar-carrinho:hover {
+  background: #218838;
+}
+
+/* Estilo para o contêiner dos botões de ação */
+.botoes-acoes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px; 
+}
+
 .botoes-acoes button {
-  padding: 1vw;
-  width: 40%;
-  margin: 0 5px; /* Margem entre os botões */
+  padding: 10px 20px;
   font-weight: bold;
-  color: #000000;
+  color: #ffffff;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .btn-remover {
@@ -211,26 +231,16 @@ nav {
   background-color: #30E738;
 }
 
-
-/* Estilo para os botões de remover e editar */ 
-.btn-remover, .btn-editar { 
-
-  cursor: pointer; 
- 
-} 
-
-/* Estilo dos botões ao passar o mouse */ 
-.btn-remover:hover, .btn-editar:hover { 
-  opacity: 0.7; 
-  /* Opacidade total ao passar o mouse */ 
+.btn-remover:hover, .btn-editar:hover {
+  opacity: 0.8;
 }
 
-
-contact {
+.contact {
   background-color: #f9f9f9;
   padding: 40px;
   text-align: center;
 }
+
 .depoimentos h1 {
   text-align: center;
   margin: 2rem;
@@ -239,14 +249,13 @@ contact {
 .contact-container {
   position: absolute;
   bottom: -80rem;
-  right: 10rem;;
+  right: 10rem;
   max-width: 500px;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 
 #contact h2 {
   margin-bottom: 20px;
@@ -279,6 +288,127 @@ button {
   cursor: pointer;
   font-size: 16px;
 }
+
+
+
+
+
+/* Estilo básico para modal */
+.modal {
+  display: none; /* Inicialmente escondido */
+  position: fixed; /* Fixa o modal na tela */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Permite rolagem se necessário */
+  background-color: rgba(0,0,0,0.4); /* Fundo preto com opacidade */
+}
+
+/* Estilo para conteúdo do modal */
+.modal-content {
+  background-color: #ffffff;
+  margin: 10% auto; /* Espaçamento para centralizar o modal verticalmente */
+  padding: 2em; /* Utiliza unidades relativas para padding */
+  border: 0.1em solid #888;
+  width: 90%; /* Use percentagem para responsividade */
+  max-width: 600px; /* Limite a largura máxima em percentagem */
+  box-shadow: 0 0.4em 0.8em rgba(0, 0, 0, 0.2); /* Adiciona sombra ao modal */
+  overflow: auto; /* Permite rolagem do conteúdo do modal se necessário */
+}
+
+/* Ajuste para telas maiores */
+@media (min-width: 37.5em) { /* Aproximadamente 600px */
+  .modal-content {
+      width: 70%; /* Aumenta a largura para telas maiores */
+  }
+}
+
+@media (min-width: 62em) { /* Aproximadamente 992px */
+  .modal-content {
+      width: 50%; /* Aumenta a largura para telas maiores */
+  }
+}
+
+/* Estilo para botão de fechar */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 1.5em; /* Utiliza unidades relativas para fonte */
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+/* Estilo para os itens do carrinho */
+.item-carrinho {
+  display: flex;
+  align-items: center;
+  border-bottom: 0.1em solid #ddd;
+  padding: 1em 0;
+}
+
+.item-carrinho img {
+  margin-right: 1.25em;
+}
+
+.item-carrinho h3 {
+  margin: 0 0 0.3em 0;
+}
+
+.item-carrinho p {
+  margin: 0;
+}
+
+.item-carrinho button {
+  margin: 0.3em;
+  padding: 0.5em 1em;
+  background-color: #007BFF; /* Cor principal do site */
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 0.25em;
+}
+
+.item-carrinho button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo para total do carrinho */
+.total-carrinho {
+  text-align: right;
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+/* Estilo para botão de finalizar compra */
+#finalizar-compra {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 1em 2em;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 0.25em;
+  display: block;
+  width: 100%;
+  margin-top: 1.25em;
+}
+
+#finalizar-compra:hover {
+  background-color: #218838;
+}
+
+
+
+
+
+
 
 
 footer {
