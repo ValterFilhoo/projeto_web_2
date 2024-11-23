@@ -80,6 +80,23 @@
     <section class="produtos" id="produtos">
       <!-- Produtos dinâmicos serão carregados aqui -->
     </section>
+
+    <section>
+        <!-- Contêiner para os produtos do carrinho -->
+      <div id="carrinho"></div>
+
+      <!-- Modal do Carrinho --> 
+      <div id="carrinho-modal" class="modal"> 
+          <div class="modal-content"> 
+            <span class="close">&times;</span> 
+            <h2>Itens do Carrinho</h2> 
+            <div id="carrinho-itens"></div> 
+            <div class="total-carrinho">Total: R$ <span id="total-carrinho">0,00</span></div> 
+            <button id="finalizar-compra">Finalizar Compra</button> 
+          </div> 
+      </div>
+    </section>
+
     <section class="depoimentos">
       <h1>Depoimentos de clientes</h1>
     </section>
@@ -117,6 +134,7 @@
     </footer>
 
     <script src="../js/categoriaMotor/produtosMotor.js"></script>
+    <script src="../js/carrinho/carrinho.js"></script>
 
 </body>
 </html>

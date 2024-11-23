@@ -1,5 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    // Função fictícia para obter o ID do usuário autenticado
+    function getUserId() {
+        // Esta função deve ser substituída pela lógica real para obter o ID do usuário autenticado
+        // Por exemplo, você pode obtê-lo de um cookie, de uma variável JavaScript global ou de uma chamada de API
+        return 'usuario123'; // Exemplo de ID de usuário
+    }
+
+    const userId = getUserId();
+
     // Faz uma requisição para buscar produtos da categoria "Arduino" no servidor.
     fetch('../PHP/buscarProdutos/buscarProdutosCategoria.php?categoria=Arduino')
         .then(resposta => {
@@ -42,14 +51,20 @@ document.addEventListener('DOMContentLoaded', function() {
                             <h1>${produto.nomeProduto}</h1>
                             <p>R$ ${produto.valorProduto.toFixed(2)}</p>
                             <p>até 6x de R$ ${valorParcela}</p>
-                            <a href="produtoDetalhes.php?id=${produto.id}">Comprar agora</a>
+                            <button class="adicionar-carrinho" data-id="${produto.id}">Adicionar ao Carrinho</button>
                             ${tipoConta === 'Admin' ? `
                             <div class="botoes-acoes">
                                 <button class="btn-remover" data-id="${produto.id}">Remover</button>
                                 <button class="btn-editar" data-id="${produto.id}">Editar</button>
                             </div>` : ''}
                         `;
+
                         containerProdutos.appendChild(produtoDiv); // Adiciona o elemento div ao contêiner de produtos
+
+                        // Adiciona evento ao botão "Adicionar ao Carrinho"
+                        produtoDiv.querySelector('.adicionar-carrinho').addEventListener('click', function() {
+                            adicionarAoCarrinho(userId, produto.id, produto.nomeProduto, produto.valorProduto, produto.imagemProduto);
+                        });
 
                     });
 
@@ -57,29 +72,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         // Adiciona eventos de clique aos botões de remover
                         document.querySelectorAll('.btn-remover').forEach(button => {
+
                             button.addEventListener('click', function() {
 
                                 const produtoId = this.getAttribute('data-id');
-                                // Adiciona alerta de confirmação. 
                                 const confirmarRemocao = confirm('Você realmente deseja excluir este produto?'); 
-                                
+
                                 if (confirmarRemocao) { 
                                     removerProduto(produtoId); 
                                 }
 
+
                             });
+
                         });
 
                         // Adiciona eventos de clique aos botões de editar
                         document.querySelectorAll('.btn-editar').forEach(button => {
 
                             button.addEventListener('click', function() {
-
                                 const produtoId = this.getAttribute('data-id');
-
-                                // Enviando o id do produto para a página de edição do produto.
                                 window.location.href = `./editarProduto.php?id=${produtoId}`;
-
                             });
 
                         });
@@ -87,14 +100,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                 } else {
-
                     containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem informada pelo servidor
-
                 }
+
             } else {
-
                 containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem de erro informada pelo servidor
-
             }
 
         })
@@ -105,50 +115,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
         });
 
-});
+    const cartIcon = document.querySelector('.cart-icon');
+    const modal = document.getElementById('carrinho-modal');
+    const closeModal = document.querySelector('.modal .close');
 
-// Função para remover um produto
-function removerProduto(produtoId) {
-
-    fetch('../PHP/excluirProduto/excluirProduto.php?', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `id=${produtoId}`
-    })
-    .then(resposta => {
-
-        if (!resposta.ok) {
-            return resposta.text().then(text => {
-                throw new Error(`Erro na resposta: ${text}`);
-            });
-        }
-
-        return resposta.json();
-
-    })
-    .then(dados => {
-
-
-        if (dados.status === 'sucesso') {
-
-            alert('Produto removido com sucesso.');
-
-            // Opcional: Remova o produto do DOM sem recarregar a página
-            document.querySelector(`.btn-remover[data-id="${produtoId}"]`).closest('.notebook').remove();
-
-        } else {
-
-            alert('Erro ao remover o produto: ' + dados.mensagem);
-
-        }
-
-    })
-    .catch(erro => {
-
-        alert('Erro ao tentar remover o produto: ' + erro.message);
-
+    cartIcon.addEventListener('click', function(event) {
+        event.preventDefault(); // Previne comportamento padrão do link
+        carregarItensDoCarrinho(userId);
+        modal.style.display = 'block';
     });
 
-}
+    closeModal.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+});

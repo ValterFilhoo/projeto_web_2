@@ -88,6 +88,24 @@
     </div>
 </section>
 
+  <section>
+
+      <!-- Contêiner para os produtos do carrinho -->
+      <div id="carrinho"></div>
+
+      <!-- Modal do Carrinho --> 
+       <div id="carrinho-modal" class="modal"> 
+          <div class="modal-content"> 
+            <span class="close">&times;</span> 
+            <h2>Itens do Carrinho</h2> 
+            <div id="carrinho-itens"></div> 
+            <div class="total-carrinho">Total: R$ <span id="total-carrinho">0,00</span></div> 
+            <button id="finalizar-compra">Finalizar Compra</button> 
+          </div> 
+        </div>
+
+    </section>
+
     <footer>
       <div class="footer-content">
         <div class="footer-section about">
@@ -116,7 +134,9 @@
     </div>
     </footer>
 
-    <script src="../js/categoriaArduino/produtosArduino.js"></script>
+    <script src="../js/categoriaArduino/produtosArduino.js"></script>  
+    <script src="../js/carrinho/carrinho.js"></script>
+
 
 </body>
 </html>
