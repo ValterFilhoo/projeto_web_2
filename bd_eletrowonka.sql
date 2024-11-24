@@ -43,7 +43,7 @@ CREATE TABLE pedido (
     numeroCartao VARCHAR(20), 
     quantidadeParcelas INT, 
     numeroBoleto VARCHAR(50), 
-    valor DECIMAL(10, 2) NOT NULL,  -- Campo de valor total adicionado
+    valor DECIMAL(10, 2) NOT NULL, 
     FOREIGN KEY (idUsuario) REFERENCES usuario(id)
 );
 
