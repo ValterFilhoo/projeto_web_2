@@ -3,8 +3,8 @@
 require_once __DIR__ . '/../../strategy/boletoStrategy.php';
 require_once __DIR__ . '/../../strategy/cartaoCreditoStrategy.php';
 require_once __DIR__ . '/../../strategy/pixStrategy.php';
+require_once __DIR__ . "/../../arquivosFactoryMethod/produtoCreator.php";
 require_once __DIR__ . '/../../composite/pedidoComposite.php';
-require_once __DIR__ . '/../../arquivosFactoryMethod/produtoCreator.php';
 require_once __DIR__ . '/../../encontrarFabricaEspecifica/gerenciadorFabrica.php';
 require_once __DIR__ . '/../../crudTemplateMethod/crudPedido.php';
 require_once __DIR__ . '/../../crudTemplateMethod/crudItemPedido.php';
@@ -42,14 +42,22 @@ try {
 
     // Adicionar itens ao pedido utilizando a fábrica correta
     foreach ($produtos as $produto) {
-
         $fabrica = $gerenciadorDeFabrica->obterFabrica($produto['categoria']);
-        $produtoItem = $fabrica->criarProduto($produto['id'], $produto['imagemProduto'], $produto['nomeProduto'], $produto['valorProduto'], $produto['quantidade'], $produto['categoria'], $produto['tipoProduto'], $produto['descricaoProduto']);
+        $produtoItem = $fabrica->criarProduto(
+            $produto['id'], 
+            $produto['imagemProduto'], 
+            $produto['nomeProduto'], 
+            $produto['valorProduto'], 
+            $produto['quantidade'], 
+            $produto['categoria'], 
+            $produto['tipoProduto'], 
+            $produto['descricaoProduto']
+        );
 
         // Criar um ItemPedido usando a fábrica parametrizada, passando um objeto Product
         $fabricaItemPedido = new ItemPedidoConcreteCreator();
         $itemPedido = $fabricaItemPedido->factoryMethod($produtoItem, $produto['quantidade']);
-        
+
         // Certifique-se de que $itemPedido seja do tipo ItemPedidoComponent
         if ($itemPedido instanceof ItemPedidoComponent) {
             $pedidoComposite->adicionarItem($itemPedido);
@@ -60,26 +68,23 @@ try {
 
     // Definir a forma de pagamento
     switch ($metodoPagamento) {
-        
         case 'pix':
             $pagamento = new PixStrategy();
-            $chavePix = gerarChavePix();
+            $chavePix = $detalhesPagamento['chavePix'];
             $pagamento->setChavePix($chavePix);
             $pagamento->setPorcentagemDesconto(0.05); // Desconto para Pix
-            $detalhesPagamento['chavePix'] = $chavePix; // Atualizar detalhes de pagamento
             break;
         case 'cartao_credito':
             $pagamento = new CartaoCreditoStrategy();
             $pagamento->setNumeroCartao($detalhesPagamento['numeroCartao']);
             $pagamento->setQuantidadeParcelas($detalhesPagamento['quantidadeParcelas']);
-            $pagamento->setPorcentagemDesconto(0.00); // Exemplo de desconto para cartão de crédito
+            $pagamento->setPorcentagemDesconto(0.00);
             break;
         case 'boleto':
             $pagamento = new BoletoStrategy();
-            $numeroBoleto = gerarNumeroBoleto();
+            $numeroBoleto = $detalhesPagamento['numeroBoleto'];
             $pagamento->setNumeroBoleto($numeroBoleto);
             $pagamento->setPorcentagemDesconto(0.00); // Desconto para boleto
-            $detalhesPagamento['numeroBoleto'] = $numeroBoleto; // Atualizar detalhes de pagamento
             break;
         default:
             throw new Exception('Forma de pagamento inválida.');
@@ -89,7 +94,7 @@ try {
     $valorTotal = $pedidoComposite->calcularValorPedido();
 
     // Salvar o pedido
-    $pedido = $fabricaPedido->criarPedido($userId, date('Y-m-d H:i:s'), $metodoPagamento, $pedidoComposite->getItensPedido());
+    $pedido = $fabricaPedido->criarPedido($userId, date('Y-m-d H:i:s'), $metodoPagamento, $pedidoComposite->getItensPedido(), $valorTotal);
     $crudPedido->criarEntidade($pedido);
 
     // Após salvar o pedido, obtemos o ID do pedido recém-criado
@@ -107,8 +112,8 @@ try {
     // Retornar uma resposta JSON com o status e o ID do pedido criado
     echo json_encode(["status" => "sucesso", "idPedido" => $idPedido]);
 
-} catch (Exception $e) {
+} catch (Exception $excecao) {
     // Rollback da transação em caso de erro
     $crudPedido->rollbackTransacao();
-    echo json_encode(["status" => "erro", "mensagem" => $e->getMessage()]);
+    echo json_encode(["status" => "erro", "mensagem" => $excecao->getMessage()]);
 }

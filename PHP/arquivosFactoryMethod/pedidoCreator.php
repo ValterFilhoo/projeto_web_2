@@ -7,12 +7,12 @@ abstract class PedidoCreator {
     
     private Pedido $pedido; 
 
-    abstract public function factoryMethod(int $idUsuario, string $dataPedido, string $tipoPagamento, array $itensPedido): Pedido;
+    abstract public function factoryMethod(int $idUsuario, string $dataPedido, string $tipoPagamento, array $itensPedido, float $valor, ?string $chavePix = null, ?string $numeroCartao = null, int $quantidadeParcelas = null, ?string $numeroBoleto = null): Pedido;
 
 
-    public function criarPedido(int $idUsuario, string $dataPedido, string $tipoPagamento, array $itensPedido): Pedido {
+    public function criarPedido(int $idUsuario, string $dataPedido, string $tipoPagamento, array $itensPedido, float $valor, ?string $chavePix = null, ?string $numeroCartao = null, int $quantidadeParcelas = null, ?string $numeroBoleto = null): Pedido {
         
-        return $this->pedido = $this->factoryMethod($idUsuario, $dataPedido, $tipoPagamento, $itensPedido);
+        return $this->pedido = $this->factoryMethod($idUsuario, $dataPedido, $tipoPagamento, $itensPedido, $valor, $chavePix, $numeroCartao, $quantidadeParcelas, $numeroBoleto);
 
     }
 

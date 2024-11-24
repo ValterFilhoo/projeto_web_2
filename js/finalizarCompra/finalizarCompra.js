@@ -165,9 +165,13 @@ function finalizarCompra(userId) {
         let carrinho = localStorage.getItem(chaveCarrinho);
         carrinho = carrinho ? JSON.parse(carrinho) : [];
 
-
         // Verificar se todos os produtos possuem a chave "categoria"
-         carrinho.forEach(produto => { console.log('Produto:', produto); if (!produto.hasOwnProperty('categoria')) { console.error('Produto sem categoria:', produto); } });
+        carrinho.forEach(produto => {
+            console.log('Produto:', produto);
+            if (!produto.hasOwnProperty('categoria')) {
+                console.error('Produto sem categoria:', produto);
+            }
+        });
 
         // Coletar detalhes específicos do método de pagamento
         let detalhesPagamento = {};
@@ -175,8 +179,10 @@ function finalizarCompra(userId) {
             const numeroCartao = document.getElementById('numero-cartao').value;
             const quantidadeParcelas = parseInt(document.getElementById('parcelas').value);
             detalhesPagamento = { numeroCartao, quantidadeParcelas };
-        } else if (metodoPagamento === 'pix' || metodoPagamento === 'boleto') {
-            detalhesPagamento = {}; // Pix e Boleto não precisam de detalhes adicionais no frontend
+        } else if (metodoPagamento === 'pix') {
+            detalhesPagamento.chavePix = gerarChavePix(); // Gerar chave Pix
+        } else if (metodoPagamento === 'boleto') {
+            detalhesPagamento.numeroBoleto = gerarNumeroBoleto(); // Gerar número do boleto
         }
 
         // Preparar os dados do pedido
@@ -204,7 +210,7 @@ function finalizarCompra(userId) {
             if (data.status === 'sucesso') {
                 // Limpar carrinho após finalizar a compra
                 localStorage.removeItem(chaveCarrinho);
-                alert('Compra finalizada com sucesso!');
+                alert(`Compra finalizada com sucesso! Chave Pix/Boleto: ${detalhesPagamento.chavePix || detalhesPagamento.numeroBoleto}`);
             } else {
                 alert('Erro ao finalizar a compra: ' + data.mensagem);
             }
@@ -229,4 +235,18 @@ function calcularValorFinalCartao(valorBase, parcelas) {
 
 function calcularValorFinalBoleto(valorBase) {
     return valorBase; // Sem desconto para boleto
+}
+
+// Funções para gerar chave Pix e número do boleto automaticamente
+function gerarChavePix() {
+    return 'pix_' + uniqid(); // Gera uma chave Pix única
+}
+
+function gerarNumeroBoleto() {
+    return 'boleto_' . uniqid(); // Gera um número de boleto único
+}
+
+// Função para gerar um ID único
+function uniqid() {
+    return Math.random().toString(36).substr(2, 9); // Exemplo simples de geração de ID único
 }

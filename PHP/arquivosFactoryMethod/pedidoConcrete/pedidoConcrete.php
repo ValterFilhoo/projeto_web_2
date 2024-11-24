@@ -3,19 +3,20 @@
 require_once __DIR__ . "/../pedido.php";
 
 class PedidoConcrete implements Pedido {
+
     private int $id;
     private int $idUsuario;
     private string $dataPedido;
     private string $tipoPagamento;
-    private string $chavePix; 
-    private $numeroCartao; 
-    private int $quantidadeParcelas; 
-    private int $numeroBoleto;
-
-    private $valor; 
+    private ?string $chavePix; 
+    private ?string $numeroCartao; 
+    private ?int $quantidadeParcelas; 
+    private ?string $numeroBoleto;
+    private float $valor; 
     private array $itensPedido;
 
-    public function __construct(int $idUsuario, string $dataPedido, string $tipoPagamento, $itensPedido, $chavePix = null, $numeroCartao = null, $quantidadeParcelas = null, $numeroBoleto = null) { 
+    public function __construct(int $idUsuario, string $dataPedido, string $tipoPagamento, array $itensPedido, float $valor, ?string $chavePix = null, ?string $numeroCartao = null, int $quantidadeParcelas = null, ?string $numeroBoleto = null) { 
+
         $this->idUsuario = $idUsuario; 
         $this->dataPedido = $dataPedido;
         $this->tipoPagamento = $tipoPagamento;
@@ -24,26 +25,32 @@ class PedidoConcrete implements Pedido {
         $this->numeroCartao = $numeroCartao;
         $this->quantidadeParcelas = $quantidadeParcelas; 
         $this->numeroBoleto = $numeroBoleto;
+        $this->valor = $valor;
+
     }
 
     public function setId(int $id): void {
         $this->id = $id;
     }
 
-    public function setChavePix($chavePix): void {
+    public function setChavePix(string $chavePix): void {
         $this->chavePix = $chavePix;
     }
 
-    public function setNumeroCartao($numeroCartao): void {
+    public function setNumeroCartao(string $numeroCartao): void {
         $this->numeroCartao = $numeroCartao;
     }
 
-    public function setQuantidadeParcelas($quantidadeParcelas): void {
+    public function setQuantidadeParcelas(int $quantidadeParcelas): void {
         $this->quantidadeParcelas = $quantidadeParcelas;
     }
 
-    public function setNumeroBoleto($numeroBoleto): void {
+    public function setNumeroBoleto(string $numeroBoleto): void {
         $this->numeroBoleto = $numeroBoleto;
+    }
+
+    public function setValor(float $valor): void {
+        $this->valor = $valor;
     }
 
     public function getId(): int {
@@ -62,24 +69,28 @@ class PedidoConcrete implements Pedido {
         return $this->tipoPagamento;
     }
 
-    public function getChavePix() { 
+    public function getChavePix(): string|null { 
         return $this->chavePix;
     } 
 
-    public function getNumeroCartao() { 
+    public function getNumeroCartao(): string|null { 
         return $this->numeroCartao; 
     }
 
-    public function getQuantidadeParcelas() { 
+    public function getQuantidadeParcelas(): int|null { 
         return $this->quantidadeParcelas; 
     } 
 
-    public function getNumeroBoleto() { 
+    public function getNumeroBoleto(): string|null { 
         return $this->numeroBoleto; 
     }
 
     public function getItensPedido(): array {
         return $this->itensPedido;
+    }
+
+    public function getValor(): float {
+        return $this->valor;
     }
 
     public function adicionarItem(ItemPedido $item): void {

@@ -1,12 +1,12 @@
 <?php
 
-require_once __DIR__ . '/../arquivosFactoryMethod/fabricaPedido/pedidoConcreteCreator.php'; // Ajuste o caminho conforme necessário
+require_once __DIR__ . '/../arquivosFactoryMethod/fabricaPedido/pedidoConcreteCreator.php'; 
 require_once __DIR__ . '/crudAbstractTemplateMethod.php';
 
 class CrudPedido extends CrudTemplateMethod {
 
     public function sqlCriar(): string {
-        return "INSERT INTO pedido (idUsuario, dataPedido, tipoPagamento, chavePix, numeroCartao, quantidadeParcelas, numeroBoleto) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO pedido (idUsuario, dataPedido, tipoPagamento, chavePix, numeroCartao, quantidadeParcelas, numeroBoleto, valor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     public function sqlLer(): string {
@@ -20,6 +20,7 @@ class CrudPedido extends CrudTemplateMethod {
                 pedido.numeroCartao,
                 pedido.quantidadeParcelas,
                 pedido.numeroBoleto,
+                pedido.valor,  -- Incluindo o valor do pedido
                 pedido_produto.idProduto, 
                 pedido_produto.quantidade, 
                 pedido_produto.valorItem,
@@ -42,7 +43,7 @@ class CrudPedido extends CrudTemplateMethod {
     }
 
     public function sqlAtualizar(): string {
-        return "UPDATE pedido SET idUsuario = ?, dataPedido = ?, tipoPagamento = ?, chavePix = ?, numeroCartao = ?, quantidadeParcelas = ?, numeroBoleto = ? WHERE id = ?";
+        return "UPDATE pedido SET idUsuario = ?, dataPedido = ?, tipoPagamento = ?, chavePix = ?, numeroCartao = ?, quantidadeParcelas = ?, numeroBoleto = ?, valor = ? WHERE id = ?";
     }
 
     public function sqlDeletar(): string {
@@ -60,6 +61,7 @@ class CrudPedido extends CrudTemplateMethod {
                 pedido.numeroCartao,
                 pedido.quantidadeParcelas,
                 pedido.numeroBoleto,
+                pedido.valor,  -- Incluindo o valor do pedido
                 pedido_produto.idProduto, 
                 pedido_produto.quantidade, 
                 pedido_produto.valorItem,
@@ -81,7 +83,6 @@ class CrudPedido extends CrudTemplateMethod {
     }
 
     public function vincularParametros($declaracao, $entidade, $operacao): void {
-
         switch ($operacao) {
             case "Criar":
                 $idUsuario = $entidade->getIdUsuario();
@@ -91,9 +92,10 @@ class CrudPedido extends CrudTemplateMethod {
                 $numeroCartao = $entidade->getNumeroCartao();
                 $quantidadeParcelas = $entidade->getQuantidadeParcelas();
                 $numeroBoleto = $entidade->getNumeroBoleto();
+                $valor = $entidade->getValor();
 
                 // Vinculando os parâmetros dos valores da string SQL, passando os tipos dos valores e seus valores.
-                $declaracao->bind_param("issssis", $idUsuario, $dataPedido, $tipoPagamento, $chavePix, $numeroCartao, $quantidadeParcelas, $numeroBoleto);
+                $declaracao->bind_param("issssisd", $idUsuario, $dataPedido, $tipoPagamento, $chavePix, $numeroCartao, $quantidadeParcelas, $numeroBoleto, $valor);
                 break;
 
             case "Ler":
@@ -110,10 +112,11 @@ class CrudPedido extends CrudTemplateMethod {
                 $numeroCartao = $entidade->getNumeroCartao();
                 $quantidadeParcelas = $entidade->getQuantidadeParcelas();
                 $numeroBoleto = $entidade->getNumeroBoleto();
+                $valor = $entidade->getValor();
                 $id = $entidade->getId();
 
                 // Vinculando os parâmetros dos valores da string SQL, passando os tipos dos valores e seus valores.
-                $declaracao->bind_param("issssisi", $idUsuario, $dataPedido, $tipoPagamento, $chavePix, $numeroCartao, $quantidadeParcelas, $numeroBoleto, $id);
+                $declaracao->bind_param("issssisd", $idUsuario, $dataPedido, $tipoPagamento, $chavePix, $numeroCartao, $quantidadeParcelas, $numeroBoleto, $valor, $id);
                 break;
         }
     }
@@ -125,4 +128,5 @@ class CrudPedido extends CrudTemplateMethod {
     public function excluirImagemSeExistir($caminhoImagem) {
         throw new Exception("Esta classe não pode usar este método.");
     }
+
 }
