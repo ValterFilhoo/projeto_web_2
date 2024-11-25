@@ -6,7 +6,7 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
 class CrudPedido extends CrudTemplateMethod {
 
     public function sqlCriar(): string {
-        return "INSERT INTO pedido (idUsuario, dataPedido, tipoPagamento, chavePix, numeroCartao, quantidadeParcelas, numeroBoleto, valor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO pedido (idUsuario, dataPedido, tipoPagamento, chavePix, numeroCartao, quantidadeParcelas, numeroBoleto, valor, valorParcelas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     public function sqlLer(): string {
@@ -20,30 +20,30 @@ class CrudPedido extends CrudTemplateMethod {
                 pedido.numeroCartao,
                 pedido.quantidadeParcelas,
                 pedido.numeroBoleto,
-                pedido.valor,  -- Incluindo o valor do pedido
+                pedido.valor,
+                pedido.valorParcelas,  -- Adicionando o campo valorParcelas
                 pedido_produto.idProduto, 
                 pedido_produto.quantidade, 
                 pedido_produto.valorItem,
                 produto.imagemProduto, 
                 produto.nomeProduto, 
                 produto.valorProduto, 
-                produto.quantidade, 
                 produto.categoria, 
                 produto.tipoProduto, 
                 produto.descricaoProduto
             FROM 
-                pedido,
-                pedido_produto,
-                produto
+                pedido
+            JOIN 
+                pedido_produto ON pedido.id = pedido_produto.idPedido
+            JOIN 
+                produto ON pedido_produto.idProduto = produto.id
             WHERE 
-                pedido.id = pedido_produto.idPedido 
-                AND pedido_produto.idProduto = produto.id 
-                AND pedido.id = ?
+                pedido.id = ?
         ";
     }
-
+    
     public function sqlAtualizar(): string {
-        return "UPDATE pedido SET idUsuario = ?, dataPedido = ?, tipoPagamento = ?, chavePix = ?, numeroCartao = ?, quantidadeParcelas = ?, numeroBoleto = ?, valor = ? WHERE id = ?";
+        return "UPDATE pedido SET idUsuario = ?, dataPedido = ?, tipoPagamento = ?, chavePix = ?, numeroCartao = ?, quantidadeParcelas = ?, numeroBoleto = ?, valor = ?, valorParcelas = ? WHERE id = ?";
     }
 
     public function sqlDeletar(): string {
@@ -61,7 +61,8 @@ class CrudPedido extends CrudTemplateMethod {
                 pedido.numeroCartao,
                 pedido.quantidadeParcelas,
                 pedido.numeroBoleto,
-                pedido.valor,  -- Incluindo o valor do pedido
+                pedido.valor,
+                pedido.valorParcelas,
                 pedido_produto.idProduto, 
                 pedido_produto.quantidade, 
                 pedido_produto.valorItem,
@@ -93,11 +94,22 @@ class CrudPedido extends CrudTemplateMethod {
                 $quantidadeParcelas = $entidade->getQuantidadeParcelas();
                 $numeroBoleto = $entidade->getNumeroBoleto();
                 $valor = $entidade->getValor();
+                $valorParcelas = $entidade->getValorParcelas();
 
-                // Vinculando os parâmetros dos valores da string SQL, passando os tipos dos valores e seus valores.
-                $declaracao->bind_param("issssisd", $idUsuario, $dataPedido, $tipoPagamento, $chavePix, $numeroCartao, $quantidadeParcelas, $numeroBoleto, $valor);
+                // Logando os valores para depuração
+                error_log("idUsuario: $idUsuario");
+                error_log("dataPedido: $dataPedido");
+                error_log("tipoPagamento: $tipoPagamento");
+                error_log("chavePix: $chavePix");
+                error_log("numeroCartao: $numeroCartao");
+                error_log("quantidadeParcelas: $quantidadeParcelas");
+                error_log("numeroBoleto: $numeroBoleto");
+                error_log("valor: $valor");
+                error_log("valorParcelas: $valorParcelas");
+
+                $declaracao->bind_param("issssissd", $idUsuario, $dataPedido, $tipoPagamento, $chavePix, $numeroCartao, $quantidadeParcelas, $numeroBoleto, $valor, $valorParcelas);
                 break;
-
+            
             case "Ler":
             case "Deletar":
                 $id = $entidade; // Para as operações de leitura e exclusão, $entidade é o ID
@@ -113,13 +125,82 @@ class CrudPedido extends CrudTemplateMethod {
                 $quantidadeParcelas = $entidade->getQuantidadeParcelas();
                 $numeroBoleto = $entidade->getNumeroBoleto();
                 $valor = $entidade->getValor();
+                $valorParcelas = $entidade->getValorParcelas();
                 $id = $entidade->getId();
 
-                // Vinculando os parâmetros dos valores da string SQL, passando os tipos dos valores e seus valores.
-                $declaracao->bind_param("issssisd", $idUsuario, $dataPedido, $tipoPagamento, $chavePix, $numeroCartao, $quantidadeParcelas, $numeroBoleto, $valor, $id);
+                // Logando os valores para depuração
+                error_log("idUsuario: $idUsuario");
+                error_log("dataPedido: $dataPedido");
+                error_log("tipoPagamento: $tipoPagamento");
+                error_log("chavePix: $chavePix");
+                error_log("numeroCartao: $numeroCartao");
+                error_log("quantidadeParcelas: $quantidadeParcelas");
+                error_log("numeroBoleto: $numeroBoleto");
+                error_log("valor: $valor");
+                error_log("valorParcelas: $valorParcelas");
+                error_log("id: $id");
+
+                $declaracao->bind_param("issssissdi", $idUsuario, $dataPedido, $tipoPagamento, $chavePix, $numeroCartao, $quantidadeParcelas, $numeroBoleto, $valor, $valorParcelas, $id);
                 break;
         }
     }
+
+    public function listarPedidosPorUsuario($idUsuario) {
+        $sql = "
+            SELECT 
+                id, 
+                idUsuario, 
+                dataPedido, 
+                tipoPagamento, 
+                valor,
+                chavePix,
+                numeroCartao,
+                quantidadeParcelas,
+                numeroBoleto,
+                valorParcelas
+            FROM 
+                pedido
+            WHERE 
+                idUsuario = ?
+        ";
+        
+        $stmt = $this->conexaoBD->prepare($sql);
+        $stmt->bind_param("i", $idUsuario);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        $pedidos = [];
+        $fabricaPedido = new PedidoConcreteCreator(); // Instancia a fábrica de pedidos
+
+        while ($row = $result->fetch_assoc()) {
+
+            // Cria a entidade de pedido usando a fábrica de pedidos
+            $pedido = $fabricaPedido->criarPedido(
+                $row['idUsuario'],
+                $row['dataPedido'],
+                $row['tipoPagamento'],
+                [], // Passando um array vazio, pois estamos apenas listando os pedidos, sem detalhes dos itens
+                $row['valor'],
+                $row['chavePix'] ?? null,
+                $row['numeroCartao'] ?? null,
+                $row['quantidadeParcelas'] ?? null,
+                $row['numeroBoleto'] ?? null,
+                $row['valorParcelas'] ?? null
+            );
+            $pedido->setId($row['id']);
+    
+            $pedidos[] = [
+                'id' => $pedido->getId(),
+                'dataPedido' => $pedido->getDataPedido(),
+                'tipoPagamento' => $pedido->getTipoPagamento(),
+                'valor' => $pedido->getValor()
+            ];
+        }
+    
+        return $pedidos;
+    }
+    
+    
 
     public function obterCaminhoImagemSeNecessario($id) {
         throw new Exception("Esta classe não pode usar este método.");
@@ -128,5 +209,4 @@ class CrudPedido extends CrudTemplateMethod {
     public function excluirImagemSeExistir($caminhoImagem) {
         throw new Exception("Esta classe não pode usar este método.");
     }
-
 }

@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('America/Sao_Paulo'); // Define o fuso horário para São Paulo, Brasil.
+
 require_once __DIR__ . '/../../strategy/boletoStrategy.php';
 require_once __DIR__ . '/../../strategy/cartaoCreditoStrategy.php';
 require_once __DIR__ . '/../../strategy/pixStrategy.php';
@@ -10,9 +12,8 @@ require_once __DIR__ . '/../../crudTemplateMethod/crudPedido.php';
 require_once __DIR__ . '/../../crudTemplateMethod/crudItemPedido.php';
 require_once __DIR__ . '/../../arquivosFactoryMethod/fabricaItemPedido/itemPedidoConcreteCreator.php';
 require_once __DIR__ . '/../../arquivosFactoryMethod/itemPedidoConcrete/itemPedidoConcrete.php';
-require_once __DIR__ . '/../../geracoesDeChaves/gerarChavesENumeros.php';
 
-// Receber os dados do pedido enviados do front-end
+// Receber os dados do pedido enviados do front-end.
 $dadosPedido = json_decode(file_get_contents('php://input'), true);
 
 $userId = $dadosPedido['userId'];
@@ -26,21 +27,18 @@ $produtos = $dadosPedido['produtos'];
 
 $fabricaPedido = new PedidoConcreteCreator();
 
-// Criar uma instância de PedidoComposite
 $pedidoComposite = new PedidoComposite();
 
-// Criar uma instância do Gerenciador de Fábricas
 $gerenciadorDeFabrica = new GerenciadorDeFabrica();
 
-// Criar uma instância de CrudPedido e CrudItemPedido
 $crudPedido = new CrudPedido();
 $crudItemPedido = new CrudItemPedido();
 
 try {
-    // Iniciar transação
+    // Iniciar transação.
     $crudPedido->iniciarTransacao();
 
-    // Adicionar itens ao pedido utilizando a fábrica correta
+    // Adicionar itens ao pedido utilizando a fábrica correta.
     foreach ($produtos as $produto) {
         $fabrica = $gerenciadorDeFabrica->obterFabrica($produto['categoria']);
         $produtoItem = $fabrica->criarProduto(
@@ -54,11 +52,11 @@ try {
             $produto['descricaoProduto']
         );
 
-        // Criar um ItemPedido usando a fábrica parametrizada, passando um objeto Product
+        // Criar um ItemPedido usando a fábrica parametrizada, passando um objeto Product.
         $fabricaItemPedido = new ItemPedidoConcreteCreator();
         $itemPedido = $fabricaItemPedido->factoryMethod($produtoItem, $produto['quantidade']);
 
-        // Certifique-se de que $itemPedido seja do tipo ItemPedidoComponent
+        // Verificar se o item do pedido é do tipo da interface do composite.
         if ($itemPedido instanceof ItemPedidoComponent) {
             $pedidoComposite->adicionarItem($itemPedido);
         } else {
@@ -66,54 +64,90 @@ try {
         }
     }
 
-    // Definir a forma de pagamento
+    // Definir a forma de pagamento primeiro.
+    $chavePix = null;
+    $numeroCartao = null;
+    $quantidadeParcelas = null;
+    $numeroBoleto = null;
+    $valorParcelas = null;
+
     switch ($metodoPagamento) {
         case 'pix':
             $pagamento = new PixStrategy();
-            $chavePix = $detalhesPagamento['chavePix'];
-            $pagamento->setChavePix($chavePix);
-            $pagamento->setPorcentagemDesconto(0.05); // Desconto para Pix
+            if (isset($detalhesPagamento['chavePix'])) {
+                $chavePix = $detalhesPagamento['chavePix'];
+                $pagamento->setChavePix($chavePix);
+                $pagamento->setPorcentagemDesconto(0.05); // Desconto para Pix.
+            } else {
+                throw new Exception('Chave Pix não recebida do frontend.');
+            }
             break;
         case 'cartao_credito':
             $pagamento = new CartaoCreditoStrategy();
-            $pagamento->setNumeroCartao($detalhesPagamento['numeroCartao']);
-            $pagamento->setQuantidadeParcelas($detalhesPagamento['quantidadeParcelas']);
+            $numeroCartao = $detalhesPagamento['numeroCartao'];
+            $quantidadeParcelas = $detalhesPagamento['quantidadeParcelas'];
+            $pagamento->setNumeroCartao($numeroCartao);
+            $pagamento->setQuantidadeParcelas($quantidadeParcelas);
             $pagamento->setPorcentagemDesconto(0.00);
             break;
         case 'boleto':
             $pagamento = new BoletoStrategy();
-            $numeroBoleto = $detalhesPagamento['numeroBoleto'];
-            $pagamento->setNumeroBoleto($numeroBoleto);
-            $pagamento->setPorcentagemDesconto(0.00); // Desconto para boleto
+            if (isset($detalhesPagamento['numeroBoleto'])) {
+                $numeroBoleto = $detalhesPagamento['numeroBoleto'];
+                $pagamento->setNumeroBoleto($numeroBoleto);
+                $pagamento->setPorcentagemDesconto(0.00); // Desconto para boleto.
+            } else {
+                throw new Exception('Número do boleto não recebido do frontend.');
+            }
             break;
         default:
             throw new Exception('Forma de pagamento inválida.');
     }
 
+    // Definir a forma de pagamento.
     $pedidoComposite->definirFormaPagamento($pagamento);
+
+    // Calcular o valor total após definir a forma de pagamento.
     $valorTotal = $pedidoComposite->calcularValorPedido();
 
-    // Salvar o pedido
-    $pedido = $fabricaPedido->criarPedido($userId, date('Y-m-d H:i:s'), $metodoPagamento, $pedidoComposite->getItensPedido(), $valorTotal);
+    // Ajustar o cálculo do valorParcelas após definir o valorTotal.
+    if ($metodoPagamento === 'cartao_credito') {
+        $valorParcelas = $valorTotal / $quantidadeParcelas;
+    }
+
+    // Salvar o pedido usando a fábrica do pedido.
+    $pedido = $fabricaPedido->criarPedido(
+        $userId, 
+        date('Y-m-d H:i:s'), 
+        $metodoPagamento, 
+        $pedidoComposite->getItensPedido(), 
+        $valorTotal, 
+        $chavePix, 
+        $numeroCartao, 
+        $quantidadeParcelas, 
+        $numeroBoleto, 
+        $valorParcelas
+    );
+
     $crudPedido->criarEntidade($pedido);
 
-    // Após salvar o pedido, obtemos o ID do pedido recém-criado
+    // Após salvar o pedido, pega o ID do pedido recém-criado.
     $idPedido = $crudPedido->obterUltimoIdInserido();
 
-    // Salvar os itens do pedido
+    // Salvar os itens do pedido.
     foreach ($pedidoComposite->getItensPedido() as $itemPedido) {
         $itemPedido->setIdPedido($idPedido);
         $crudItemPedido->criarEntidade($itemPedido);
     }
 
-    // Commit da transação
+    // Commit da transação.
     $crudPedido->commitTransacao();
 
-    // Retornar uma resposta JSON com o status e o ID do pedido criado
-    echo json_encode(["status" => "sucesso", "idPedido" => $idPedido]);
+    // Retornar uma resposta JSON com o status e o ID do pedido criado.
+    echo json_encode(["status" => "sucesso", "idPedido" => $idPedido, "detalhesPagamento" => $detalhesPagamento]);
 
 } catch (Exception $excecao) {
-    // Rollback da transação em caso de erro
+    // Rollback da transação em caso de erro.
     $crudPedido->rollbackTransacao();
     echo json_encode(["status" => "erro", "mensagem" => $excecao->getMessage()]);
 }

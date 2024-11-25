@@ -37,6 +37,18 @@ function carregarDadosUsuario(userId, apiUsuarioUrl) {
                 document.getElementById('cpf').value = usuario.cpf;
                 document.getElementById('email').value = usuario.email;
                 document.getElementById('telefone').value = usuario.celular;
+
+                // Inserir os campos adicionais do usuário
+                document.getElementById('sexo').value = usuario.sexo;
+                document.getElementById('dataNascimento').value = usuario.dataNascimento;
+                document.getElementById('cep').value = usuario.cep;
+                document.getElementById('endereco').value = usuario.endereco;
+                document.getElementById('numeroEndereco').value = usuario.numeroEndereco;
+                document.getElementById('complemento').value = usuario.complemento;
+                document.getElementById('referencia').value = usuario.referencia;
+                document.getElementById('bairro').value = usuario.bairro;
+                document.getElementById('cidade').value = usuario.cidade;
+                document.getElementById('estado').value = usuario.estado;
             } else {
                 console.error('Erro ao carregar os dados do usuário:', data.mensagem);
             }
@@ -45,6 +57,7 @@ function carregarDadosUsuario(userId, apiUsuarioUrl) {
             console.error('Erro na requisição:', error);
         });
 }
+
 
 function carregarProdutosSelecionados(userId) {
     const chaveCarrinho = `carrinho_${userId}`;
@@ -59,7 +72,9 @@ function carregarProdutosSelecionados(userId) {
         let total = 0;
 
         carrinho.forEach(produto => {
+
             if (produto && typeof produto.valorProduto === 'number' && typeof produto.quantidade === 'number') {
+
                 const produtoTr = document.createElement('tr');
                 produtoTr.innerHTML = `
                     <td>
@@ -115,13 +130,14 @@ function atualizarValorTotal() {
         let valorFinal;
 
         switch (metodoPagamento) {
+
             case 'pix':
                 valorFinal = calcularValorFinalPix(valorBase);
                 document.getElementById('valor-pix').textContent = `Valor com desconto: R$ ${valorFinal.toFixed(2)}`;
                 document.getElementById('valor-cartao').textContent = '';
                 document.getElementById('valor-boleto').textContent = '';
                 break;
-            case 'cartao':
+            case 'cartao_credito':
                 const parcelasInput = document.getElementById('parcelas');
                 const parcelas = parcelasInput ? parseInt(parcelasInput.value) || 1 : 1;
                 valorFinal = calcularValorFinalCartao(valorBase, parcelas);
@@ -175,7 +191,7 @@ function finalizarCompra(userId) {
 
         // Coletar detalhes específicos do método de pagamento
         let detalhesPagamento = {};
-        if (metodoPagamento === 'cartao') {
+        if (metodoPagamento === 'cartao_credito') {
             const numeroCartao = document.getElementById('numero-cartao').value;
             const quantidadeParcelas = parseInt(document.getElementById('parcelas').value);
             detalhesPagamento = { numeroCartao, quantidadeParcelas };
@@ -210,7 +226,8 @@ function finalizarCompra(userId) {
             if (data.status === 'sucesso') {
                 // Limpar carrinho após finalizar a compra
                 localStorage.removeItem(chaveCarrinho);
-                alert(`Compra finalizada com sucesso! Chave Pix/Boleto: ${detalhesPagamento.chavePix || detalhesPagamento.numeroBoleto}`);
+                alert(`Compra finalizada com sucesso!`);
+                window.location.href = "index.php";
             } else {
                 alert('Erro ao finalizar a compra: ' + data.mensagem);
             }
@@ -243,10 +260,15 @@ function gerarChavePix() {
 }
 
 function gerarNumeroBoleto() {
-    return 'boleto_' . uniqid(); // Gera um número de boleto único
+    return 'boleto_' + uniqid(); // Gera um número de boleto único
 }
 
-// Função para gerar um ID único
-function uniqid() {
-    return Math.random().toString(36).substr(2, 9); // Exemplo simples de geração de ID único
+
+function uniqid(prefix = '', more_entropy = false) {
+    let id = Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
+    if (more_entropy) {
+        id += Math.random().toString(36).substring(2, 7);
+    }
+    return prefix + id;
 }
+

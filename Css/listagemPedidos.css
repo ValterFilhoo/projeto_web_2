@@ -1,0 +1,73 @@
+/* Estilos para a seção dos pedidos */
+section {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+section h2 {
+    color: #007BFF;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+#tabela-pedidos {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+#tabela-pedidos th, #tabela-pedidos td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#tabela-pedidos th {
+    background-color: #007BFF;
+    color: white;
+}
+
+#tabela-pedidos tr:hover {
+    background-color: #f1f1f1;
+}
+
+#tabela-pedidos td a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#tabela-pedidos td a:hover {
+    text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    #tabela-pedidos, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    #tabela-pedidos th {
+        display: none; /* Esconde cabeçalho da tabela em telas pequenas */
+    }
+
+    #tabela-pedidos td {
+        position: relative;
+        padding-left: 50%;
+        white-space: pre-wrap;
+    }
+
+    #tabela-pedidos td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+}

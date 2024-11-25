@@ -7,6 +7,8 @@
     require_once __DIR__ . "/../arquivosFactoryMethod/fabricaMotor/motoresConcreteCreator.php";
     require_once __DIR__ . "/../arquivosFactoryMethod/fabricaRaspberryPI/raspberryPiConcreteCreator.php";
     require_once __DIR__ . "/../arquivosFactoryMethod/fabricaSensores/sensoresConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaItemPedido/itemPedidoConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/pedidoConcrete/pedidoConcrete.php";
 
 
 
@@ -52,7 +54,6 @@
         }
 
         public function lerEntidade(int $id, string $tipo) {
-
             $operacao = "Ler";
             
             // Parte do código que varia entre as subclasses.
@@ -71,30 +72,30 @@
                 $resultadoDaBusca = $stmt->get_result();
                 
                 if ($resultadoDaBusca->num_rows > 0) {
-
-                    $row = $resultadoDaBusca->fetch_assoc();
-                    $fabricaConcreta = $this->getFactory($tipo, $row);
+                    $rows = [];
+                    while ($row = $resultadoDaBusca->fetch_assoc()) {
+                        $rows[] = $row;
+                    }
+                    $fabricaConcreta = $this->getFactory($tipo, $rows[0]);
         
                     if (!$fabricaConcreta) {
                         throw new Exception("Tipo de entidade desconhecido: $tipo");
                     }
         
-                    // Processar o registro com base no tipo
-                    $entidadeEncontrada = $this->processarRegistro($tipo, $fabricaConcreta, $row);
+                    // Processar os registros com base no tipo
+                    $entidadeEncontrada = $this->processarRegistro($tipo, $fabricaConcreta, $rows);
                     
                     return $entidadeEncontrada;
-        
                 } else {
                     echo 'Entidade não encontrada.';
                     return null;
                 }
-        
             } else {
                 echo "Erro na preparação da declaração: " . $this->conexaoBD->error;
                 return null;
             }
-
         }
+        
         
         
         
@@ -238,21 +239,22 @@
 
         }
         
-        protected function processarRegistro($tipo, $fabricaConcreta, $row) {
-
+        protected function processarRegistro($tipo, $fabricaConcreta, $rows) {
             if ($tipo === 'Produtos') {
-                return $this->processarProduto($fabricaConcreta, $row);
+                return $this->processarProduto($fabricaConcreta, $rows[0]);
             } else if ($tipo === 'Usuários') {
-                return $this->processarUsuario($fabricaConcreta, $row);
+                return $this->processarUsuario($fabricaConcreta, $rows[0]);
             } else if ($tipo === 'Pedidos') {
-                return $this->processarPedido($fabricaConcreta, $row);
-            } else if ($tipo === 'ItensPedido') {
-                return $this->processarItemPedido($fabricaConcreta, $row);
+                // Criar a fábrica de itens de pedido
+                $fabricaItemPedido = $this->getFactory('ItensPedido', $rows[0]);
+                // Criar a fábrica de produtos
+                $fabricaProduto = $this->getFactory('Produtos', $rows[0]);
+                return $this->processarPedido($fabricaConcreta, $fabricaItemPedido, $fabricaProduto, $rows);
             }
         
             throw new Exception("Tipo de entidade desconhecido: $tipo");
-
         }
+        
         
 
         
@@ -276,36 +278,50 @@
 
         }
 
-        protected function processarPedido($fabricaConcreta, $row) {
-            $itensPedido = []; // Inicialize o array de itens de pedido
+        protected function processarPedido($fabricaPedido, $fabricaItemPedido, $fabricaProduto, $rows) {
+            $itensPedido = []; // Inicialize o array de itens do pedido
         
-            foreach ($row['itens'] as $itemRow) {
-                $itemPedido = $this->processarItemPedido($fabricaConcreta, $itemRow);
-                $itensPedido[] = $itemPedido;
+            // Processar cada registro de item no array de registros
+            foreach ($rows as $row) {
+                // Certificar-se de que os dados necessários estão presentes
+                if (isset($row['idProduto'], $row['imagemProduto'], $row['nomeProduto'], $row['valorProduto'], $row['quantidade'], $row['categoria'], $row['tipoProduto'], $row['descricaoProduto'])) {
+                    $itemPedido = $this->processarItemPedido($fabricaProduto, $fabricaItemPedido, $row);
+                    $itensPedido[] = $itemPedido;
+                } else {
+                    // Lidar com possíveis dados ausentes
+                    error_log('Dados ausentes no registro do item do pedido.');
+                }
             }
         
-            $entidade = $fabricaConcreta->criarPedido(
-                $row['idUsuario'],
-                $row['dataPedido'],
-                $row['tipoPagamento'],
+            // Criar a entidade de pedido usando a fábrica concreta de pedidos
+            $entidade = $fabricaPedido->criarPedido(
+                $rows[0]['idUsuario'],
+                $rows[0]['dataPedido'],
+                $rows[0]['tipoPagamento'],
                 $itensPedido,
-                $row['chavePix'] ?? null,   
-                $row['numeroCartao'] ?? null, 
-                $row['quantidadeParcelas'] ?? null, 
-                $row['numeroBoleto'] ?? null 
+                $rows[0]['valor'],   
+                $rows[0]['chavePix'] ?? null,   
+                $rows[0]['numeroCartao'] ?? null, 
+                $rows[0]['quantidadeParcelas'] ?? null, 
+                $rows[0]['numeroBoleto'] ?? null, 
+                $rows[0]['valorParcelas'] ?? null
             );
         
-            $entidade->setId($row['id']);
+            // Definir o ID da entidade criada
+            $entidade->setId($rows[0]['id']);
         
+            // Retornar um array associativo com os dados do pedido e seus itens
             return [
                 'id' => $entidade->getId(),
                 'idUsuario' => $entidade->getIdUsuario(),
                 'dataPedido' => $entidade->getDataPedido(),
                 'tipoPagamento' => $entidade->getTipoPagamento(),
+                'valor' => $entidade->getValor(),
                 'chavePix' => $entidade->getChavePix(),               
                 'numeroCartao' => $entidade->getNumeroCartao(),      
                 'quantidadeParcelas' => $entidade->getQuantidadeParcelas(), 
                 'numeroBoleto' => $entidade->getNumeroBoleto(),
+                'valorParcelas' => $entidade->getValorParcelas(),
                 'itens' => array_map(function($item) {
                     return [
                         'idProduto' => $item->getIdProduto(),
@@ -319,23 +335,26 @@
                     ];
                 }, $entidade->getItensPedido())
             ];
-
         }
         
         
+        
+        
+        
 
-        protected function processarItemPedido($fabricaConcreta, $row) {
-
-            $produto = $fabricaConcreta->factoryMethod(
-                $row['id'], $row['imagemProduto'], $row['nomeProduto'], $row['valorProduto'], 
+        protected function processarItemPedido($fabricaProduto, $fabricaItemPedido, $row) {
+            // Usando a fábrica de produtos para criar o produto
+            $produto = $fabricaProduto->factoryMethod(
+                $row['idProduto'], $row['imagemProduto'], $row['nomeProduto'], $row['valorProduto'], 
                 $row['quantidade'], $row['categoria'], $row['tipoProduto'], $row['descricaoProduto']
             );
         
-            $entidade = $fabricaConcreta->criarItemPedido($produto, $row['quantidade']);
+            // Usando a fábrica de itens de pedido para criar o item de pedido
+            $entidade = $fabricaItemPedido->criarItemPedido($produto, $row['quantidade']);
         
             return $entidade;
-
         }
+        
         
 
         protected function processarUsuario($fabricaConcreta, $row) {

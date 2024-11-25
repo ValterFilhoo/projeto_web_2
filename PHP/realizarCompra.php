@@ -39,19 +39,47 @@
             <h2>Informações do Usuário</h2>
             <form id="form-usuario">
 
-                <label for="">Id</label>
-                <input type="number" value="<?php echo $_SESSION['id'];?>">
                 <label for="nome">Nome Completo:</label>
-                <input type="text" id="nome" name="nome" required>
+                <input type="text" id="nome" name="nome" readonly required>
 
                 <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" required>
+                <input type="text" id="cpf" name="cpf" readonly required>
 
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" readonly required>
 
                 <label for="telefone">Telefone:</label>
-                <input type="text" id="telefone" name="telefone" required>
+                <input type="text" id="telefone" name="telefone" readonly required>
+
+                <label for="sexo">Sexo:</label>
+                <input type="text" id="sexo" name="sexo" readonly required>
+
+                <label for="dataNascimento">Data de Nascimento:</label>
+                <input type="date" id="dataNascimento" name="dataNascimento" readonly required>
+
+                <label for="cep">CEP:</label>
+                <input type="text" id="cep" name="cep" readonly required>
+
+                <label for="endereco">Endereço:</label>
+                <input type="text" id="endereco" name="endereco" readonly required>
+
+                <label for="numeroEndereco">Número:</label>
+                <input type="text" id="numeroEndereco" name="numeroEndereco" readonly required>
+
+                <label for="complemento">Complemento:</label>
+                <input type="text" id="complemento" name="complemento" readonly required>
+
+                <label for="referencia">Referência:</label>
+                <input type="text" id="referencia" name="referencia" readonly required>
+
+                <label for="bairro">Bairro:</label>
+                <input type="text" id="bairro" name="bairro" readonly required>
+
+                <label for="cidade">Cidade:</label>
+                <input type="text" id="cidade" name="cidade" readonly required>
+
+                <label for="estado">Estado:</label>
+                <input type="text" id="estado" name="estado" readonly required>
             </form>
         </section>
 
@@ -64,7 +92,7 @@
                     <p id="valor-pix"></p>
                 </div>
                 <div class="forma-pagamento">
-                    <input type="radio" id="cartao" name="pagamento" value="cartao" required>
+                    <input type="radio" id="cartao" name="pagamento" value="cartao_credito" required>
                     <label for="cartao">Cartão de Crédito</label>
                     <input type="text" id="numero-cartao" name="numero-cartao" placeholder="Número do Cartão">
                     <input type="number" id="parcelas" name="parcelas" placeholder="Quantidade de Parcelas" min="1" max="6">

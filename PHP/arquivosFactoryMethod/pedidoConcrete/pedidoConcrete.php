@@ -13,9 +13,10 @@ class PedidoConcrete implements Pedido {
     private ?int $quantidadeParcelas; 
     private ?string $numeroBoleto;
     private float $valor; 
+    private ?float $valorParcelas; 
     private array $itensPedido;
 
-    public function __construct(int $idUsuario, string $dataPedido, string $tipoPagamento, array $itensPedido, float $valor, ?string $chavePix = null, ?string $numeroCartao = null, int $quantidadeParcelas = null, ?string $numeroBoleto = null) { 
+    public function __construct(int $idUsuario, string $dataPedido, string $tipoPagamento, array $itensPedido, float $valor, ?string $chavePix = null, ?string $numeroCartao = null, int $quantidadeParcelas = null, ?string $numeroBoleto = null, ?float $valorParcelas = null) { 
 
         $this->idUsuario = $idUsuario; 
         $this->dataPedido = $dataPedido;
@@ -26,6 +27,7 @@ class PedidoConcrete implements Pedido {
         $this->quantidadeParcelas = $quantidadeParcelas; 
         $this->numeroBoleto = $numeroBoleto;
         $this->valor = $valor;
+        $this->valorParcelas = $valorParcelas; 
 
     }
 
@@ -53,6 +55,10 @@ class PedidoConcrete implements Pedido {
         $this->valor = $valor;
     }
 
+    public function setValorParcelas(float $valorParcelas): void {
+        $this->valorParcelas = $valorParcelas; 
+    }
+
     public function getId(): int {
         return $this->id;
     }
@@ -69,33 +75,36 @@ class PedidoConcrete implements Pedido {
         return $this->tipoPagamento;
     }
 
-    public function getChavePix(): string|null { 
+    public function getChavePix(): ?string { 
         return $this->chavePix;
     } 
 
-    public function getNumeroCartao(): string|null { 
+    public function getNumeroCartao(): ?string { 
         return $this->numeroCartao; 
     }
 
-    public function getQuantidadeParcelas(): int|null { 
+    public function getQuantidadeParcelas(): ?int { 
         return $this->quantidadeParcelas; 
     } 
 
-    public function getNumeroBoleto(): string|null { 
+    public function getNumeroBoleto(): ?string { 
         return $this->numeroBoleto; 
-    }
-
-    public function getItensPedido(): array {
-        return $this->itensPedido;
     }
 
     public function getValor(): float {
         return $this->valor;
     }
 
+    public function getValorParcelas(): ?float {
+        return $this->valorParcelas;
+    }
+
+    public function getItensPedido(): array {
+        return $this->itensPedido;
+    }
+
     public function adicionarItem(ItemPedido $item): void {
         $this->itensPedido[] = $item;
     }
 
-    
 }
