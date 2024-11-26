@@ -471,13 +471,15 @@ button {
   border-bottom: 1px solid #ddd;
 }
 
-#modal-content-dynamic ul li a {
+#modal-content-dynamic ul li a,
+#modal-content-dynamic a {
   text-decoration: none;
   color: #333;
   font-weight: 500;
 }
 
-#modal-content-dynamic ul li a:hover {
+#modal-content-dynamic ul li a:hover,
+#modal-content-dynamic a:hover {
   color: #007BFF; /* Cor de destaque ao passar o mouse */
 }
 

@@ -3,6 +3,8 @@
   session_start();
 
   $isAuthenticated = isset($_SESSION['autenticado']) && $_SESSION['autenticado'];
+  $tipoUsuario = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : ''; 
+  $userId = isset($_SESSION['id']) ? htmlspecialchars($_SESSION['id']) : ''
 
 
 ?>
@@ -20,7 +22,8 @@
     <link rel="stylesheet" href="../Css/style.css">
     <script async src="../js/loja.js"></script>
 </head>
-<body data-user-id="<?php echo htmlspecialchars($_SESSION['id']); ?>">
+<body data-user-id="<?php echo $userId; ?>" data-autenticado="<?php echo $isAuthenticated ? 'true' : 'false'; ?>" data-tipo-usuario="<?php echo $tipoUsuario; ?>">
+
   <nav class="cabecalho">
     <div class="perfil">
       <a ><img src="../img/perfil.png" alt="perfil" width="20px"></a>
@@ -110,7 +113,7 @@
             <h2>Itens do Carrinho</h2> 
             <div id="carrinho-itens"></div> 
             <div class="total-carrinho">Total: R$ <span id="total-carrinho">0,00</span></div> 
-            <a href="carrinho.php"> <button id="finalizar-compra">Finalizar Compra</button>  </a> 
+            <a href="carrinho.php" id="finalizar-compra">Finalizar Compra  </a> 
           </div> 
         </div>
 
@@ -160,6 +163,6 @@
     <script src="../js/paginaInicial/index.js"></script>
     <script src="../js/paginaInicial/modalPerfil.js"></script>
     <script src="../js/carrinho/carrinho.js"></script>
-    
-</body>
+
+</
 </html>

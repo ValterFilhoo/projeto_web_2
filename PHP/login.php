@@ -3,6 +3,11 @@
   session_start();
 
   
+  $isAuthenticated = isset($_SESSION['autenticado']) && $_SESSION['autenticado'];
+  $tipoUsuario = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : ''; 
+  $userId = isset($_SESSION['id']) ? htmlspecialchars($_SESSION['id']) : ''
+
+  
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +23,7 @@
     <link rel="stylesheet" href="../Css/login.css">
     <script async src="../js/loja.js"></script>
 </head>
-<body>
+<body data-user-id="<?php echo $userId; ?>" data-autenticado="<?php echo $isAuthenticated ? 'true' : 'false'; ?>" data-tipo-usuario="<?php echo $tipoUsuario; ?>">
   <nav class="cabecalho">
     <div class="perfil">
       <a><img src="../img/perfil.png" alt="perfil" width="20px"></a>
@@ -63,7 +68,6 @@
   </nav>
 
   <section class="acesso">
-    
     <div class="login">
       <div class="acesso-div">
         <img src="../img/add.png" alt="" width="30px">
@@ -134,7 +138,7 @@
           <p>Telefone: (11) 1234-5678</p>
           <p>Endereço: Rua Exemplo, 123, Cidade, Estado</p>
       </div>
-
+      
   </div>
   <div class="footer-bottom">
       <p>&copy; 2024 Empresa | Todos os direitos reservados.</p>

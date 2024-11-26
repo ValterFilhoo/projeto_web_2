@@ -2,6 +2,11 @@
 
   session_start();
 
+  
+  $isAuthenticated = isset($_SESSION['autenticado']) && $_SESSION['autenticado'];
+  $tipoUsuario = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : ''; 
+  $userId = isset($_SESSION['id']) ? htmlspecialchars($_SESSION['id']) : ''
+
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +21,7 @@
     <link rel="stylesheet" href="../Css/style.css">
     <script async src="../js/loja.js"></script>
 </head>
-<body data-user-id="<?php echo htmlspecialchars($_SESSION['id']); ?>">
+<body data-user-id="<?php echo $userId; ?>" data-autenticado="<?php echo $isAuthenticated ? 'true' : 'false'; ?>" data-tipo-usuario="<?php echo $tipoUsuario; ?>">
   <nav class="cabecalho">
     <div class="perfil">
       <a><img src="../img/perfil.png" alt="perfil" width="20px"></a>

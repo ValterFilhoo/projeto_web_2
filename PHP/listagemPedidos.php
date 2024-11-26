@@ -2,6 +2,11 @@
 
 session_start();
 
+
+$isAuthenticated = isset($_SESSION['autenticado']) && $_SESSION['autenticado'];
+$tipoUsuario = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : ''; 
+$userId = isset($_SESSION['id']) ? htmlspecialchars($_SESSION['id']) : ''
+
 ?>
 
 <!DOCTYPE html>
@@ -13,12 +18,12 @@ session_start();
     <link rel="stylesheet" href="../Css/style.css">
     <link rel="stylesheet" href="../Css/listagemPedidos.css">
 </head>
-<body data-user-id="<?php echo htmlspecialchars($_SESSION['id']); ?>" data-api-pedidos-url="../PHP/pedidos/buscarPedidosUsuario.php">
+<body data-user-id="<?php echo $userId; ?>" data-autenticado="<?php echo $isAuthenticated ? 'true' : 'false'; ?>" data-tipo-usuario="<?php echo $tipoUsuario; ?>" data-api-pedidos-url="../PHP/pedidos/buscarPedidosUsuario.php">
     
     <nav class="cabecalho">
         <div class="perfil">
-          <a href="login.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
-          <a href="login.php">
+          <a><img src="../img/perfil.png" alt="perfil" width="20px"></a>
+          <a>
           <?php 
           // Verificando se a chave nome da sessão foi iniciada (quando o usuário é autenticado é criado essa chave). Então exibe o nome do usuário.
           echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta';
@@ -80,7 +85,8 @@ session_start();
       </div>
     </section>
 
-    <section>
+
+    <section class="secao-pedidos">
 
         <h2>Meus Pedidos</h2>
         <table id="tabela-pedidos">
@@ -109,6 +115,24 @@ session_start();
           </div>
         </div>
       </div>
+    </section>
+
+    <section>
+
+      <!-- Contêiner para os produtos do carrinho -->
+      <div id="carrinho"></div>
+
+      <!-- Modal do Carrinho --> 
+       <div id="carrinho-modal" class="modal"> 
+          <div class="modal-content"> 
+            <span class="close">&times;</span> 
+            <h2>Itens do Carrinho</h2> 
+            <div id="carrinho-itens"></div> 
+            <div class="total-carrinho">Total: R$ <span id="total-carrinho">0,00</span></div> 
+            <a href="carrinho.php" id="finalizar-compra">Finalizar Compra  </a> 
+          </div> 
+        </div>
+
     </section>
 
     <footer>
@@ -140,5 +164,7 @@ session_start();
     </footer>
 
     <script src="../js/pedidos/listarPedidos.js"></script>
+    <script src="../js/paginaInicial/modalPerfil.js"></script>
+    <script src="../js/carrinho/carrinho.js"></script>
 </body>
 </html>

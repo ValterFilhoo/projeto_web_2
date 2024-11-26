@@ -2,6 +2,11 @@
 
     session_start();
 
+    
+  $isAuthenticated = isset($_SESSION['autenticado']) && $_SESSION['autenticado'];
+  $tipoUsuario = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : ''; 
+  $userId = isset($_SESSION['id']) ? htmlspecialchars($_SESSION['id']) : ''
+
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +18,7 @@
     <link rel="stylesheet" href="../Css/style.css">
     <link rel="stylesheet" href="../Css/detalhesPedido.css">
 </head>
-<body data-user-id="<?php echo htmlspecialchars($_SESSION['id']); ?>" data-api-detalhes-pedido-url="../PHP/pedidos/buscarPedidoId.php">
+<body data-user-id="<?php echo $userId; ?>" data-autenticado="<?php echo $isAuthenticated ? 'true' : 'false'; ?>" data-tipo-usuario="<?php echo $tipoUsuario; ?>" data-api-detalhes-pedido-url="../PHP/pedidos/buscarPedidoId.php">
     <nav class="cabecalho">
         <div class="perfil">
             <a><img src="../img/perfil.png" alt="perfil" width="20px"></a>

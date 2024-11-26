@@ -1,3 +1,14 @@
+<?php 
+
+    session_start();
+
+    
+  $isAuthenticated = isset($_SESSION['autenticado']) && $_SESSION['autenticado'];
+  $tipoUsuario = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : ''; 
+  $userId = isset($_SESSION['id']) ? htmlspecialchars($_SESSION['id']) : ''
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
