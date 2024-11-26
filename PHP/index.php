@@ -43,7 +43,7 @@
     </div>
     <div class="search-bar">
       <input type="text" placeholder="Faça sua pesquisa">
-      <img src="../img/lupa.png" alt="lupa" height="30px"> <!-- Ajuste a altura conforme necessário -->
+      <img src="../img/lupa.png" alt="lupa" height="30px"> 
     </div>
     
     <div class="nav-right">
@@ -125,7 +125,6 @@
         <div class="modal-content-perfil">
           <span class="close-perfil">&times;</span>
           <div id="modal-content-dynamic">
-            <!-- Conteúdo dinâmico será carregado aqui -->
           </div>
         </div>
       </div>

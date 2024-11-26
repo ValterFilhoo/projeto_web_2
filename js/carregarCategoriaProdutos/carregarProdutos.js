@@ -23,97 +23,84 @@ document.addEventListener('DOMContentLoaded', function() {
   
     // Função para carregar produtos de uma categoria específica
     function carregarProdutos(categoria) {
-
       fetch(`../PHP/buscarProdutos/buscarProdutosCategoria.php?categoria=${categoria}`)
-        .then(resposta => {
-          if (!resposta.ok) {
-            return resposta.text().then(text => {
-              throw new Error(`Erro na resposta: ${text}`);
-            });
-          }
-          return resposta.json();
-        })
-        .then(dados => {
-
-          const containerProdutos = document.getElementById('produtos'); // Contêiner onde os produtos serão exibidos
-          containerProdutos.innerHTML = ''; // Limpa o contêiner antes de adicionar novos produtos
-  
-          if (dados.status === 'sucesso') {
-
-            const tipoConta = dados.tipoConta; // Armazena o tipo de conta do usuário autenticado
-            
-            if (dados.produtos.length > 0) {
-
-              dados.produtos.forEach(produto => {
-
-                const valorParcela = (produto.valorProduto / 6).toFixed(2); // Calcula o valor da parcela em 6x
-                const produtoDiv = document.createElement('div');
-                produtoDiv.classList.add('notebook'); // Adiciona a classe CSS 'notebook' ao elemento div
-                
-                produtoDiv.innerHTML = `
-                  <img src="../${produto.imagemProduto}" alt="${produto.nomeProduto}">
-                  <h1>${produto.nomeProduto}</h1>
-                  <p>R$ ${produto.valorProduto.toFixed(2)}</p>
-                  <p>até 6x de R$ ${valorParcela}</p>
-                  <button class="adicionar-carrinho" data-id="${produto.id}">Adicionar ao Carrinho</button>
-                  ${tipoConta === 'Admin' ? `
-                  <div class="botoes-acoes">
-                    <button class="btn-remover" data-id="${produto.id}">Remover</button>
-                    <button class="btn-editar" data-id="${produto.id}">Editar</button>
-                  </div>` : ''}
-                `;
-  
-                containerProdutos.appendChild(produtoDiv); // Adiciona o elemento div ao contêiner de produtos
-  
-                // Adiciona evento ao botão "Adicionar ao Carrinho"
-                produtoDiv.querySelector('.adicionar-carrinho').addEventListener('click', function() {
-                  adicionarAoCarrinho(userId, produto);
-                });
-  
-                if (tipoConta === 'Admin') {
-
-                  // Adiciona eventos de clique aos botões de remover
-                  document.querySelectorAll('.btn-remover').forEach(button => {
-                    button.addEventListener('click', function() {
-
-                      const produtoId = this.getAttribute('data-id');
-                      const confirmarRemocao = confirm('Você realmente deseja excluir este produto?'); 
-                      
-                      if (confirmarRemocao) { 
-                        removerProduto(produtoId); 
-                      }
-                    });
-
+          .then(resposta => {
+              if (!resposta.ok) {
+                  return resposta.text().then(text => {
+                      throw new Error(`Erro na resposta: ${text}`);
                   });
+              }
+              return resposta.json();
+          })
+          .then(dados => {
+              const containerProdutos = document.getElementById('produtos'); // Contêiner onde os produtos serão exibidos
+              containerProdutos.innerHTML = ''; // Limpa o contêiner antes de adicionar novos produtos
   
-                  // Adiciona eventos de clique aos botões de editar
-                  document.querySelectorAll('.btn-editar').forEach(button => {
-                    button.addEventListener('click', function() {
-                      const produtoId = this.getAttribute('data-id');
-                      window.location.href = `./editarProduto.php?id=${produtoId}`;
-                    });
-
-                  });
-
-                }
+              if (dados.status === 'sucesso') {
+                  const tipoConta = dados.tipoConta; // Armazena o tipo de conta do usuário autenticado
   
-              });
-
-            } else {
-              containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem informada pelo servidor
-            }
-
-          } else {
-            containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem de erro informada pelo servidor
-          }
-
-        })
-        .catch(erro => {
-          const containerProdutos = document.getElementById('produtos'); // Contêiner onde os produtos serão exibidos
-          containerProdutos.innerHTML = `<p>${erro.message}</p>`; // Exibe a mensagem de erro informada pelo servidor
-        });
-
-    }
+                  if (dados.produtos.length > 0) {
+                      dados.produtos.forEach(produto => {
+                          const valorParcela = (produto.valorProduto / 6).toFixed(2); // Calcula o valor da parcela em 6x
+                          const produtoDiv = document.createElement('div');
+                          produtoDiv.classList.add('notebook'); // Adiciona a classe CSS 'notebook' ao elemento div
+  
+                          produtoDiv.innerHTML = `
+                              <a href="./produto.php?idProduto=${produto.id}">
+                                  <img src="../${produto.imagemProduto}" alt="${produto.nomeProduto}">
+                              </a>
+                              <h1>${produto.nomeProduto}</h1>
+                              <p>R$ ${produto.valorProduto.toFixed(2)}</p>
+                              <p>até 6x de R$ ${valorParcela}</p>
+                              <button class="adicionar-carrinho" data-id="${produto.id}">Adicionar ao Carrinho</button>
+                              ${tipoConta === 'Admin' ? `
+                              <div class="botoes-acoes">
+                                  <button class="btn-remover" data-id="${produto.id}">Remover</button>
+                                  <button class="btn-editar" data-id="${produto.id}">Editar</button>
+                              </div>` : ''}
+                          `;
+  
+                          containerProdutos.appendChild(produtoDiv); // Adiciona o elemento div ao contêiner de produtos
+  
+                          // Adiciona evento ao botão "Adicionar ao Carrinho"
+                          produtoDiv.querySelector('.adicionar-carrinho').addEventListener('click', function() {
+                              adicionarAoCarrinho(userId, produto);
+                          });
+  
+                          if (tipoConta === 'Admin') {
+                              // Adiciona eventos de clique aos botões de remover
+                              document.querySelectorAll('.btn-remover').forEach(button => {
+                                  button.addEventListener('click', function() {
+                                      const produtoId = this.getAttribute('data-id');
+                                      const confirmarRemocao = confirm('Você realmente deseja excluir este produto?'); 
+                                      if (confirmarRemocao) { 
+                                          removerProduto(produtoId); 
+                                      }
+                                  });
+                              });
+  
+                              // Adiciona eventos de clique aos botões de editar
+                              document.querySelectorAll('.btn-editar').forEach(button => {
+                                  button.addEventListener('click', function() {
+                                      const produtoId = this.getAttribute('data-id');
+                                      window.location.href = `./editarProduto.php?id=${produtoId}`;
+                                  });
+                              });
+                          }
+                      });
+                  } else {
+                      containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem informada pelo servidor
+                  }
+              } else {
+                  containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem de erro informada pelo servidor
+              }
+          })
+          .catch(erro => {
+              const containerProdutos = document.getElementById('produtos'); // Contêiner onde os produtos serão exibidos
+              containerProdutos.innerHTML = `<p>${erro.message}</p>`; // Exibe a mensagem de erro informada pelo servidor
+          });
+  }
+  
   
     // Chame a função `carregarProdutos` passando a categoria como parâmetro
     const categoria = window.categoriaProduto; // Categoria passada pela página
