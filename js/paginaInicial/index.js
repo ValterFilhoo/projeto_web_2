@@ -92,21 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .catch(erro => console.error('Erro ao carregar produtos:', erro)); // Exibe erros de rede no console
   
-    // Evento para abrir o modal ao clicar no ícone do carrinho
-    const cartIcon = document.querySelector('.cart-icon');
-    const modal = document.getElementById('carrinho-modal');
-    const closeModal = document.querySelector('.modal .close');
-  
-    cartIcon.addEventListener('click', function(event) {
-      event.preventDefault(); // Previne comportamento padrão do link
-      carregarItensDoCarrinho(userId);
-      modal.style.display = 'block';
-    });
-  
-    closeModal.addEventListener('click', function() {
-      modal.style.display = 'none';
-    });
-
   });
   
   // Função fictícia para obter o ID do usuário autenticado

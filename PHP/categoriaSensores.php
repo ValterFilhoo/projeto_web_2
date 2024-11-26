@@ -46,7 +46,7 @@
         <option value="">Fale Conosco</option>
         <option value="qsomos.php">Sobre Nós</option>
       </select>   
-      <a href="carrinho.php" class="cart-icon">🛒</a>
+      <a class="cart-icon">🛒</a>
       
       </div>
   
@@ -100,7 +100,7 @@
             <h2>Itens do Carrinho</h2> 
             <div id="carrinho-itens"></div> 
             <div class="total-carrinho">Total: R$ <span id="total-carrinho">0,00</span></div> 
-            <a href="carrinho.php"> <button id="finalizar-compra">Finalizar Compra</button>  </a> 
+            <a href="carrinho.php" id="finalizar-compra">Finalizar Compra  </a> 
           </div> 
       </div>
     </section>

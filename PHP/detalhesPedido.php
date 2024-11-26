@@ -1,3 +1,9 @@
+<?php 
+
+    session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -7,13 +13,12 @@
     <link rel="stylesheet" href="../Css/style.css">
     <link rel="stylesheet" href="../Css/detalhesPedido.css">
 </head>
-<body data-api-detalhes-pedido-url="../PHP/pedidos/buscarPedidoId.php">
+<body data-user-id="<?php echo htmlspecialchars($_SESSION['id']); ?>" data-api-detalhes-pedido-url="../PHP/pedidos/buscarPedidoId.php">
     <nav class="cabecalho">
         <div class="perfil">
-            <a href="login.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
-            <a href="login.php">
+            <a><img src="../img/perfil.png" alt="perfil" width="20px"></a>
+            <a>
             <?php 
-            session_start();
             echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta';
             ?> 
             </a>
@@ -70,6 +75,36 @@
         </div>
     </section>
 
+    <section>
+
+      <!-- Contêiner para os produtos do carrinho -->
+      <div id="carrinho"></div>
+
+      <!-- Modal do Carrinho --> 
+       <div id="carrinho-modal" class="modal"> 
+          <div class="modal-content"> 
+            <span class="close">&times;</span> 
+            <h2>Itens do Carrinho</h2> 
+            <div id="carrinho-itens"></div> 
+            <div class="total-carrinho">Total: R$ <span id="total-carrinho">0,00</span></div> 
+            <a href="carrinho.php"> <button id="finalizar-compra">Finalizar Compra</button>  </a> 
+          </div> 
+        </div>
+
+    </section>
+
+    <!-- Modal do Perfil -->
+  <section>
+      <div id="perfil-modal" class="modal-perfil">
+        <div class="modal-content-perfil">
+          <span class="close-perfil">&times;</span>
+          <div id="modal-content-dynamic">
+            <!-- Conteúdo dinâmico será carregado aqui -->
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="detalhes-pedido-section">
         <div id="detalhes-pedido">
             <h2>Detalhes do Pedido</h2>
@@ -120,6 +155,9 @@
         </div>
     </footer>
 
+    <script src="../js/paginaInicial/modalPerfil.js"></script>
     <script src="../js/pedidos/detalhesPedido.js"></script>
+    <script src="../js/carrinho/carrinho.js"></script>
+    
 </body>
 </html>

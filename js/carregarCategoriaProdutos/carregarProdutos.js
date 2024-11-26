@@ -118,20 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Chame a função `carregarProdutos` passando a categoria como parâmetro
     const categoria = window.categoriaProduto; // Categoria passada pela página
     carregarProdutos(categoria);
-  
-    const cartIcon = document.querySelector('.cart-icon');
-    const modal = document.getElementById('carrinho-modal');
-    const closeModal = document.querySelector('.modal .close');
-  
-    cartIcon.addEventListener('click', function(event) {
-      event.preventDefault(); // Previne comportamento padrão do link
-      carregarItensDoCarrinho(userId);
-      modal.style.display = 'block';
-    });
-  
-    closeModal.addEventListener('click', function() {
-      modal.style.display = 'none';
-    });
 
   });
   

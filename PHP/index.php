@@ -160,5 +160,6 @@
     <script src="../js/paginaInicial/index.js"></script>
     <script src="../js/paginaInicial/modalPerfil.js"></script>
     <script src="../js/carrinho/carrinho.js"></script>
+    
 </body>
 </html>

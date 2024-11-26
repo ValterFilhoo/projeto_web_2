@@ -1,59 +1,66 @@
+
+
 #detalhes-pedido-section {
-    margin: 20px 0;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
 }
 
 #detalhes-pedido {
-    background-color: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-#detalhes-pedido h2, #detalhes-pedido h3 {
+.titulo-detalhes-pedido {
     margin-bottom: 20px;
-    color: #4CAF50;
+    color: #007BFF;
+    text-align: center;
 }
 
-#detalhes-tabela {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+.titulo-itens-pedido {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #007BFF;
 }
 
-#detalhes-tabela td {
+.lista-itens-pedido {
+    list-style: none;
+    padding: 0;
+}
+
+.item-produto {
+    display: flex;
+    align-items: center;
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
 
-#itens-pedido {
-    list-style: none;
-    padding: 0;
+.imagem-produto {
+    margin-right: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 150px; /* Aumenta o tamanho da imagem */
+    height: 150px; /* Aumenta o tamanho da imagem */
+}
+
+.info-produto {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    flex-direction: column;
+    flex: 1; /* Permite que o texto ocupe o restante do espaço */
 }
 
-#itens-pedido li {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: calc(33.333% - 20px); /* Ajuste conforme necessário */
-    box-sizing: border-box;
+.nome-produto, .quantidade-produto, .valor-produto, .categoria-produto, .tipo-produto, .descricao-produto {
+    margin: 5px 0;
+    line-height: 1.5;
+    color: #555;
 }
 
-#itens-pedido img {
-    width: 100%;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-#itens-pedido p {
-    margin: 0;
-    font-size: 14px;
-}
-
-#itens-pedido strong {
-    display: block;
-    margin-bottom: 5px;
+.data-pedido, .tipo-pagamento, .valor-total, .numero-cartao, .quantidade-parcelas, .valor-parcelas {
+    margin: 5px 0;
+    color: #333;
 }

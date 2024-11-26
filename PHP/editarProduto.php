@@ -48,7 +48,7 @@
         <option value="">Fale Conosco</option>
         <option value="qsomos.php">Sobre Nós</option>
       </select>   
-      <a href="carrinho.php" class="cart-icon">🛒</a>
+      <a class="cart-icon">🛒</a>
     </div>
 
     <ul class="navegacao-topicos">

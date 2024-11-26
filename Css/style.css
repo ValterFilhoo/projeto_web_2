@@ -291,7 +291,7 @@ button {
 
 
 
-/* Estilo básico para modal */
+/* Estilo para o modal do carrinho */
 .modal {
   display: none; /* Inicialmente escondido */
   position: fixed; /* Fixa o modal na tela */
@@ -314,6 +314,24 @@ button {
   box-shadow: 0 0.4em 0.8em rgba(0, 0, 0, 0.2); /* Adiciona sombra ao modal */
   overflow: auto; /* Permite rolagem do conteúdo do modal se necessário */
 }
+
+/* Remove o sublinhado do botão Finalizar Compra */
+#finalizar-compra {
+  text-decoration: none;
+  color: inherit; /* Mantém a cor do texto do botão */
+  background-color: #007BFF; /* Adicione um fundo azul ao botão */
+  padding: 10px 20px; /* Adicione preenchimento ao botão */
+  border: none; /* Remove a borda padrão */
+  border-radius: 5px; /* Adiciona cantos arredondados */
+  cursor: pointer; /* Adiciona um cursor de ponteiro ao passar o mouse */
+  text-align: center; /* Centraliza o texto */
+  display: inline-block; /* Define como um bloco inline */
+}
+
+#finalizar-compra:hover {
+  background-color: #0056b3; /* Muda a cor de fundo ao passar o mouse */
+}
+
 
 /* Ajuste para telas maiores */
 @media (min-width: 37.5em) { /* Aproximadamente 600px */

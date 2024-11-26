@@ -7,9 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(`Usuário autenticado com ID: ${userId}`);
 
     carregarItensDoCarrinho(userId);
+    
 });
 
 function carregarItensDoCarrinho(userId) {
+
     const chaveCarrinho = `carrinho_${userId}`; // Chave única para o carrinho do usuário
     let carrinho = localStorage.getItem(chaveCarrinho);
     const carrinhoProdutos = document.getElementById('carrinho-produtos');

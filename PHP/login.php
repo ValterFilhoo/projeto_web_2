@@ -63,6 +63,7 @@
   </nav>
 
   <section class="acesso">
+    
     <div class="login">
       <div class="acesso-div">
         <img src="../img/add.png" alt="" width="30px">
@@ -133,6 +134,7 @@
           <p>Telefone: (11) 1234-5678</p>
           <p>Endereço: Rua Exemplo, 123, Cidade, Estado</p>
       </div>
+
   </div>
   <div class="footer-bottom">
       <p>&copy; 2024 Empresa | Todos os direitos reservados.</p>

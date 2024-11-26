@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     const apiDetalhesPedidoUrl = '../PHP/pedidos/buscarPedidoId.php';
     const urlParams = new URLSearchParams(window.location.search);
     const pedidoId = urlParams.get('id');
@@ -8,58 +9,62 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('ID do pedido não encontrado na URL.');
     }
+
 });
 
 // Função para carregar os detalhes do pedido
 function carregarDetalhesPedido(apiDetalhesPedidoUrl, pedidoId) {
+
     fetch(`${apiDetalhesPedidoUrl}?id=${pedidoId}`)
         .then(response => response.json())
         .then(data => {
+            
             if (data.status === 'sucesso') {
                 const pedido = data.pedido;
                 const detalhesPedido = document.getElementById('detalhes-pedido');
 
                 let itensHtml = '';
                 pedido.itens.forEach(item => {
-                    itensHtml += `<li>
-                        <img src="../${item.imagemProduto}" alt="${item.nomeProduto}" width="100" height="100">
-                        <p>Nome do Produto: ${item.nomeProduto}</p>
-                        <p>Quantidade: ${item.quantidade}</p>
-                        <p>Valor Unitário: R$ ${item.valor.toFixed(2)}</p>`;
+                    itensHtml += `<li class="item-produto">
+                        <img src="../${item.imagemProduto}" alt="${item.nomeProduto}" class="imagem-produto">
+                        <div class="info-produto">
+                            <p class="nome-produto">Nome do Produto: ${item.nomeProduto}</p>
+                            <p class="quantidade-produto">Quantidade: ${item.quantidade}</p>
+                            <p class="valor-produto">Valor Unitário: R$ ${item.valor.toFixed(2)}</p>`;
                     
                     if (item.categoriaProduto) {
-                        itensHtml += `<p>Categoria: ${item.categoriaProduto}</p>`;
+                        itensHtml += `<p class="categoria-produto">Categoria: ${item.categoriaProduto}</p>`;
                     }
                     if (item.tipoProduto) {
-                        itensHtml += `<p>Tipo: ${item.tipoProduto}</p>`;
+                        itensHtml += `<p class="tipo-produto">Tipo: ${item.tipoProduto}</p>`;
                     }
                     if (item.descricaoProduto) {
-                        itensHtml += `<p>Descrição: ${item.descricaoProduto}</p>`;
+                        itensHtml += `<p class="descricao-produto">Descrição: ${item.descricaoProduto}</p>`;
                     }
 
-                    itensHtml += `</li>`;
+                    itensHtml += `</div></li>`;
                 });
 
                 let pagamentoHtml = `
-                    <p>Data do Pedido: ${pedido.dataPedido}</p>
-                    <p>Tipo de Pagamento: ${pedido.tipoPagamento}</p>
-                    <p>Valor: R$ ${pedido.valor.toFixed(2)}</p>`;
+                    <p class="data-pedido">Data do Pedido: ${pedido.dataPedido}</p>
+                    <p class="tipo-pagamento">Tipo de Pagamento: ${pedido.tipoPagamento}</p>
+                    <p class="valor-total">Valor: R$ ${pedido.valor.toFixed(2)}</p>`;
                 
                 if (pedido.numeroCartao) {
-                    pagamentoHtml += `<p>Número do Cartão: ${pedido.numeroCartao}</p>`;
+                    pagamentoHtml += `<p class="numero-cartao">Número do Cartão: ${pedido.numeroCartao}</p>`;
                 }
                 if (pedido.quantidadeParcelas) {
-                    pagamentoHtml += `<p>Quantidade de Parcelas: ${pedido.quantidadeParcelas}</p>`;
+                    pagamentoHtml += `<p class="quantidade-parcelas">Quantidade de Parcelas: ${pedido.quantidadeParcelas}</p>`;
                 }
                 if (pedido.valorParcelas) {
-                    pagamentoHtml += `<p>Valor por Parcela: R$ ${pedido.valorParcelas.toFixed(2)}</p>`;
+                    pagamentoHtml += `<p class="valor-parcelas">Valor por Parcela: R$ ${pedido.valorParcelas.toFixed(2)}</p>`;
                 }
 
                 detalhesPedido.innerHTML = `
-                    <h2>Detalhes do Pedido</h2>
+                    <h2 class="titulo-detalhes-pedido">Detalhes do Pedido</h2>
                     ${pagamentoHtml}
-                    <h3>Itens do Pedido</h3>
-                    <ul>
+                    <h3 class="titulo-itens-pedido">Itens do Pedido</h3>
+                    <ul class="lista-itens-pedido">
                         ${itensHtml}
                     </ul>
                 `;
@@ -70,4 +75,5 @@ function carregarDetalhesPedido(apiDetalhesPedidoUrl, pedidoId) {
         .catch(error => {
             console.error('Erro na requisição:', error);
         });
+
 }
