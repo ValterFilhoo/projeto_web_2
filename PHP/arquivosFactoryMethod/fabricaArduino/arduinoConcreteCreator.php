@@ -10,7 +10,15 @@ class ArduinoConcreteCreator extends ProdutoCreator {
 
 
     // Implementando o método do padrão de projeto para criação do produto especifico dessa fábrica.
-    public function factoryMethod(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): ItemPedidoComponent {
+    public function factoryMethod(int $id, 
+    string $imagemProduto, 
+    string $nomeProduto, 
+    float $valorProduto, 
+    int $quantidadeProduto, 
+    string $categoriaProduto, 
+    string $tipoProduto, 
+    string $descricaoProduto
+    ): ItemPedidoComponent {
         
         switch ($tipoProduto) {
 
@@ -37,5 +45,3 @@ class ArduinoConcreteCreator extends ProdutoCreator {
     }
 
 }
-
-?>

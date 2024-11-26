@@ -2,6 +2,7 @@
 
 require_once __DIR__ . "/itemPedidoComponent.php";
 require_once __DIR__ . "/../strategy/FormaPagamentoStrategy.php";
+require_once __DIR__ . "/../arquivosFactoryMethod/product.php";
 
 class PedidoComposite implements ItemPedidoComponent {
 
@@ -37,6 +38,7 @@ class PedidoComposite implements ItemPedidoComponent {
     }
 
     public function calcularValorPedido(): float {
+
         $valorBasePedido = 0;
 
         // Itera na lista de itens do pedido para calcular recursivamente os valores de cada item contidos na lista.
@@ -56,6 +58,7 @@ class PedidoComposite implements ItemPedidoComponent {
         }
 
         return $this->getValorTotalPedido();
+
     }
 
     public function getValorTotalPedido(): float {

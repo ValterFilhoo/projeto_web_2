@@ -22,8 +22,6 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . "/../crudTemplateMethod/crudProduto.php";
 
-use App\Product; // Use o namespace correto, se necessário
-
 session_start(); // Inicia a sessão
 
 try {
@@ -45,7 +43,7 @@ try {
     } else {
         // Verificar se os objetos são instâncias da classe Product
         foreach ($produtos as $produto) {
-            if (!$produto instanceof ItemPedidoComponent) {
+            if (!$produto instanceof Product) {
                 throw new Exception("Objeto não é uma instância de ItemPedidoComponent.");
             }
         }

@@ -1,7 +1,9 @@
 <?php 
 
+require_once __DIR__ . "/../composite/itemPedidoComponent.php";
+
 // Classe abstrata em vez da interface, do padrão FactoryMethod, pois existem atributos em comum entre todos os produtos do nosso site.
-abstract class Product {
+abstract class Product implements ItemPedidoComponent {
 
     protected int $id;
     protected string $imagem;
@@ -88,6 +90,11 @@ abstract class Product {
 
     public function getDescricao(): string {
         return $this->descricao;
+    }
+
+    // Retornando o valor do produto, que é o método que a interface "ItemPedidoComponent" do Composite obriga implementar.
+    public function calcularValorPedido(): float {
+        return $this->getValor();
     }
 
 }
