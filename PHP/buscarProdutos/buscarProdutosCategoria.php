@@ -1,5 +1,17 @@
 <?php
-// Exibir todos os erros para depuração
+
+    require_once __DIR__ . "/../bdSingleton/conexaoBDSingleton.php";
+    require_once __DIR__ . "/../bdSingleton/configConexao.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaArduino/arduinoConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaDisplay/displayConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaMotor/motoresConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaRaspberryPI/raspberryPiConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaSensores/sensoresConcreteCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/produtoCreator.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/product.php";
+    
+
+    // Exibir todos os erros para depuração
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -9,6 +21,8 @@ ob_start();
 header('Content-Type: application/json');
 
 require_once __DIR__ . "/../crudTemplateMethod/crudProduto.php";
+
+use App\Product; // Use o namespace correto, se necessário
 
 session_start(); // Inicia a sessão
 
@@ -29,6 +43,13 @@ try {
     if ($produtos === null) {
         $resposta = ["status" => "erro", "mensagem" => "Nenhum produto encontrado para a categoria especificada."];
     } else {
+        // Verificar se os objetos são instâncias da classe Product
+        foreach ($produtos as $produto) {
+            if (!$produto instanceof ItemPedidoComponent) {
+                throw new Exception("Objeto não é uma instância de ItemPedidoComponent.");
+            }
+        }
+
         // Transformar as instâncias dos produtos em arrays antes de retornar
         $produtosArray = array_map(function($produto) {
             return [
