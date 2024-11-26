@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     const userId = document.body.getAttribute('data-user-id');
     const apiUsuarioUrl = document.body.getAttribute('data-api-usuario-url');
 
@@ -24,10 +25,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+const notificacao = document.getElementById('notificacao');
+
+function mostrarNotificacao(mensagem, duracao = 3000) {
+    notificacao.textContent = mensagem;
+    notificacao.classList.add('mostrar');
+    notificacao.classList.remove('esconder');
+
+    setTimeout(() => {
+        notificacao.classList.add('esconder');
+        notificacao.classList.remove('mostrar');
+    }, duracao);
+}
+
 function carregarDadosUsuario(userId, apiUsuarioUrl) {
     console.info(userId);
     console.info(apiUsuarioUrl);
-    
+
     fetch(`${apiUsuarioUrl}?id=${userId}`)
         .then(response => response.json())
         .then(data => {
@@ -57,7 +71,6 @@ function carregarDadosUsuario(userId, apiUsuarioUrl) {
             console.error('Erro na requisição:', error);
         });
 }
-
 
 function carregarProdutosSelecionados(userId) {
     const chaveCarrinho = `carrinho_${userId}`;
@@ -172,7 +185,7 @@ function finalizarCompra(userId) {
     const email = document.getElementById('email').value;
     const telefone = document.getElementById('telefone').value;
     const metodoPagamentoInput = document.querySelector('input[name="pagamento"]:checked');
-    
+
     if (metodoPagamentoInput) {
         const metodoPagamento = metodoPagamentoInput.value;
 
@@ -226,18 +239,20 @@ function finalizarCompra(userId) {
             if (data.status === 'sucesso') {
                 // Limpar carrinho após finalizar a compra
                 localStorage.removeItem(chaveCarrinho);
-                alert(`Compra finalizada com sucesso!`);
-                window.location.href = "index.php";
+                mostrarNotificacao('Compra finalizada com sucesso!');
+                setTimeout(() => {
+                    window.location.href = "index.php";
+                }, 2000); // Redireciona após 2 segundos
             } else {
-                alert('Erro ao finalizar a compra: ' + data.mensagem);
+                mostrarNotificacao('Erro ao finalizar a compra: ' + data.mensagem);
             }
         })
         .catch(error => {
             console.error('Erro ao finalizar a compra:', error);
-            alert('Erro ao finalizar a compra. Tente novamente.');
+            mostrarNotificacao('Erro ao finalizar a compra. Tente novamente.');
         });
     } else {
-        alert('Por favor, selecione um método de pagamento.');
+        mostrarNotificacao('Por favor, selecione um método de pagamento.');
     }
 }
 
@@ -263,7 +278,6 @@ function gerarNumeroBoleto() {
     return 'boleto_' + uniqid(); // Gera um número de boleto único
 }
 
-
 function uniqid(prefix = '', more_entropy = false) {
     let id = Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
     if (more_entropy) {
@@ -271,4 +285,3 @@ function uniqid(prefix = '', more_entropy = false) {
     }
     return prefix + id;
 }
-

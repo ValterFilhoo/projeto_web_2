@@ -403,11 +403,93 @@ button {
 }
 
 
+/* Estilo para o Modal do Perfil */
+.modal-perfil {
+  display: none; /* Escondido por padrão */
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  width: 300px; /* Ajuste a largura conforme necessário */
+  height: 50%; /* Definir a altura para 70% da tela */
+  background-color: #f4f4f4; /* Fundo sólido claro */
+}
+
+.modal-content-perfil {
+  background-color: #ffffff; /* Fundo branco */
+  margin: 15% auto; /* Ajuste de margem para centralizar verticalmente */
+  padding: 20px;
+  border: 1px solid #ddd; /* Borda cinza clara */
+  border-radius: 8px; /* Cantos arredondados */
+  height: 100%;
+  overflow-y: auto; /* Permite rolagem vertical */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para um efeito de profundidade */
+  font-family: 'Roboto', sans-serif; /* Fonte Roboto para um toque moderno */
+}
+
+.close-perfil {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-perfil:hover,
+.close-perfil:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilo para o conteúdo do modal */
+#modal-content-dynamic ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#modal-content-dynamic ul li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+#modal-content-dynamic ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+#modal-content-dynamic ul li a:hover {
+  color: #007BFF; /* Cor de destaque ao passar o mouse */
+}
 
 
+/* Estilo para notificações */
+.notificacao {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: 'Roboto', sans-serif;
+  z-index: 1000;
+  transition: opacity 0.5s, transform 0.5s;
+}
 
+.notificacao.mostrar {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
 
-
+.notificacao.esconder {
+  opacity: 0;
+  transform: translateY(-20px);
+}
 
 footer {
   background-color: #f8f8f8;
