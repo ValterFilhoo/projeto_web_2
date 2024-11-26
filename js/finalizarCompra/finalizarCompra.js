@@ -16,6 +16,15 @@ document.addEventListener('DOMContentLoaded', function() {
         parcelasInput.addEventListener('input', atualizarValorTotal);
     }
 
+
+    
+    const botaoVoltar = document.getElementById('botao-voltar');
+    botaoVoltar.addEventListener('click', function() {
+        window.location.href = './index.php';
+    });
+        
+       
+    
     // Adiciona evento ao botão de finalizar compra
     const botaoFinalizar = document.getElementById('botao-finalizar');
     if (botaoFinalizar) {
@@ -23,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             finalizarCompra(userId);
         });
     }
+
 });
 
 const notificacao = document.getElementById('notificacao');
@@ -39,13 +49,13 @@ function mostrarNotificacao(mensagem, duracao = 3000) {
 }
 
 function carregarDadosUsuario(userId, apiUsuarioUrl) {
-    console.info(userId);
-    console.info(apiUsuarioUrl);
 
     fetch(`${apiUsuarioUrl}?id=${userId}`)
         .then(response => response.json())
         .then(data => {
+
             if (data.status === 'sucesso') {
+
                 const usuario = data.entidade;
                 document.getElementById('nome').value = usuario.nomeCompleto;
                 document.getElementById('cpf').value = usuario.cpf;
@@ -63,16 +73,20 @@ function carregarDadosUsuario(userId, apiUsuarioUrl) {
                 document.getElementById('bairro').value = usuario.bairro;
                 document.getElementById('cidade').value = usuario.cidade;
                 document.getElementById('estado').value = usuario.estado;
+
             } else {
                 console.error('Erro ao carregar os dados do usuário:', data.mensagem);
             }
+
         })
         .catch(error => {
             console.error('Erro na requisição:', error);
         });
+        
 }
 
 function carregarProdutosSelecionados(userId) {
+
     const chaveCarrinho = `carrinho_${userId}`;
     let carrinho = localStorage.getItem(chaveCarrinho);
     const produtosSelecionados = document.getElementById('produtos-selecionados');
@@ -103,6 +117,7 @@ function carregarProdutosSelecionados(userId) {
                 produtosSelecionados.appendChild(produtoTr);
 
                 total += produto.valorProduto * produto.quantidade;
+
             } else {
                 console.error('Produto inválido ou propriedades ausentes:', produto);
                 console.log('ID:', produto.id);
@@ -115,13 +130,16 @@ function carregarProdutosSelecionados(userId) {
 
         totalCompra.dataset.valorBase = total; // Armazena o valor base da compra
         totalCompra.textContent = `Total: R$ ${total.toFixed(2)}`;
+
     } else {
         produtosSelecionados.innerHTML = '<tr><td colspan="4">Nenhum produto selecionado.</td></tr>';
         totalCompra.textContent = 'Total: R$ 0,00';
     }
+
 }
 
 function adicionarProdutoAoCarrinho(userId, produto) {
+
     const chaveCarrinho = `carrinho_${userId}`;
     let carrinho = localStorage.getItem(chaveCarrinho);
 
@@ -133,9 +151,11 @@ function adicionarProdutoAoCarrinho(userId, produto) {
 
     carrinho.push(produto);
     localStorage.setItem(chaveCarrinho, JSON.stringify(carrinho));
+
 }
 
 function atualizarValorTotal() {
+
     const metodoPagamentoInput = document.querySelector('input[name="pagamento"]:checked');
     if (metodoPagamentoInput) {
         const metodoPagamento = metodoPagamentoInput.value;
@@ -180,6 +200,7 @@ function atualizarValorTotal() {
 }
 
 function finalizarCompra(userId) {
+
     const nome = document.getElementById('nome').value;
     const cpf = document.getElementById('cpf').value;
     const email = document.getElementById('email').value;

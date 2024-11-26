@@ -14,14 +14,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../Css/style.css">
     <link rel="stylesheet" href="../Css/login.css">
     <script async src="../js/loja.js"></script>
 </head>
 <body>
   <nav class="cabecalho">
     <div class="perfil">
-      <a href=""><img src="../img/perfil.png" alt="perfil" width="20px"></a>
-      <a href="">
+      <a><img src="../img/perfil.png" alt="perfil" width="20px"></a>
+      <a>
       <?php 
       // Verificando se a chave nome da sessão foi iniciada (quando o usuário é autenticado é criado essa chave). Então exibe o nome do usuário.
       echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta';
@@ -48,7 +49,7 @@
         <option value="">Fale Conosco</option>
         <option value="qsomos.php">Sobre Nós</option>
       </select>   
-      <a href="carrinho.php" class="cart-icon">🛒</a>
+      <a class="cart-icon">🛒</a>
     </div>
 
     <ul class="navegacao-topicos">
@@ -97,6 +98,19 @@
     <img src="../img/Banner 2.png" alt="Banner">
   </div>
 </section>
+
+  <!-- Modal do Perfil -->
+  <section>
+      <div id="perfil-modal" class="modal-perfil">
+        <div class="modal-content-perfil">
+          <span class="close-perfil">&times;</span>
+          <div id="modal-content-dynamic">
+            <!-- Conteúdo dinâmico será carregado aqui -->
+          </div>
+        </div>
+      </div>
+    </section>
+
   <footer>
     <div class="footer-content">
       <div class="footer-section about">
@@ -125,10 +139,9 @@
   </div>
   </footer>
 
- 
-
-
   <script src="../js/autenticacao/autenticacao.js"></script>
+  <script src="../js/paginaInicial/modalPerfil.js"></script>
+
 </body>
 </html>
 </body>

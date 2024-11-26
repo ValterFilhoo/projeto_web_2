@@ -112,6 +112,18 @@
     </div>
   </section>
 
+  <!-- Modal do Perfil -->
+  <section>
+      <div id="perfil-modal" class="modal-perfil">
+        <div class="modal-content-perfil">
+          <span class="close-perfil">&times;</span>
+          <div id="modal-content-dynamic">
+            <!-- Conteúdo dinâmico será carregado aqui -->
+          </div>
+        </div>
+      </div>
+    </section>
+
   <footer>
     <div class="footer-content">
       <div class="footer-section about">

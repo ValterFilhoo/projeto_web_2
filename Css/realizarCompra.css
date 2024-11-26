@@ -1,152 +1,300 @@
 /* Estilo básico */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    padding: 20px;
-  }
-  
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-  }
-  
-  header h1 {
-    font-size: 2rem;
-    color: #007BFF;
-  }
-  
-  header nav a {
-    margin-right: 15px;
-    text-decoration: none;
-    color: #007BFF;
-  }
-  
-  header nav a:hover {
-    text-decoration: underline;
-  }
-  
-  section {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
-    max-height: 400px; /* Define a altura máxima */
-    overflow-y: auto; /* Adiciona rolagem vertical se necessário */
-  }
-  
-  section h2 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-  }
-  
-  .tabela-produtos {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .tabela-produtos th, 
-  .tabela-produtos td {
-    padding: 15px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .tabela-produtos th {
-    background-color: #007BFF;
-    color: white;
-  }
-  
-  .produto-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .produto-info img {
-    border-radius: 5px;
-    width: 60px; /* Ajusta o tamanho das imagens */
-    height: auto; /* Mantém a proporção das imagens */
-  }
-  
-  .resumo-total {
-    text-align: right;
-    margin-top: 20px;
-  }
-  
-  .resumo-total .total {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-  
-  .dados-pagamento {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .informacoes-usuario, .opcoes-pagamento {
-    flex: 1;
-    max-height: 400px; /* Define a altura máxima */
-    overflow-y: auto; /* Adiciona rolagem vertical se necessário */
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  form label {
-    font-size: 1rem;
-    font-weight: bold;
-  }
-  
-  form input[type="text"], form input[type="email"], form input[type="number"] {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100%;
-  }
-  
-  .forma-pagamento {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .opcoes-pagamento label {
-    font-size: 1rem;
-  }
-  
-  button.finalizar-compra {
-    background-color: #28A745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: block;
-    width: 100%;
-    margin-top: 20px;
-  }
-  
-  button.finalizar-compra:hover {
-    background-color: #218838;
-  }
-  
-  footer {
-    margin-top: 20px;
-    text-align: center;
-    color: #777;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f8f8f8;
+  overflow-x: hidden;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Estilos de Navegação */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 10px;
+  max-width: 97%;
+}
+
+.cabecalho {
+  display: flex;
+  justify-content: right;
+  margin: 0;
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#perfil-link, #perfil-nome {
+  text-decoration: none;
+}
+
+.logo {
+  display: flex;
+  margin-left: 5rem;
+  align-items: center;
+  gap: 30px;
+}
+
+.search-bar {
+  margin-top: 14px;
+  position: relative;
+}
+
+#search-bar-input {
+  padding: 8px 40px 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  height: 50px;
+  width: 500px;
+}
+
+.search-bar img {
+  position: absolute;
+  right: 10px;
+  top: 40%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+#pageSelect, .cart-icon {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+  padding: 8px;
+}
+
+.navegacao-topicos {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  list-style: none;
+  padding: 10px 0;
+  margin: 10px;
+}
+
+.navegacao-topicos li {
+  position: relative;
+  padding: 0 15px;
+}
+
+.navegacao-topicos li:not(:last-child) {
+  border-right: 1px solid #ccc;
+}
+
+.navegacao-item {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.navegacao-item:hover {
+  color: #007BFF;
+}
+
+/* Estilos do Banner */
+.banner {
+  display: grid;
+  place-items: center;
+}
+
+.banner img {
+  margin-top: 2rem;
+  max-width: 90%;
+}
+
+/* Estilos Saiba Mais */
+.saiba-mais {
+  display: flex;
+  gap: 30px;
+  font-size: 15px;
+  text-align: center;
+}
+
+.saiba-mais > div::before {
+  content: attr(data-info);
+  margin-right: 10px;
+  color: #555;
+  font-weight: bold;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: #007BFF;
+}
+
+header nav a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #007BFF;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  max-height: 40rem; /* Define a altura máxima */
+  overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+}
+
+.resumo-titulo, .informacoes-titulo, .opcoes-titulo {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.tabela-produtos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.tabela-produtos th, 
+.tabela-produtos td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabela-produtos th {
+  background-color: #007BFF;
+  color: white;
+}
+
+.produto-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.produto-info img {
+  border-radius: 5px;
+  width: 10vw; /* Ajusta o tamanho das imagens */
+  height: auto; /* Mantém a proporção das imagens */
+}
+
+.resumo-total {
+  text-align: right;
+  margin-top: 2rem;
+}
+
+.total {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.dados-pagamento {
+  display: flex;
+  gap: 2rem;
+}
+
+.informacoes-usuario, .opcoes-pagamento {
+  flex: 1;
+  max-height: 20rem; /* Reduz a altura máxima */
+  overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+form label {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+form input[type="text"], form input[type="email"], form input[type="number"], form input[type="date"], select {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="number"]:focus,
+form input[type="date"]:focus,
+select:focus {
+  border-color: #007bff; /* Muda a cor da borda quando em foco */
+}
+
+.forma-pagamento {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.opcoes-pagamento label {
+  font-size: 1rem;
+}
+
+.botoes-acao {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* Espaçamento entre os botões */
+  margin-top: 2rem;
+}
+
+.botoes-acao button {
+  padding: 0.5rem 1rem; /* Diminui o padding */
+  width: 20%; /* Diminui a largura dos botões */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2rem; /* Aumenta o tamanho do texto */
+}
+
+.botao-voltar {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.botao-voltar:hover {
+  background-color: #c82333;
+}
+
+.finalizar-compra {
+  background-color: #007BFF;
+  color: white;
+}
+
+.finalizar-compra:hover {
+  background-color: #0056b3;
+}
+
+footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: #777;
+}
