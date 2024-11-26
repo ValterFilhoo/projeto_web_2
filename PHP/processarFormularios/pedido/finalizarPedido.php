@@ -54,7 +54,7 @@ try {
 
         // Criar um ItemPedido usando a fábrica parametrizada, passando um objeto Product.
         $fabricaItemPedido = new ItemPedidoConcreteCreator();
-        $itemPedido = $fabricaItemPedido->factoryMethod($produtoItem, $produto['quantidade']);
+        $itemPedido = $fabricaItemPedido->criarItemPedido($produtoItem, $produto['quantidade']);
 
         // Verificar se o item do pedido é do tipo da interface do composite.
         if ($itemPedido instanceof ItemPedidoComponent) {

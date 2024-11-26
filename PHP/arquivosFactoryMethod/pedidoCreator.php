@@ -7,7 +7,7 @@ abstract class PedidoCreator {
     
     private Pedido $pedido; 
 
-    abstract public function factoryMethod(int $idUsuario, 
+    abstract public function retornarInstanciaPedido(int $idUsuario, 
     string $dataPedido, 
     string $tipoPagamento, 
     array $itensPedido, 
@@ -30,7 +30,7 @@ abstract class PedidoCreator {
     ?string $numeroBoleto, 
     ?float $valorParcelas): Pedido {
         
-        return $this->pedido = $this->factoryMethod($idUsuario, 
+        return $this->pedido = $this->retornarInstanciaPedido($idUsuario, 
         $dataPedido, 
         $tipoPagamento, 
         $itensPedido, 

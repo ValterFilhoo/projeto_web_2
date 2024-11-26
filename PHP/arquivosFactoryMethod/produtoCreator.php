@@ -9,12 +9,12 @@ abstract class ProdutoCreator {
     private ItemPedidoComponent $produto;
 
     // Método abstrato do padrão FactoryMethod, que será responsável por instanciar um produto e retornar ele instanciado.
-    abstract public function factoryMethod(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): ItemPedidoComponent;
+    abstract public function retornarInstanciaProduto(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): ItemPedidoComponent;
 
     // Método de operação que ajudará a criar e retornar o produto.
     public function criarProduto(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): ItemPedidoComponent {
 
-        $this->produto = $this->factoryMethod($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+        $this->produto = $this->retornarInstanciaProduto($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
 
         return $this->produto;
 

@@ -86,10 +86,14 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
 
                     $usuarioAutenticado->setId($resultado['id']);
 
+                    $this->conexaoBD->close();
+
                     // Retornando o objeto do usuário autenticado..
                     return $usuarioAutenticado;
 
                 } else { //se a senha digitada não corresponder a senha armazenada no banco.
+
+                    $this->conexaoBD->close();
 
                     return null;
 
@@ -97,18 +101,20 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
 
             } else { // não encontrou nenhum usuário com o email informado.
 
+                $this->conexaoBD->close();
+
                 return null;
 
             }
         
-            $stmt->close();
-            $this->conexaoBD->close();
 
         }
         
         
         public function vincularParametros($declaracao, $entidade, $operacao): void {
+
             switch ($operacao) {
+
                 case "Criar":
                     $nomeCompleto = $entidade->getNomeCompleto();
                     $email = $entidade->getEmail();
@@ -142,10 +148,9 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
                     break;
         
             }
+
         }
         
-
-
         public function obterCaminhoImagemSeNecessario($id) {
             throw new Exception("Esta classe não pode usar este método.");
         }

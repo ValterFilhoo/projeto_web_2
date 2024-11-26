@@ -6,7 +6,7 @@ require_once __DIR__ . "/../pedidoCreator.php";
 
 class PedidoConcreteCreator extends PedidoCreator {
 
-    public function factoryMethod(
+    public function retornarInstanciaPedido(
         int $idUsuario, 
         string $dataPedido, 
         string $tipoPagamento, 

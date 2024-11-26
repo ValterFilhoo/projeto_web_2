@@ -22,7 +22,7 @@
 
         }
 
-        public function criarEntidade($entidade) {
+        public function criarEntidade($entidade): bool {
             
             $operacao = "Criar";
             
@@ -53,7 +53,7 @@
 
         }
 
-        public function lerEntidade(int $id, string $tipo) {
+        public function lerEntidade(int $id, string $tipo): array|null {
             
             $operacao = "Ler";
             
@@ -73,10 +73,13 @@
                 $resultadoDaBusca = $stmt->get_result();
                 
                 if ($resultadoDaBusca->num_rows > 0) {
+
                     $rows = [];
+
                     while ($row = $resultadoDaBusca->fetch_assoc()) {
                         $rows[] = $row;
                     }
+
                     $fabricaConcreta = $this->getFactory($tipo, $rows[0]);
         
                     if (!$fabricaConcreta) {
@@ -87,16 +90,18 @@
                     $entidadeEncontrada = $this->processarRegistro($tipo, $fabricaConcreta, $rows);
                     
                     return $entidadeEncontrada;
+
                 } else {
                     echo 'Entidade não encontrada.';
                     return null;
                 }
+
             } else {
                 echo "Erro na preparação da declaração: " . $this->conexaoBD->error;
                 return null;
             }
+
         }
-        
         
         
         public function atualizarEntidade($entidade): bool {
@@ -139,14 +144,16 @@
         }
         
 
-        public function deletarEntidade($id) {
+        public function deletarEntidade($id): bool {
 
             $caminhoImagem = null;
         
             try {
+
                 // Parte do código que varia entre as subclasses.
                 $caminhoImagem = $this->obterCaminhoImagemSeNecessario($id);
-            } catch (Exception $e) {
+
+            } catch (Exception $excecao) {
                 // Se ocorrer uma exceção, definimos caminhoImagem como null e continuamos
                 $caminhoImagem = null;
             }
@@ -172,9 +179,9 @@
                             
                             $this->excluirImagemSeExistir($caminhoImagem);
 
-                        } catch (Exception $e) {
+                        } catch (Exception $excecao) {
                             // Tratamento de exceção para exclusão de imagem
-                            echo 'Erro ao tentar excluir a imagem: ' . $e->getMessage();
+                            echo 'Erro ao tentar excluir a imagem: ' . $excecao->getMessage();
                         }
 
                     }
@@ -185,6 +192,7 @@
 
                     echo 'Erro na exclusão da entidade: ' . $stmt->error;
                     return false;
+
                 }
 
             } else {
@@ -196,7 +204,7 @@
 
         }
     
-        public function listarEntidades($tipo) {
+        public function listarEntidades($tipo): array|null {
 
             // Consulta SQL para listar as entidades, e que variam conforme a subclasse.
             $sql = $this->sqlListar();
@@ -239,8 +247,7 @@
         }
         
         
-        
-        protected function processarRegistro($tipo, $fabricaConcreta, $linha) {
+        protected function processarRegistro($tipo, $fabricaConcreta, $linha): array|null {
 
             if (empty($linha)) {
                 return null; // Retorna null se a linha estiver vazia
@@ -265,7 +272,7 @@
         }
         
         
-        protected function processarProduto($fabricaConcreta, $linha) {
+        protected function processarProduto($fabricaConcreta, $linha): array|null {
             
             $dadosProduto = isset($linha[0]) ? $linha[0] : $linha;
         
@@ -285,7 +292,7 @@
             $dadosProduto['quantidade'] = (int)$dadosProduto['quantidade'];
         
             // Cria a entidade do produto usando a fábrica concreta
-            $entidade = $fabricaConcreta->factoryMethod(
+            $entidade = $fabricaConcreta->criarProduto(
                 $dadosProduto['id'], $dadosProduto['imagemProduto'], $dadosProduto['nomeProduto'], $dadosProduto['valorProduto'], 
                 $dadosProduto['quantidade'], $dadosProduto['categoria'], $dadosProduto['tipoProduto'], $dadosProduto['descricaoProduto']
             );
@@ -304,10 +311,8 @@
 
         }
         
-        
-        
 
-        protected function processarPedido($fabricaPedido, $fabricaItemPedido, $fabricaProduto, $linhas) {
+        protected function processarPedido($fabricaPedido, $fabricaItemPedido, $fabricaProduto, $linhas): array {
 
             $itensPedido = []; // Inicializa o array de itens do pedido
         
@@ -371,10 +376,10 @@
         }
         
 
-        protected function processarItemPedido($fabricaProduto, $fabricaItemPedido, $linha) {
+        protected function processarItemPedido($fabricaProduto, $fabricaItemPedido, $linha): mixed {
 
             // Cria o produto usando a fábrica de produtos
-            $produto = $fabricaProduto->factoryMethod(
+            $produto = $fabricaProduto->criarProduto(
                 $linha['idProduto'], $linha['imagemProduto'], $linha['nomeProduto'], $linha['valorProduto'], 
                 $linha['quantidade'], $linha['categoria'], $linha['tipoProduto'], $linha['descricaoProduto']
             );
@@ -386,14 +391,9 @@
             
         }
         
-        
-        
-        
-        
-        
-        
 
-        protected function processarUsuario($fabricaConcreta, $linha) {
+        protected function processarUsuario($fabricaConcreta, $linha): array|null {
+
             // Desencapsulando os dados caso estejam dentro de um array
             $dadosUsuario = isset($linha[0]) ? $linha[0] : $linha;
         
@@ -403,12 +403,16 @@
                 'dataNascimento', 'cep', 'endereco', 'numeroEndereco', 'complemento', 
                 'referencia', 'bairro', 'cidade', 'estado', 'tipoConta'
             ];
+
             foreach ($chavesNecessarias as $chave) {
+
                 if (!isset($dadosUsuario[$chave])) {
                     echo "Chave faltante: '{$chave}' nos dados: " . json_encode($dadosUsuario);
                     return null;
                 }
+
             }
+
         
             // Converte os campos apropriados para os tipos corretos
             $numeroEndereco = (int) $dadosUsuario['numeroEndereco']; // Converte para int
@@ -456,11 +460,11 @@
                 'estado' => $entidade->getEstado(),
                 'tipoConta' => $entidade->getTipoConta()
             ];
+
         }
         
         
-        
-        protected function getFactory($tipo, $dados) {
+        protected function getFactory($tipo, $dados): ArduinoConcreteCreator|DisplayConcreteCreator|ItemPedidoConcreteCreator|MotoresConcreteCreator|PedidoConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator|UserConcreteCreator|null {
 
             if ($tipo === 'Produtos') {
 
@@ -504,10 +508,6 @@
 
         }
         
-        
-        
-
-
 
         public function iniciarTransacao(): void { 
             $this->conexaoBD->begin_transaction(); 
@@ -523,7 +523,6 @@
             return $this->conexaoBD->insert_id;
         }
 
-        
         abstract public function sqlCriar(): string;
 
         abstract public function sqlLer(): string;

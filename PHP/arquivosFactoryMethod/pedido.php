@@ -1,6 +1,7 @@
 <?php
 
 interface Pedido {
+
     public function setId(int $id): void;
 
     public function setChavePix(string $chavePix): void;
@@ -34,8 +35,6 @@ interface Pedido {
     public function getValorParcelas(): ?float;
 
     public function getItensPedido(): array;
-
-
 
     public function adicionarItem(ItemPedido $item): void;
 
