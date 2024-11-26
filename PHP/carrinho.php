@@ -26,6 +26,8 @@
       </a>
     </div>
   </nav>
+
+  <div id="notificacao" class="notificacao"></div>
   
   <nav>
     <div class="logo">

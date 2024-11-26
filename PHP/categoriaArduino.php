@@ -28,6 +28,9 @@
       </a>
     </div>
   </nav>
+
+  <div id="notificacao" class="notificacao"></div>
+
   <nav>
     <div class="logo">
     <a href="./index.php"> <img src="../img/eletronico.png" alt="logo" width="40px"> </a>
@@ -140,6 +143,7 @@
     </div>
     </footer>
 
+    <script src="../js/categoriasDeProdutos/carregarProdutos.js"></script>
     <script src="../js/categoriaArduino/produtosArduino.js"></script>  
     <script src="../js/carrinho/carrinho.js"></script>
 

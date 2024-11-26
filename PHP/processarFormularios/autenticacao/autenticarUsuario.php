@@ -35,7 +35,7 @@
 
             } else {
 
-                echo json_encode(['status' => 'erro', 'mensagem' => 'Erro na autenticação.']);
+                echo json_encode(['status' => 'erro', 'mensagem' => 'Login inválido.']);
 
             }
         } catch (Exception $excecao) {

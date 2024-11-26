@@ -16,6 +16,8 @@
     </div>
   </nav>
   
+  <div id="notificacao" class="notificacao"></div>
+
   <nav>
     <div class="logo">
       <img src="../img/eletronico.png" alt="logo" width="40px">

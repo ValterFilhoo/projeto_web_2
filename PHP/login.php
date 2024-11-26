@@ -29,6 +29,8 @@
       </a>
     </div>
   </nav>
+
+  <div id="notificacao" class="notificacao"></div>
   
   <nav>
     <div class="logo">
@@ -122,6 +124,9 @@
       <p>&copy; 2024 Empresa | Todos os direitos reservados.</p>
   </div>
   </footer>
+
+ 
+
 
   <script src="../js/autenticacao/autenticacao.js"></script>
 </body>

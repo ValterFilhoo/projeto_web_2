@@ -10,10 +10,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finalizar Compra</title>
+    <link rel="stylesheet" href="../Css/style.css">
     <link rel="stylesheet" href="../Css/realizarCompra.css">
 </head>
 <body data-user-id="<?php echo htmlspecialchars($_SESSION['id']); ?>" data-api-usuario-url="../PHP/buscarUsuarios/buscarUsuarioPorId.php">
     
+<nav class="cabecalho">
+    <div class="perfil">
+      <a ><img src="../img/perfil.png" alt="perfil" width="20px"></a>
+      <a >
+      <?php 
+      // Verificando se a chave nome da sessão foi iniciada (quando o usuário é autenticado é criado essa chave). Então exibe o nome do usuário.
+      echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta';
+       ?> 
+      </a>
+    </div>
+  </nav>
+  <div id="notificacao" class="notificacao"></div>
+  <nav>
+    <div class="logo">
+    <a href="./index.php"> <img src="../img/eletronico.png" alt="logo" width="40px"> </a>
+    <h1>Eletrowonka</h1>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Faça sua pesquisa">
+      <img src="../img/lupa.png" alt="lupa" height="30px"> <!-- Ajuste a altura conforme necessário -->
+    </div>
+    
+    <div class="nav-right">
+      <select name="" id="" class="pageSelect">
+        <option value="">Fale Conosco</option>
+        <option value="qsomos.php">Sobre Nós</option>
+      </select>   
+      <a class="cart-icon">🛒</a>
+      
+      </div>
+  
+    
+    <ul class="navegacao-topicos">
+      <li><a href="#">Categorias</a></li>
+      <li><a href="./categoriaArduino.php">Arduino</a></li>
+      <li><a href="./categoriaDisplay.php">Display</a></li>
+      <li><a href="./categoriaMotor.php">Motor</a></li>
+      <li><a href="./categoriaRaspberryPI.php">RaspberryPI</a></li>
+      <li><a href="./categoriaSensores.php">Sensores</a></li>
+    </ul>
+  </nav>
+
     <section class="resumo-produtos">
         <h2>Resumo dos Produtos</h2>
         <table class="tabela-produtos">
@@ -109,9 +152,12 @@
 
     <button class="finalizar-compra" id="botao-finalizar">Finalizar Compra</button>
 
+    <div id="notificacao" class="notificacao"></div>
+
     <footer>
         <p>&copy; 2024 Minha Loja - Todos os direitos reservados.</p>
     </footer>
+
 
     <script src="../js/finalizarCompra/finalizarCompra.js"></script>
 </body>
