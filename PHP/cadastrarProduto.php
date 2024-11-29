@@ -1,13 +1,9 @@
 <?php 
-
   session_start();
-
   
   $isAuthenticated = isset($_SESSION['autenticado']) && $_SESSION['autenticado'];
   $tipoUsuario = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : ''; 
-  $userId = isset($_SESSION['id']) ? htmlspecialchars($_SESSION['id']) : ''
-
-  
+  $userId = isset($_SESSION['id']) ? htmlspecialchars($_SESSION['id']) : '';
 ?>
 
 <!DOCTYPE html>
@@ -28,9 +24,8 @@
       <a href="login.php"><img src="../img/perfil.png" alt="perfil" width="20px"></a>
       <a href="login.php">
       <?php 
-      // Verificando se a chave nome da sessão foi iniciada (quando o usuário é autenticado é criado essa chave). Então exibe o nome do usuário.
-      echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta';
-       ?> 
+        echo isset($_SESSION['nome']) ? htmlspecialchars($_SESSION['nome']) : 'Minha conta';
+      ?> 
       </a>
     </div>
   </nav>
@@ -39,7 +34,7 @@
   
   <nav>
     <div class="logo">
-      <a href="./index.php"> <img src="../img/eletronico.png" alt="logo" width="40px"> </a>
+      <a href="./index.php"><img src="../img/eletronico.png" alt="logo" width="40px"></a>
       <h1>Eletrowonka</h1>
     </div>
     
@@ -70,9 +65,8 @@
     <div class="formulario-container">
       <h2>Cadastrar Produto</h2> 
 
-      <form> 
-
-      <label for="imagem-produto" class="input-label">Imagem do Produto</label> 
+      <form>
+        <label for="imagem-produto" class="input-label">Imagem do Produto</label>
         <div class="input-imagem-container" onclick="document.getElementById('imagem-produto').click();">   
           <input type="file" id="imagem-produto" name="imagem" accept="image/*" required> 
           <div class="input-imagem-placeholder"> 
@@ -81,39 +75,46 @@
           </div> 
         </div>
 
-            <label for="nome-produto">Nome do produto</label> 
-            <input type="text" id="nome-produto" name="nome" required> 
+        <label for="nome-produto">Nome do produto</label> 
+        <input type="text" id="nome-produto" name="nome" required> 
 
-            <label for="valor-produto">Valor do produto</label> 
-            <input type="text" id="valor-produto" name="valor" required> 
+        <label for="valor-produto">Valor do produto</label> 
+        <input type="number" id="valor-produto" name="valor" step="0.01" min="0" required> 
 
-            <label for="quantidade-produto">Quantidade do produto</label> 
-            <input type="number" id="quantidade-produto" name="quantidade" required> 
+        <label for="quantidade-produto">Quantidade</label> 
+        <input type="number" id="quantidade-produto" name="quantidade" required> 
 
-            <label for="categoria-produto">Categoria do produto</label> 
-            <select id="categoria-produto" name="categoria" onchange="atualizarTipos()" required> 
-              <option value="">Selecione uma categoria</option>
-              <option value="Arduino">Arduino</option> 
-              <option value="Display">Display</option> 
-              <option value="Motor">Motor</option>
-              <option value="RaspberryPI">RaspberryPI</option> 
-              <option value="Sensores">Sensores</option> 
-            </select> 
-            
-            <label for="tipo-produto">Tipo do produto</label> 
-            <select id="tipo-produto" name="tipo" required> 
-              <option value="">Selecione uma categoria primeiro</option>
-            </select> 
+        <label for="categoria-produto">Categoria do produto</label> 
+        <select id="categoria-produto" name="categoria" onchange="atualizarTipos()" required> 
+          <option value="">Selecione uma categoria</option>
+          <option value="Arduino">Arduino</option> 
+          <option value="Display">Display</option> 
+          <option value="Motor">Motor</option>
+          <option value="RaspberryPI">RaspberryPI</option> 
+          <option value="Sensores">Sensores</option> 
+        </select> 
+        
+        <label for="tipo-produto">Tipo do produto</label> 
+        <select id="tipo-produto" name="tipo" onchange="atualizarFormulario()" required disabled> 
+          <option value="">Selecione uma categoria primeiro</option>
+        </select> 
 
-            <label for="descricao-produto">Descrição do produto</label> 
-            <textarea id="descricao-produto" name="descricao" rows="4" required>
+        <label for="descricao-produto">Descrição do produto</label> 
+        <textarea id="descricao-produto" name="descricao" rows="4" required></textarea> 
 
-            </textarea> 
+        <div id="campos-kit" style="display: none;">
+          <label for="produtos-kit">Produtos do Kit</label>
+          <div id="produtos-kit-checkboxes">
+          <!-- Caixas de seleção dos produtos serão inseridas aqui --> 
+          </div>
+          
+          <div id="produtos-kit-detalhes">
+            <!-- Campos para quantidade e valor dos produtos do kit serão adicionados aqui -->
+          </div>
+        </div>
 
-            <button type="submit">Cadastrar</button>
-
-        </form>
-
+        <button type="submit">Cadastrar</button>
+      </form>
     </div>
   </section>
 
@@ -132,16 +133,13 @@
               <li><a href="#">Contato</a></li>
           </ul>
       </div>
- 
-  </div>
-  <div class="footer-bottom">
+    </div>
+    <div class="footer-bottom">
       <p>&copy; 2024 Empresa | Todos os direitos reservados.</p>
-  </div>
+    </div>
   </footer>
 
   <script src="../js/cadastrarProduto/cadastrarProduto.js"></script>
   <script src="../js/cadastrarProduto/enviarFormulario.js"></script>
-</body>
-</html>
 </body>
 </html>

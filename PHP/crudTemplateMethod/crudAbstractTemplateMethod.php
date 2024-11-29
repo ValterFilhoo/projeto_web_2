@@ -205,46 +205,41 @@
         }
     
         public function listarEntidades($tipo): array|null {
-
-            // Consulta SQL para listar as entidades, e que variam conforme a subclasse.
             $sql = $this->sqlListar();
             $resultadoDaBusca = $this->conexaoBD->query($sql);
         
             if (!$resultadoDaBusca) {
-
-                // Exibe mensagem de erro se a consulta falhar
                 echo "Erro na consulta: " . $this->conexaoBD->error;
                 return null;
-
             }
         
             $entidadesEncontradas = [];
         
             if ($resultadoDaBusca->num_rows > 0) {
-
                 while ($linha = $resultadoDaBusca->fetch_assoc()) {
-
-                    // Cria a fábrica concreta com base no tipo de entidade
                     $fabricaConcreta = $this->getFactory($tipo, $linha);
         
                     if (!$fabricaConcreta) {
-                        continue; // Ignora se a fábrica não puder ser criada
+                        continue;
                     }
         
-                    // Processa o registro e adiciona à lista de entidades encontradas
                     $entidadesEncontradas[] = $this->processarRegistro($tipo, $fabricaConcreta, $linha);
-
                 }
         
-                // Retorna as entidades encontradas
+                // Processar produtos do tipo Kit para desserializar produtos do kit
+                foreach ($entidadesEncontradas as &$entidade) {
+                    if ($entidade['tipoProduto'] === 'Kit' && is_string($entidade['produtosKit'])) {
+                        $entidade['produtosKit'] = json_decode($entidade['produtosKit'], true);
+                    }
+                }
+        
                 return $entidadesEncontradas;
-
             } else {
                 echo 'Nenhuma entidade encontrada.';
                 return null;
             }
-
         }
+        
         
         
         protected function processarRegistro($tipo, $fabricaConcreta, $linha): array|null {
@@ -272,32 +267,24 @@
         
         
         protected function processarProduto($fabricaConcreta, $linha): array|null {
-            
             $dadosProduto = isset($linha[0]) ? $linha[0] : $linha;
         
-            // Verificação de chaves presentes nos dados do produto
             $chavesNecessarias = ['id', 'imagemProduto', 'nomeProduto', 'valorProduto', 'quantidade', 'categoria', 'tipoProduto', 'descricaoProduto'];
-
             foreach ($chavesNecessarias as $chave) {
-
                 if (!isset($dadosProduto[$chave])) {
                     return null;
                 }
-
             }
         
-            // Conversão explícita de valores numéricos
             $dadosProduto['valorProduto'] = (float)$dadosProduto['valorProduto'];
             $dadosProduto['quantidade'] = (int)$dadosProduto['quantidade'];
         
-            // Cria a entidade do produto usando a fábrica concreta
             $entidade = $fabricaConcreta->criarProduto(
                 $dadosProduto['id'], $dadosProduto['imagemProduto'], $dadosProduto['nomeProduto'], $dadosProduto['valorProduto'], 
                 $dadosProduto['quantidade'], $dadosProduto['categoria'], $dadosProduto['tipoProduto'], $dadosProduto['descricaoProduto']
             );
         
-            // Retorna um array associativo com os dados do produto
-            return [
+            $produtoArray = [
                 'id' => $entidade->getId(),
                 'imagemProduto' => $entidade->getImagem(),
                 'nomeProduto' => $entidade->getNome(),
@@ -307,8 +294,18 @@
                 'tipoProduto' => $entidade->getTipo(),
                 'descricaoProduto' => $entidade->getDescricao()
             ];
-
+        
+            // Se for um kit, adicione os produtos do kit ao array
+            if ($dadosProduto['tipoProduto'] === 'Kit' && !empty($dadosProduto['produtosKit'])) {
+                $produtoArray['produtosKit'] = json_decode($dadosProduto['produtosKit'], true);
+            }
+        
+            return $produtoArray;
         }
+        
+        
+        
+        
         
         protected function processarPedido($fabricaPedido, $fabricaItemPedido, $fabricaProduto, $linhas): array {
             $itensPedido = []; // Inicializa o array de itens do pedido
@@ -496,17 +493,14 @@
         
         
         protected function getFactory($tipo, $dados): ArduinoConcreteCreator|DisplayConcreteCreator|ItemPedidoConcreteCreator|MotoresConcreteCreator|PedidoConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator|UserConcreteCreator|null {
-        
             if ($tipo === 'Produtos') {
-                
                 $dadosProduto = isset($dados[0]) ? $dados[0] : $dados;
-                
+        
                 if (!isset($dadosProduto['categoria'])) {
                     echo "Categoria não definida em dadosProduto.<br>";
                     return null;
                 }
-                        
-                // Seleciona a fábrica correta com base na categoria do produto
+        
                 switch ($dadosProduto['categoria']) {
                     case 'Arduino':
                         return new ArduinoConcreteCreator();
@@ -522,10 +516,8 @@
                         echo "Categoria desconhecida: " . $dadosProduto['categoria'] . "<br>";
                         return null;
                 }
-
             }
-            
-            // Seleciona a fábrica correta com base no tipo de entidade
+        
             switch ($tipo) {
                 case 'Usuários':
                     return new UserConcreteCreator();
@@ -538,6 +530,7 @@
                     return null;
             }
         }
+        
         
         
 

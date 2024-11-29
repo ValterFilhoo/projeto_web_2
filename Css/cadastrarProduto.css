@@ -177,7 +177,6 @@ section {
     background-color: #1A5276;
 }
 
-
 .input-imagem-container {
     width: 100%;
     max-width: 30rem;
@@ -224,11 +223,36 @@ section {
 .preview {
     width: 100%; /* Ajustar a largura da imagem de pré-visualização para 100% */
     height: 100%; /* Ajustar a altura da imagem de pré-visualização para 100% */
-    object-fit: fill; /* Garantir que a imagem preencha o contêiner sem distorcer */
+    object-fit: contain; /* Garantir que a imagem preencha o contêiner sem distorcer */
 }
 
 #imagem-mensagem {
     color: #333;
+}
+
+
+#produtos-kit-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 0.5rem;
+    transform: scale(1.2); /* Aumentar o tamanho da caixa de seleção */
+}
+
+.produto-kit-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
 }
 
 

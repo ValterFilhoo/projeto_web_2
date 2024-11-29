@@ -111,7 +111,7 @@
         </table>
 
         <div class="resumo-carrinho">
-            <span class="total" id="total-carrinho">Total: R$ 0,00</span>
+            <span class="total" id="total-carrinho2">Total: R$ 0,00</span>
            <a href="realizarCompra.php"> <button class="finalizar-compra">Finalizar Compra</button> </a> 
             <a href="index.php" class="continuar-comprando">Continuar Comprando</a>
         </div>

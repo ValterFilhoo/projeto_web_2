@@ -41,6 +41,30 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class="description">${produto.descricaoProduto.trim()}</p>
             <button class="add-to-cart-btn" data-id="${produto.id}">Adicionar ao Carrinho</button>
         `;
+
+        // Se o produto for um kit, exiba os produtos do kit
+        if (produto.tipoProduto === 'Kit' && Array.isArray(produto.produtosKit) && produto.produtosKit.length > 0) {
+            const produtosKitDiv = document.createElement('div');
+            produtosKitDiv.classList.add('produtos-kit');
+
+            const tituloKit = document.createElement('h2');
+            tituloKit.textContent = 'Produtos do Kit';
+            produtosKitDiv.appendChild(tituloKit);
+
+            produto.produtosKit.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('produto-kit-item');
+                itemDiv.innerHTML = `
+                    <p><strong>Produto:</strong> ${item.nome}</p>
+                    <p><strong>Quantidade:</strong> ${item.quantidade}</p>
+                    <p><strong>Valor:</strong> R$ ${item.valor.toFixed(2)}</p>
+                `;
+                produtosKitDiv.appendChild(itemDiv);
+            });
+
+            cartaoProduto.insertBefore(produtosKitDiv, cartaoProduto.querySelector('.add-to-cart-btn'));
+        }
+
         containerProduto.appendChild(cartaoProduto);
 
         // Adicionar evento ao botão "Adicionar ao Carrinho"
@@ -57,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para adicionar produto ao carrinho
     function adicionarAoCarrinho(userId, produto) {
-
         const chaveCarrinho = `carrinho_${userId}`; // Cria uma chave única para o carrinho do usuário
         let carrinho = localStorage.getItem(chaveCarrinho);
 

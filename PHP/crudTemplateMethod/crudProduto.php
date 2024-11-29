@@ -6,8 +6,9 @@
     class CrudProduto extends CrudTemplateMethod {
 
         public function sqlCriar(): string {
-            return "INSERT INTO produto (imagemProduto, nomeProduto, valorProduto, quantidade, categoria, tipoProduto, descricaoProduto) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            return "INSERT INTO produto (imagemProduto, nomeProduto, valorProduto, quantidade, categoria, tipoProduto, descricaoProduto, produtosKit) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         }
+        
 
         public function sqlLer(): string {
             return "SELECT * FROM produto WHERE id = ?";
@@ -86,9 +87,7 @@
         }
 
         public function vincularParametros($declaracao, $entidade, $operacao): void {
-            
             switch ($operacao) {
-
                 case "Criar":
                     $imagem = $entidade->getImagem();
                     $nome = $entidade->getNome();
@@ -97,16 +96,22 @@
                     $categoria = $entidade->getCategoria();
                     $tipo = $entidade->getTipo();
                     $descricao = $entidade->getDescricao();
-                    $declaracao->bind_param("ssdisss", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao);
+        
+                    // Verifique se é um kit e serialize os produtos do kit se necessário
+                    if ($tipo === 'Kit') {
+                        $produtosKit = json_encode($entidade->obterProdutos());
+                        $declaracao->bind_param("ssdissss", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit);
+                    } else {
+                        $declaracao->bind_param("ssdisss", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao);
+                    }
                     break;
-
+        
                 case "Ler":
                     $id = $entidade; // Para a operação de leitura, $entidade é o ID
                     $declaracao->bind_param("i", $id);
                     break;
-
+        
                 case "Atualizar":
-
                     $imagem = $entidade->getImagem();
                     $nome = $entidade->getNome();
                     $valor = $entidade->getValor();
@@ -115,25 +120,33 @@
                     $tipo = $entidade->getTipo();
                     $descricao = $entidade->getDescricao();
                     $id = $entidade->getId();
-                    $declaracao->bind_param("ssdisssi", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $id);
-                    
+        
+                    // Verifique se é um kit e serialize os produtos do kit se necessário
+                    if ($tipo === 'kit') {
+                        $produtosKit = json_encode($entidade->obterProdutos());
+                        $declaracao->bind_param("ssdissssi", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit, $id);
+                    } else {
+                        $declaracao->bind_param("ssdisssi", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $id);
+                    }
                     break;
-
+        
                 case "Deletar":
                     $id = $entidade; // Para a operação de deletar, $entidade é o ID
                     $declaracao->bind_param("i", $id);
                     break;
-
+        
                 case "BuscarPorCategoria":
                     $categoria = $entidade;
                     $declaracao->bind_param("s", $categoria);
                     break;
-
+        
                 default:
                     throw new Exception("Operação desconhecida: $operacao");
             }
-
         }
+        
+        
+        
 
         // Método para obter o caminho da imagem do produto
         public function obterCaminhoImagemSeNecessario($id): string|null {

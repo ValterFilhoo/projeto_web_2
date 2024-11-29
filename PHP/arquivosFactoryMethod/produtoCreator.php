@@ -2,24 +2,41 @@
 
 require_once __DIR__ .  "/./product.php";
 
-// Classe abstrata da fábrica de produtos (Creator), é a partir dela que as classes concretas responsáveis por criar um produto irá instanciar seus produtos.
+// Classe abstrata da fábrica de produtos (Creator), é a partir dela que as classes concretas responsáveis por criar um produto irão instanciar seus produtos.
 abstract class ProdutoCreator {
     
     // Atributo que irá guardar o produto que será instanciado por cada fábrica concreta (ConcreteCreator).
     private ItemPedidoComponent $produto;
 
     // Método abstrato do padrão FactoryMethod, que será responsável por instanciar um produto e retornar ele instanciado.
-    abstract public function retornarInstanciaProduto(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): ItemPedidoComponent;
+    abstract public function retornarInstanciaProduto(
+        int $id, 
+        string $imagemProduto, 
+        string $nomeProduto, 
+        float $valorProduto, 
+        int $quantidadeProduto, 
+        string $categoriaProduto, 
+        string $tipoProduto, 
+        string $descricaoProduto, 
+        array $produtosKit = []
+    ): ItemPedidoComponent;
 
     // Método de operação que ajudará a criar e retornar o produto.
-    public function criarProduto(int $id, string $imagemProduto, string $nomeProduto, float $valorProduto, int $quantidadeProduto, string $categoriaProduto, string $tipoProduto, string $descricaoProduto): ItemPedidoComponent {
+    public function criarProduto(
+        int $id, 
+        string $imagemProduto, 
+        string $nomeProduto, 
+        float $valorProduto, 
+        int $quantidadeProduto, 
+        string $categoriaProduto, 
+        string $tipoProduto, 
+        string $descricaoProduto, 
+        array $produtosKit = []
+    ): ItemPedidoComponent {
 
-        $this->produto = $this->retornarInstanciaProduto($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto);
+        $this->produto = $this->retornarInstanciaProduto($id, $imagemProduto, $nomeProduto, $valorProduto, $quantidadeProduto, $categoriaProduto, $tipoProduto, $descricaoProduto, $produtosKit);
 
         return $this->produto;
-
     }
-
-
+    
 }
-

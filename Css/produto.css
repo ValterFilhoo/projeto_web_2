@@ -62,3 +62,19 @@ h1 {
 .buy-btn:hover {
   background-color: #0056b3; /* Cor de fundo ao passar o mouse */
 }
+
+.produtos-kit {
+  text-align: left; /* Alinhamento à esquerda */
+  margin-top: 20px; /* Espaço acima dos produtos do kit */
+  padding: 20px; /* Preenchimento */
+  border-top: 1px solid #ddd; /* Borda superior */
+}
+
+.produto-kit-item {
+  padding: 10px 0; /* Preenchimento vertical */
+  border-bottom: 1px solid #ddd; /* Borda inferior */
+}
+
+.produto-kit-item:last-child {
+  border-bottom: none; /* Remove a borda inferior do último item */
+}

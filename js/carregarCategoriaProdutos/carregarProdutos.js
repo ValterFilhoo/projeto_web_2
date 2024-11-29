@@ -112,46 +112,32 @@ document.addEventListener('DOMContentLoaded', function() {
   function getUserId() {
     return document.body.getAttribute('data-user-id'); // Pega o ID do atributo data no html da página
   }
-  
   function adicionarAoCarrinho(userId, produto) {
-
-    const chaveCarrinho = `carrinho_${userId}`; // Cria uma chave única para o carrinho do usuário
+    const chaveCarrinho = `carrinho_${userId}`; // Chave única para o carrinho do usuário
     let carrinho = localStorage.getItem(chaveCarrinho);
-  
+
     if (carrinho) {
-      carrinho = JSON.parse(carrinho);
+        carrinho = JSON.parse(carrinho);
     } else {
-      carrinho = [];
+        carrinho = [];
     }
-  
+
     // Verifica se o produto já está no carrinho
     const produtoExistente = carrinho.find(item => item.id === produto.id);
-  
+
     if (produtoExistente) {
-
-      if (produtoExistente.quantidade < produto.quantidadeDisponivel) {
-        produtoExistente.quantidade += 1; // Incrementa a quantidade se o produto já estiver no carrinho e ainda tiver estoque disponível
-      } else {
-        mostrarNotificacao('Quantidade desejada ultrapassa a quantidade disponível em estoque.');
-        return; // Sai da função sem adicionar mais itens
-      }
-
+        produtoExistente.quantidade += 1; // Incrementa a quantidade se o produto já estiver no carrinho
     } else {
-
-      if (typeof produto.quantidadeDisponivel !== 'undefined' && produto.quantidadeDisponivel > 0) {
         // Adiciona o novo produto ao carrinho
         carrinho.push({ ...produto, quantidade: 1 });
-      } else {
-        mostrarNotificacao('Produto fora de estoque.');
-        return; // Sai da função sem adicionar o item
-      }
-
     }
-  
+
     // Atualiza o localStorage com o carrinho atualizado
     localStorage.setItem(chaveCarrinho, JSON.stringify(carrinho));
-  
+
     mostrarNotificacao('Produto adicionado ao carrinho com sucesso!'); // Exibir notificação em vez de alert
 
-  }
-  
+    // Atualiza o modal do carrinho
+    carregarItensDoCarrinho(userId);
+}
+

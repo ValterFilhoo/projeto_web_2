@@ -29,6 +29,13 @@ try {
         // Verifica se a conta autenticada é "Admin"
         $tipoConta = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : 'Guest';
 
+        // Processa cada entidade para incluir produtos do kit, se necessário
+        foreach ($entidades as &$entidade) {
+            if ($entidade['tipoProduto'] === 'Kit' && is_string($entidade['produtosKit'])) {
+                $entidade['produtosKit'] = json_decode($entidade['produtosKit'], true);
+            }
+        }
+
         echo json_encode(["status" => "sucesso", "entidades" => $entidades, "tipoConta" => $tipoConta]);
 
     }
