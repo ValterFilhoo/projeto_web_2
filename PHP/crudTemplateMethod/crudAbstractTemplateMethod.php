@@ -352,17 +352,16 @@
         
         // Método que retorna objetos do tipo concreto de Pedidos.
         protected function processarPedido($fabricaPedido, $fabricaItemPedido, $fabricaProduto, $linhas): array {
-
             $itensPedido = []; // Inicializa o array de itens do pedido
         
             // Processa cada registro de item no array de registros
             foreach ($linhas as $linha) {
-
+        
                 $dadosItem = is_array($linha) && isset($linha[0]) ? $linha[0] : $linha;
         
                 // Seleciona a fábrica correta para o produto
                 $fabricaProduto = $this->getFactory('Produtos', $dadosItem);
-
+        
                 if (!$fabricaProduto) {
                     echo "Erro ao obter fábrica para produto: " . $dadosItem['nomeProduto'] . "<br>";
                     continue; // Pula o item se a fábrica não for encontrada
@@ -370,19 +369,17 @@
         
                 // Verifica se os dados necessários estão presentes
                 if ($this->dadosNecessariosPresentes($dadosItem)) {
-
                     $itemPedido = $this->processarItemPedido($fabricaProduto, $fabricaItemPedido, $dadosItem);
-
+        
                     if ($itemPedido) {
                         $itensPedido[] = $itemPedido;
                     } else {
                         echo "Falha ao processar item do pedido: " . json_encode($dadosItem) . "<br>";
                     }
-
+        
                 } else {
                     echo "Dados do item incompletos: " . json_encode($dadosItem) . "<br>";
                 }
-
             }
         
             // Cria a entidade de pedido usando a fábrica concreta de pedidos
@@ -415,23 +412,20 @@
                 'numeroBoleto' => $entidade->getNumeroBoleto(),
                 'valorParcelas' => $entidade->getValorParcelas(),
                 'itens' => array_map(function($item) {
-
                     return [
-                        'idProduto' => $item->getIdProduto(),
-                        'nomeProduto' => $item->getNomeProduto(),
+                        'idProduto' => $item->getId(),
+                        'nomeProduto' => $item->getNome(),
                         'quantidade' => $item->getQuantidade(),
                         'valor' => $item->getValor(),
-                        'categoriaProduto' => $item->getCategoriaProduto(),
-                        'tipoProduto' => $item->getTipoProduto(),
-                        'descricaoProduto' => $item->getDescricaoProduto(),
-                        'imagemProduto' => $item->getImagemProduto()
+                        'categoriaProduto' => $item->getCategoria(),
+                        'tipoProduto' => $item->getTipo(),
+                        'descricaoProduto' => $item->getDescricao(),
+                        'imagemProduto' => $item->getImagem()
                     ];
-
                 }, $entidade->getItensPedido())
-
             ];
-
         }
+        
         
         // Método para verificar se todos os campos da tabela de produto foram retornados no registro.
         protected function dadosNecessariosPresentes(array $dadosItem): bool {
@@ -472,7 +466,6 @@
             }
         
             return $entidade;
-
         }
         
         

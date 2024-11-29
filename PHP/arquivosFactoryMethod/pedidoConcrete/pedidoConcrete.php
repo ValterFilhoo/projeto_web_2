@@ -103,7 +103,7 @@ class PedidoConcrete implements Pedido {
         return $this->itensPedido;
     }
 
-    public function adicionarItem(ItemPedido $item): void {
+    public function adicionarItem(ItemPedidoComponent $item): void {
         $this->itensPedido[] = $item;
     }
 

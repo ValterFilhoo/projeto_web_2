@@ -1,12 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
     function getUserId() {
-        return document.body.getAttribute('data-user-id'); // Pega o ID do atributo data
+        let userId = document.body.getAttribute('data-user-id');
+        if (!userId) {
+            userId = localStorage.getItem('guestUserId');
+            if (!userId) {
+                userId = 'guest';
+                localStorage.setItem('guestUserId', userId);
+            }
+        }
+        return userId;
     }
 
     const userId = getUserId();
     console.log(`Usuário autenticado com ID: ${userId}`);
 
-    carregarItensDoCarrinho(userId);
+    carregarItensDoCarrinhoNaPagina(userId);
 
     // Lógica do modal do carrinho
     const cartIcon = document.querySelector('.cart-icon');
@@ -28,26 +36,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-const notificacao = document.getElementById('notificacao');
-
-function mostrarNotificacao(mensagem, duracao = 3000) {
-    notificacao.textContent = mensagem;
-    notificacao.classList.add('mostrar');
-    notificacao.classList.remove('esconder');
-
-    setTimeout(() => {
-        notificacao.classList.add('esconder');
-        notificacao.classList.remove('mostrar');
-    }, duracao);
-}
-
-function carregarItensDoCarrinho(userId) {
+function carregarItensDoCarrinhoNaPagina(userId) {
     const chaveCarrinho = `carrinho_${userId}`; // Chave única para o carrinho do usuário
     let carrinho = localStorage.getItem(chaveCarrinho);
     const carrinhoProdutos = document.getElementById('carrinho-produtos');
     const totalCarrinho = document.getElementById('total-carrinho2');
 
     console.log('Carregando itens do carrinho:', carrinho);
+
+    if (!carrinhoProdutos || !totalCarrinho) {
+        console.error('Elementos do carrinho não encontrados no DOM.');
+        return;
+    }
 
     if (carrinho) {
         carrinho = JSON.parse(carrinho);
@@ -88,22 +88,22 @@ function carregarItensDoCarrinho(userId) {
 
                 // Adiciona evento ao botão "Remover"
                 produtoTr.querySelector('.remover').addEventListener('click', function() {
-                    removerDoCarrinho(userId, produto.id);
+                    removerDoCarrinhoNaPagina(userId, produto.id);
                 });
 
                 // Adiciona evento ao botão "Diminuir"
                 produtoTr.querySelector('.diminuir').addEventListener('click', function() {
-                    alterarQuantidadeProduto(userId, produto.id, -1);
+                    alterarQuantidadeProdutoNaPagina(userId, produto.id, -1);
                 });
 
                 // Adiciona evento ao botão "Aumentar"
                 produtoTr.querySelector('.aumentar').addEventListener('click', function() {
-                    alterarQuantidadeProduto(userId, produto.id, 1);
+                    alterarQuantidadeProdutoNaPagina(userId, produto.id, 1);
                 });
 
                 // Adiciona evento ao input de quantidade
                 produtoTr.querySelector('.input-preco').addEventListener('change', function() {
-                    alterarQuantidadeProduto(userId, produto.id, parseInt(this.value) - produto.quantidade);
+                    alterarQuantidadeProdutoNaPagina(userId, produto.id, parseInt(this.value) - produto.quantidade);
                 });
             } else {
                 console.error('Produto inválido ou propriedades ausentes:', produto);
@@ -120,7 +120,6 @@ function carregarItensDoCarrinho(userId) {
 
         // Forçar atualização do texto do elemento total-carrinho
         if (totalCarrinho) {
-            // Vamos verificar e garantir que não haja problemas com espaços em branco ou formatação
             totalCarrinho.textContent = `Total: R$ ${total.toFixed(2)}`;
             totalCarrinho.style.display = 'block'; // Garantir que o elemento está visível
             console.log('Texto do total-carrinho atualizado:', totalCarrinho.textContent);
@@ -133,7 +132,7 @@ function carregarItensDoCarrinho(userId) {
     }
 }
 
-function removerDoCarrinho(userId, id) {
+function removerDoCarrinhoNaPagina(userId, id) {
     const chaveCarrinho = `carrinho_${userId}`; // Chave única para o carrinho do usuário
     let carrinho = localStorage.getItem(chaveCarrinho);
     if (carrinho) {
@@ -142,12 +141,12 @@ function removerDoCarrinho(userId, id) {
         if (index !== -1) {
             carrinho.splice(index, 1); // Remove o produto do carrinho
             localStorage.setItem(chaveCarrinho, JSON.stringify(carrinho)); // Atualiza o localStorage
-            carregarItensDoCarrinho(userId); // Atualiza a exibição do carrinho
+            carregarItensDoCarrinhoNaPagina(userId); // Atualiza a exibição do carrinho
         }
     }
 }
 
-function alterarQuantidadeProduto(userId, id, quantidade) {
+function alterarQuantidadeProdutoNaPagina(userId, id, quantidade) {
     const chaveCarrinho = `carrinho_${userId}`;
     let carrinho = localStorage.getItem(chaveCarrinho);
     if (carrinho) {
@@ -159,7 +158,7 @@ function alterarQuantidadeProduto(userId, id, quantidade) {
                 produto.quantidade = 1; // Garante que a quantidade mínima é 1
             }
             localStorage.setItem(chaveCarrinho, JSON.stringify(carrinho));
-            carregarItensDoCarrinho(userId); // Recarrega os itens do carrinho após a alteração
+            carregarItensDoCarrinhoNaPagina(userId); // Recarrega os itens do carrinho após a alteração
         } else {
             console.error('Produto não encontrado no carrinho:', id);
         }

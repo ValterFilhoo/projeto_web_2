@@ -28,7 +28,7 @@ abstract class Product implements ItemPedidoComponent {
         
     }
 
-    public function setId(int $id) {
+    public function setId(int $id): void {
         $this->id = $id;
     }
 

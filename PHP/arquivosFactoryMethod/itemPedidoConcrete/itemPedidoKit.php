@@ -3,14 +3,14 @@
 require_once __DIR__ . '/../product.php';
 require_once __DIR__ . '/../../composite/itemPedidoComponent.php';
 
-class ItemPedidoConcrete implements ItemPedidoComponent {
+class ItemPedidoKit implements ItemPedidoComponent {
     
     private $idPedido;
-    private Product $produto;
-    private int $quantidade;
+    private $produto;
+    private $quantidade;
     private $produtosKit;
 
-    public function __construct(ItemPedidoComponent $produto, int $quantidade) {
+    public function __construct(Product $produto, int $quantidade) {
         $this->produto = $produto;
         $this->quantidade = $quantidade;
     }
@@ -68,11 +68,11 @@ class ItemPedidoConcrete implements ItemPedidoComponent {
     }
 
     public function obterProdutos(): array {
-        throw new Exception("Método inválido para esta classe ItemPedidoConcrete. Ela não é um kit concreto.");
+        return $this->produto->obterProdutos();
     }
 
     public function definirProdutos(array $produtos): void {
-        throw new Exception("Método inválido para esta classe ItemPedidoConcrete. Ela não é um kit concreto.");
+        $this->produto->definirProdutos($produtos);
     }
 
     public function setProdutosKit(?string $produtosKit): void {

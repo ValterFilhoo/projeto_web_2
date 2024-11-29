@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     function getUserId() {
         return document.body.getAttribute('data-user-id'); // Pega o ID do atributo data
     }
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cartModal.style.display = 'none';
         }
     });
+
 });
 
 const notificacao = document.getElementById('notificacao');
@@ -113,6 +115,7 @@ function carregarItensDoCarrinho(userId) {
 }
 
 function alterarQuantidadeProduto(userId, id, quantidade) {
+
     const chaveCarrinho = `carrinho_${userId}`;
     let carrinho = localStorage.getItem(chaveCarrinho);
     if (carrinho) {
@@ -129,6 +132,7 @@ function alterarQuantidadeProduto(userId, id, quantidade) {
             console.error('Produto não encontrado no carrinho:', id);
         }
     }
+    
 }
 
 function adicionarAoCarrinho(userId, produto) {

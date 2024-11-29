@@ -5,11 +5,11 @@ require_once __DIR__ . "/../composite/itemPedidoComponent.php";
 
 abstract class ItemPedidoCreator {
 
-    private ItemPedido $itemPedido;
+    private ItemPedidoComponent $itemPedido;
 
-    abstract public function retornarInstanciaItemPedido(ItemPedidoComponent $produto, int $quantidade): ItemPedido;
+    abstract public function retornarInstanciaItemPedido(ItemPedidoComponent $produto, int $quantidade): ItemPedidoComponent;
 
-    public function criarItemPedido(ItemPedidoComponent $produto, int $quantidade): ItemPedido {
+    public function criarItemPedido(ItemPedidoComponent $produto, int $quantidade): ItemPedidoComponent {
         return $this->itemPedido = $this->retornarInstanciaItemPedido($produto, $quantidade);
     }
     

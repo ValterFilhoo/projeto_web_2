@@ -1,5 +1,8 @@
 <?php
 
+
+require_once __DIR__ . "/../composite/itemPedidoComponent.php";
+
 interface Pedido {
 
     public function setId(int $id): void;
@@ -36,6 +39,6 @@ interface Pedido {
 
     public function getItensPedido(): array;
 
-    public function adicionarItem(ItemPedido $item): void;
+    public function adicionarItem(ItemPedidoComponent $item): void;
 
 }

@@ -15,50 +15,42 @@ class PedidoComposite implements ItemPedidoComponent {
     }
 
     public function removerItem(ItemPedidoComponent $item): bool {
-
-        // Procura o item do pedido que está inserido na lista de itens do pedido.
         $indiceDoItem = array_search($item, $this->itensPedido);
-
         if ($indiceDoItem !== false) {
-
-            // Removendo o item da lista de itens do pedido.
             unset($this->itensPedido[$indiceDoItem]);
-            // Reorganizando a lista de itens do pedido.
             $this->itensPedido = array_values($this->itensPedido);
             return true;
-            
         }
-
         return false;
-
     }
 
-    public function definirFormaPagamento(FormaPagamentoStrategy $strategy) {
+    public function definirFormaPagamento(FormaPagamentoStrategy $strategy): void {
+        $this->log("Definindo forma de pagamento: " . get_class($strategy));
         $this->pagamentoStrategy = $strategy;
+        if ($this->pagamentoStrategy === null) {
+            throw new Exception("Erro. A estratégia de pagamento está nula após atribuição.");
+        }
+        $this->log("Forma de pagamento definida com sucesso: " . get_class($this->pagamentoStrategy));
     }
 
     public function calcularValorPedido(): float {
-
         $valorBasePedido = 0;
 
-        // Itera na lista de itens do pedido para calcular recursivamente os valores de cada item contidos na lista.
         foreach ($this->itensPedido as $item) {
-            // Cada item que está na lista de itens do pedido, executará esse mesmo método e retornará seu preço individual, sendo assim somado cada um deles.
             $valorBasePedido += $item->calcularValorPedido();
         }
 
-        // Verifica se a estratégia de pagamento é nula ou foi devidamente passada para o pedido.
         if ($this->pagamentoStrategy !== null) {
-            
-            // Descontando no valor total do pedido o valor do pagamento conforme a forma de pagamento escolhida.
             $this->valorTotalPedido = $this->pagamentoStrategy->calcularValorFinal($valorBasePedido);
-
         } else {
             throw new Exception("Erro. A estratégia de pagamento está nula.");
         }
 
         return $this->getValorTotalPedido();
+    }
 
+    private function log($message): void {
+        file_put_contents(__DIR__ . "/pedido_composite_log.txt", date('Y-m-d H:i:s') . " - " . $message . "\n", FILE_APPEND);
     }
 
     public function getValorTotalPedido(): float {
@@ -69,4 +61,43 @@ class PedidoComposite implements ItemPedidoComponent {
         return $this->itensPedido;
     }
 
+    public function getId(): int {
+        throw new Exception("Erro. Este método só pode ser usado pelas classes de kit e produtos.");
+    }
+
+    public function getImagem(): string {
+        throw new Exception("Erro. Este método só pode ser usado pelas classes de kit e produtos.");
+    }
+
+    public function getNome(): string {
+        throw new Exception("Erro. Este método só pode ser usado pelas classes de kit e produtos.");
+    }
+
+    public function getValor(): float {
+        throw new Exception("Erro. Este método em PedidoComposite só pode ser usado pelas classes de kit e produtos.");
+    }
+
+    public function getQuantidade(): int {
+        throw new Exception("Erro. Este método em PedidoComposite só pode ser usado pelas classes de kit e produtos.");
+    }
+
+    public function getCategoria(): string {
+        throw new Exception("Erro. Este método em PedidoComposite só pode ser usado pelas classes de kit e produtos.");
+    }
+
+    public function getTipo(): string {
+        throw new Exception("Erro. Este método em PedidoComposite só pode ser usado pelas classes de kit e produtos.");
+    }
+
+    public function getDescricao(): string {
+        throw new Exception("Erro. Este método em PedidoComposite só pode ser usado pelas classes de kit e produtos.");
+    }
+
+    public function obterProdutos(): array {
+        throw new Exception("Erro. Este método em PedidoComposite só pode ser usado pelas classes de kit.");
+    }
+
+    public function definirProdutos(array $produtos): void {
+        throw new Exception("Erro. Este método em PedidoComposite só pode ser usado pelas classes de kit.");
+    }
 }
