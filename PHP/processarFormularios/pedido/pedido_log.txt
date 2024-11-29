@@ -110,3 +110,9 @@
 2024-11-29 17:02:34 - Resposta: {"status":"sucesso","idPedido":61}
 2024-11-29 17:03:00 - Detalhes do pagamento: {"numeroCartao":"12312415","quantidadeParcelas":2}
 2024-11-29 17:03:00 - Resposta: {"status":"sucesso","idPedido":62}
+2024-11-29 17:26:27 - Detalhes do pagamento: {"numeroBoleto":"boleto_m4371yxdd4zic"}
+2024-11-29 17:26:27 - Resposta: {"status":"sucesso","idPedido":63}
+2024-11-29 17:53:54 - Detalhes do pagamento: {"numeroBoleto":"boleto_m4381a5yue8mh"}
+2024-11-29 17:53:54 - Resposta: {"status":"sucesso","idPedido":64}
+2024-11-29 17:54:46 - Detalhes do pagamento: {"numeroCartao":"32536236236","quantidadeParcelas":3}
+2024-11-29 17:54:46 - Resposta: {"status":"sucesso","idPedido":65}

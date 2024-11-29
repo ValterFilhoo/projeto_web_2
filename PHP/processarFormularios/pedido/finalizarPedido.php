@@ -15,13 +15,6 @@ require_once __DIR__ . '/../../arquivosFactoryMethod/itemPedidoConcrete/itemPedi
 require_once __DIR__ . '/../../arquivosFactoryMethod/product.php';
 require_once __DIR__ . '/../../facade/pedidoFacade.php'; // Inclui a Facade
 
-// Log File Path
-$logFile = __DIR__ . "/pedido_log.txt";
-
-function logMessage($message, $logFile) {
-    file_put_contents($logFile, date('Y-m-d H:i:s') . " - " . $message . "\n", FILE_APPEND);
-    echo nl2br($message . "\n");
-}
 
 // Receber os dados do pedido enviados do front-end.
 $dadosPedido = json_decode(file_get_contents('php://input'), true);
@@ -29,14 +22,13 @@ $dadosPedido = json_decode(file_get_contents('php://input'), true);
 $userId = $dadosPedido['userId'];
 $detalhesPagamento = $dadosPedido['detalhesPagamento'];
 
-// Exibir detalhesPagamento para depuração
-logMessage("Detalhes do pagamento: " . json_encode($detalhesPagamento), $logFile);
 
 // Certificar que a chave 'metodoPagamento' está presente
 if (!isset($dadosPedido['metodoPagamento'])) {
-    $errorMsg = "Forma de pagamento não especificada.";
-    logMessage($errorMsg, $logFile);
-    echo json_encode(["status" => "erro", "mensagem" => $errorMsg]);
+
+    $erroMsg = "Forma de pagamento não especificada.";
+
+    echo json_encode(["status" => "erro", "mensagem" => $erroMsg]);
     exit();
 }
 
@@ -46,10 +38,8 @@ $detalhesPagamento['metodoPagamento'] = $dadosPedido['metodoPagamento'];
 // Cria uma instância da Facade
 $pedidoFacade = new PedidoFacade();
 
-$response = $pedidoFacade->criarPedido($userId, $dadosPedido, $detalhesPagamento);
+$resposta = $pedidoFacade->criarPedido($userId, $dadosPedido, $detalhesPagamento);
 
 // Retornar uma resposta JSON com o status e o ID do pedido criado.
-logMessage("Resposta: " . json_encode($response), $logFile);
-echo json_encode($response);
+echo json_encode($resposta);
 
-?>

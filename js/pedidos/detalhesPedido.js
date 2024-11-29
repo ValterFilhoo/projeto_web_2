@@ -14,11 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Função para carregar os detalhes do pedido
 function carregarDetalhesPedido(apiDetalhesPedidoUrl, pedidoId) {
-
     fetch(`${apiDetalhesPedidoUrl}?id=${pedidoId}`)
         .then(response => response.json())
         .then(data => {
-            
             if (data.status === 'sucesso') {
                 const pedido = data.pedido;
                 const detalhesPedido = document.getElementById('detalhes-pedido');
@@ -40,6 +38,25 @@ function carregarDetalhesPedido(apiDetalhesPedidoUrl, pedidoId) {
                     }
                     if (item.descricaoProduto) {
                         itensHtml += `<p class="descricao-produto">Descrição: ${item.descricaoProduto}</p>`;
+                    }
+
+                    if (item.produtosKit && item.produtosKit.length > 0) {
+                        itensHtml += `<div class="detalhes-kit">
+                            <p><strong>Produtos do Kit:</strong></p>
+                            <ul class="lista-produtos-kit">`;
+
+                        item.produtosKit.forEach(produto => {
+                            itensHtml += `<li class="produto-kit">
+                                <p>Nome: ${produto.nomeProduto}</p>
+                                <p>Quantidade: ${produto.quantidade}</p>
+                                <p>Valor: R$ ${produto.valorProduto.toFixed(2)}</p>
+                                <p>Categoria: ${produto.categoria}</p>
+                                <p>Tipo: ${produto.tipoProduto}</p>
+                                <p>Descrição: ${produto.descricaoProduto}</p>
+                            </li>`;
+                        });
+
+                        itensHtml += `</ul></div>`;
                     }
 
                     itensHtml += `</div></li>`;
@@ -75,5 +92,4 @@ function carregarDetalhesPedido(apiDetalhesPedidoUrl, pedidoId) {
         .catch(error => {
             console.error('Erro na requisição:', error);
         });
-
 }

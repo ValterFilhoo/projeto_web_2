@@ -10,7 +10,7 @@ class CrudItemPedido extends CrudTemplateMethod {
     }
 
     public function sqlLer(): string {
-        return "SELECT * FROM pedido_produto WHERE idPedido = ? AND idProduto = ?";
+        return "SELECT * FROM pedido_produto WHERE idPedido = ?";
     }
 
     public function sqlAtualizar(): string {
@@ -25,16 +25,16 @@ class CrudItemPedido extends CrudTemplateMethod {
         return "SELECT * FROM pedido_produto";
     }
 
-    public function vincularParametros($declaracao, $entidade, $operacao): void {
+    public function vincularParametros($declaracao, $entidadeOuId, $operacao): void {
         switch ($operacao) {
             case "Criar":
-                $idPedido = $entidade->getIdPedido();
-                $idProduto = $entidade->getId();
-                $quantidade = $entidade->getQuantidade();
-                $valorItem = $entidade->getValor();
+                $idPedido = $entidadeOuId->getIdPedido();
+                $idProduto = $entidadeOuId->getId();
+                $quantidade = $entidadeOuId->getQuantidade();
+                $valorItem = $entidadeOuId->getValor();
                 $produtosKit = null;
     
-                if ($entidade->getTipo() === 'Kit') {
+                if ($entidadeOuId->getTipo() === 'Kit') {
                     $produtosKit = json_encode(array_map(function($produto) {
                         return [
                             'id' => is_object($produto) ? $produto->getId() : $produto['id'],
@@ -46,25 +46,24 @@ class CrudItemPedido extends CrudTemplateMethod {
                             'tipoProduto' => is_object($produto) ? $produto->getTipo() : $produto['tipoProduto'],
                             'descricaoProduto' => is_object($produto) ? $produto->getDescricao() : $produto['descricaoProduto']
                         ];
-                    }, $entidade->obterProdutos()));
+                    }, $entidadeOuId->obterProdutos()));
                 }
     
-                $declaracao->bind_param("iiids", $idPedido, $idProduto, $quantidade, $valorItem, $produtosKit); // 5 parâmetros
+                $declaracao->bind_param("iiids", $idPedido, $idProduto, $quantidade, $valorItem, $produtosKit);
                 break;
     
             case "Ler":
             case "Deletar":
-                $idPedido = $entidade->getIdPedido();
-                $idProduto = $entidade->getId();
-                $declaracao->bind_param("ii", $idPedido, $idProduto);
+                $idPedido = $entidadeOuId; // Para leitura, entidadeOuId é o ID
+                $declaracao->bind_param("i", $idPedido);
                 break;
     
             case "Atualizar":
-                $quantidade = $entidade->getQuantidade();
-                $valorItem = $entidade->getValor();
-                $idPedido = $entidade->getIdPedido();
-                $idProduto = $entidade->getId();
-                $produtosKit = $entidade->getTipo() === 'Kit' ? json_encode(array_map(function($produto) {
+                $quantidade = $entidadeOuId->getQuantidade();
+                $valorItem = $entidadeOuId->getValor();
+                $idPedido = $entidadeOuId->getIdPedido();
+                $idProduto = $entidadeOuId->getId();
+                $produtosKit = $entidadeOuId->getTipo() === 'Kit' ? json_encode(array_map(function($produto) {
                     return [
                         'id' => is_object($produto) ? $produto->getId() : $produto['id'],
                         'imagemProduto' => is_object($produto) ? $produto->getImagem() : $produto['imagemProduto'],
@@ -75,7 +74,7 @@ class CrudItemPedido extends CrudTemplateMethod {
                         'tipoProduto' => is_object($produto) ? $produto->getTipo() : $produto['tipoProduto'],
                         'descricaoProduto' => is_object($produto) ? $produto->getDescricao() : $produto['descricaoProduto']
                     ];
-                }, $entidade->obterProdutos())) : null;
+                }, $entidadeOuId->obterProdutos())) : null;
                 $declaracao->bind_param("idii", $quantidade, $valorItem, $idPedido, $idProduto);
                 break;
     
@@ -83,15 +82,12 @@ class CrudItemPedido extends CrudTemplateMethod {
                 throw new Exception("Operação desconhecida: $operacao");
         }
     }
-    
-    
 
     public function obterCaminhoImagemSeNecessario($id) {
         throw new Exception("Esta classe não pode usar este método.");
     }
-    
+
     public function excluirImagemSeExistir($caminhoImagem) {
         throw new Exception("Esta classe não pode usar este método.");
     }
-    
 }

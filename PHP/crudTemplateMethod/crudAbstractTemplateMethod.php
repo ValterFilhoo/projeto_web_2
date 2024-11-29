@@ -356,7 +356,6 @@
         
             // Processa cada registro de item no array de registros
             foreach ($linhas as $linha) {
-        
                 $dadosItem = is_array($linha) && isset($linha[0]) ? $linha[0] : $linha;
         
                 // Seleciona a fábrica correta para o produto
@@ -369,14 +368,23 @@
         
                 // Verifica se os dados necessários estão presentes
                 if ($this->dadosNecessariosPresentes($dadosItem)) {
+
                     $itemPedido = $this->processarItemPedido($fabricaProduto, $fabricaItemPedido, $dadosItem);
         
                     if ($itemPedido) {
+
+                        if (isset($dadosItem['tipoProduto']) && $dadosItem['tipoProduto'] === 'Kit') {
+                            $produtosKit = isset($dadosItem['produtosKit']) ? json_decode($dadosItem['produtosKit'], true) : [];
+                            $itemPedido->setProdutosKit(json_encode($produtosKit));  // Passando como string JSON
+                        } else {
+                            $itemPedido->setProdutosKit(null);
+                        }
+                        
                         $itensPedido[] = $itemPedido;
                     } else {
                         echo "Falha ao processar item do pedido: " . json_encode($dadosItem) . "<br>";
                     }
-        
+
                 } else {
                     echo "Dados do item incompletos: " . json_encode($dadosItem) . "<br>";
                 }
@@ -420,11 +428,17 @@
                         'categoriaProduto' => $item->getCategoria(),
                         'tipoProduto' => $item->getTipo(),
                         'descricaoProduto' => $item->getDescricao(),
-                        'imagemProduto' => $item->getImagem()
+                        'imagemProduto' => $item->getImagem(),
+                        'produtosKit' => $item->getTipo() === 'Kit' ? json_decode($item->getProdutosKit(), true) : []
                     ];
                 }, $entidade->getItensPedido())
             ];
         }
+        
+        
+        
+        
+        
         
         
         // Método para verificar se todos os campos da tabela de produto foram retornados no registro.
@@ -543,9 +557,7 @@
         
         // Método que dependendo do registro consultado no banco, retorna a fábrica concreta do factory method para instanciar seu objeto.
         protected function getFactory($tipo, $dados): ArduinoConcreteCreator|DisplayConcreteCreator|ItemPedidoConcreteCreator|MotoresConcreteCreator|PedidoConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator|UserConcreteCreator|null {
-
             if ($tipo === 'Produtos') {
-
                 $dadosProduto = isset($dados[0]) ? $dados[0] : $dados;
         
                 if (!isset($dadosProduto['categoria'])) {
@@ -568,23 +580,22 @@
                         echo "Categoria desconhecida: " . $dadosProduto['categoria'] . "<br>";
                         return null;
                 }
-
             }
         
             switch ($tipo) {
-
                 case 'Usuários':
                     return new UserConcreteCreator();
                 case 'Pedidos':
                     return new PedidoConcreteCreator();
                 case 'ItensPedido':
+                case 'pedido_produto':
                     return new ItemPedidoConcreteCreator();
                 default:
                     echo "Tipo de entidade desconhecido: $tipo<br>";
                     return null;
             }
-
         }
+        
         
         
         public function iniciarTransacao(): void { 

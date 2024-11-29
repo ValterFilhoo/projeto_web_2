@@ -1049,3 +1049,39 @@
 2024-11-29 17:03:00 - Produtos do kit obtidos: [{"id":-1,"imagemProduto":"","nomeProduto":"Acess\u00f3rio para RaspberryPi","valorProduto":10,"quantidade":10,"categoria":"RaspberryPI","tipoProduto":"Acess\u00f3rio para RaspberryPi","descricaoProduto":"Produto do Kit de RaspberryPI"},{"id":-1,"imagemProduto":"","nomeProduto":"Placa para RaspberryPi","valorProduto":10,"quantidade":10,"categoria":"RaspberryPI","tipoProduto":"Placa para RaspberryPi","descricaoProduto":"Produto do Kit de RaspberryPI"}]
 2024-11-29 17:03:00 - Produtos do kit em JSON: [{"id":-1,"imagemProduto":"","nomeProduto":"Acess\u00f3rio para RaspberryPi","valorProduto":10,"quantidade":10,"categoria":"RaspberryPI","tipoProduto":"Acess\u00f3rio para RaspberryPi","descricaoProduto":"Produto do Kit de RaspberryPI"},{"id":-1,"imagemProduto":"","nomeProduto":"Placa para RaspberryPi","valorProduto":10,"quantidade":10,"categoria":"RaspberryPI","tipoProduto":"Placa para RaspberryPi","descricaoProduto":"Produto do Kit de RaspberryPI"}]
 2024-11-29 17:03:00 - Transação concluída com sucesso.
+2024-11-29 17:26:27 - Iniciando transação para o pedido do usuário: 1
+2024-11-29 17:26:27 - Adicionando produto ao pedido: {"id":17,"imagemProduto":"img\/produtos\/placa-arduino.png","nomeProduto":"Kit de Arduino","valorProduto":200,"quantidade":1,"categoria":"Arduino","tipoProduto":"Kit","descricaoProduto":"Kit de arduino","produtosKit":[{"id":-1,"imagemProduto":"","nomeProduto":"Placa Arduino","valorProduto":10,"quantidade":10,"categoria":"Arduino","tipoProduto":"Placa","descricaoProduto":"Produto do Kit de Arduino"},{"id":-1,"imagemProduto":"","nomeProduto":"Acess\u00f3rio para Arduino","valorProduto":10,"quantidade":10,"categoria":"Arduino","tipoProduto":"Acess\u00f3rio para Arduino","descricaoProduto":"Produto do Kit de Arduino"}]}
+2024-11-29 17:26:27 - Obtendo fábrica para categoria: Arduino
+2024-11-29 17:26:27 - Produto concreto criado: {"id":-1,"nomeProduto":"Placa Arduino","categoria":"Arduino","tipoProduto":"Placa"}
+2024-11-29 17:26:27 - Obtendo fábrica para categoria: Arduino
+2024-11-29 17:26:27 - Produto concreto criado: {"id":-1,"nomeProduto":"Acess\u00f3rio para Arduino","categoria":"Arduino","tipoProduto":"Acess\u00f3rio para Arduino"}
+2024-11-29 17:26:27 - Adicionando produto ao pedido: {"id":19,"imagemProduto":"img\/produtos\/RaspberryPI.png","nomeProduto":"Placa RaspberryPI","valorProduto":200,"quantidade":1,"categoria":"RaspberryPI","tipoProduto":"Kit","descricaoProduto":"kit","produtosKit":[{"id":-1,"imagemProduto":"","nomeProduto":"Acess\u00f3rio para RaspberryPi","valorProduto":10,"quantidade":10,"categoria":"RaspberryPI","tipoProduto":"Acess\u00f3rio para RaspberryPi","descricaoProduto":"Produto do Kit de RaspberryPI"},{"id":-1,"imagemProduto":"","nomeProduto":"Placa para RaspberryPi","valorProduto":10,"quantidade":10,"categoria":"RaspberryPI","tipoProduto":"Placa para RaspberryPi","descricaoProduto":"Produto do Kit de RaspberryPI"}]}
+2024-11-29 17:26:27 - Obtendo fábrica para categoria: RaspberryPI
+2024-11-29 17:26:27 - Produto concreto criado: {"id":-1,"nomeProduto":"Acess\u00f3rio para RaspberryPi","categoria":"RaspberryPI","tipoProduto":"Acess\u00f3rio para RaspberryPi"}
+2024-11-29 17:26:27 - Obtendo fábrica para categoria: RaspberryPI
+2024-11-29 17:26:27 - Produto concreto criado: {"id":-1,"nomeProduto":"Placa para RaspberryPi","categoria":"RaspberryPI","tipoProduto":"Placa para RaspberryPi"}
+2024-11-29 17:26:27 - Criando estratégia de pagamento...
+2024-11-29 17:26:27 - Iniciando criação da estratégia de pagamento para método: boleto
+2024-11-29 17:26:27 - Dados recebidos para pagamento: {"numeroBoleto":"boleto_m4371yxdd4zic","metodoPagamento":"boleto"}
+2024-11-29 17:26:27 - Estratégia de pagamento criada com sucesso para método: boleto
+2024-11-29 17:26:27 - Estratégia de pagamento configurada: BoletoStrategy
+2024-11-29 17:26:27 - Valor total calculado: 400
+2024-11-29 17:26:27 - Pedido criado com sucesso.
+2024-11-29 17:26:27 - ID do pedido obtido: 63
+2024-11-29 17:26:27 - Produto do itemPedido: ArduinoConcreteKit
+2024-11-29 17:26:27 - Produto é um kit. Obtendo produtos do kit.
+2024-11-29 17:26:27 - Obtendo fábrica para categoria: Arduino
+2024-11-29 17:26:27 - Produto concreto criado: {"id":-1,"nomeProduto":"Placa Arduino","categoria":"Arduino","tipoProduto":"Placa"}
+2024-11-29 17:26:27 - Obtendo fábrica para categoria: Arduino
+2024-11-29 17:26:27 - Produto concreto criado: {"id":-1,"nomeProduto":"Acess\u00f3rio para Arduino","categoria":"Arduino","tipoProduto":"Acess\u00f3rio para Arduino"}
+2024-11-29 17:26:27 - Produtos do kit obtidos: [{"id":-1,"imagemProduto":"","nomeProduto":"Placa Arduino","valorProduto":10,"quantidade":10,"categoria":"Arduino","tipoProduto":"Placa","descricaoProduto":"Produto do Kit de Arduino"},{"id":-1,"imagemProduto":"","nomeProduto":"Acess\u00f3rio para Arduino","valorProduto":10,"quantidade":10,"categoria":"Arduino","tipoProduto":"Acess\u00f3rio para Arduino","descricaoProduto":"Produto do Kit de Arduino"}]
+2024-11-29 17:26:27 - Produtos do kit em JSON: [{"id":-1,"imagemProduto":"","nomeProduto":"Placa Arduino","valorProduto":10,"quantidade":10,"categoria":"Arduino","tipoProduto":"Placa","descricaoProduto":"Produto do Kit de Arduino"},{"id":-1,"imagemProduto":"","nomeProduto":"Acess\u00f3rio para Arduino","valorProduto":10,"quantidade":10,"categoria":"Arduino","tipoProduto":"Acess\u00f3rio para Arduino","descricaoProduto":"Produto do Kit de Arduino"}]
+2024-11-29 17:26:27 - Produto do itemPedido: RaspberryPIConcreteKit
+2024-11-29 17:26:27 - Produto é um kit. Obtendo produtos do kit.
+2024-11-29 17:26:27 - Obtendo fábrica para categoria: RaspberryPI
+2024-11-29 17:26:27 - Produto concreto criado: {"id":-1,"nomeProduto":"Acess\u00f3rio para RaspberryPi","categoria":"RaspberryPI","tipoProduto":"Acess\u00f3rio para RaspberryPi"}
+2024-11-29 17:26:27 - Obtendo fábrica para categoria: RaspberryPI
+2024-11-29 17:26:27 - Produto concreto criado: {"id":-1,"nomeProduto":"Placa para RaspberryPi","categoria":"RaspberryPI","tipoProduto":"Placa para RaspberryPi"}
+2024-11-29 17:26:27 - Produtos do kit obtidos: [{"id":-1,"imagemProduto":"","nomeProduto":"Acess\u00f3rio para RaspberryPi","valorProduto":10,"quantidade":10,"categoria":"RaspberryPI","tipoProduto":"Acess\u00f3rio para RaspberryPi","descricaoProduto":"Produto do Kit de RaspberryPI"},{"id":-1,"imagemProduto":"","nomeProduto":"Placa para RaspberryPi","valorProduto":10,"quantidade":10,"categoria":"RaspberryPI","tipoProduto":"Placa para RaspberryPi","descricaoProduto":"Produto do Kit de RaspberryPI"}]
+2024-11-29 17:26:27 - Produtos do kit em JSON: [{"id":-1,"imagemProduto":"","nomeProduto":"Acess\u00f3rio para RaspberryPi","valorProduto":10,"quantidade":10,"categoria":"RaspberryPI","tipoProduto":"Acess\u00f3rio para RaspberryPi","descricaoProduto":"Produto do Kit de RaspberryPI"},{"id":-1,"imagemProduto":"","nomeProduto":"Placa para RaspberryPi","valorProduto":10,"quantidade":10,"categoria":"RaspberryPI","tipoProduto":"Placa para RaspberryPi","descricaoProduto":"Produto do Kit de RaspberryPI"}]
+2024-11-29 17:26:27 - Transação concluída com sucesso.

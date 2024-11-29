@@ -92,3 +92,15 @@
 2024-11-29 17:03:00 - Forma de pagamento definida com sucesso: CartaoCreditoStrategy
 2024-11-29 17:03:00 - Definindo forma de pagamento: CartaoCreditoStrategy
 2024-11-29 17:03:00 - Forma de pagamento definida com sucesso: CartaoCreditoStrategy
+2024-11-29 17:26:27 - Definindo forma de pagamento: BoletoStrategy
+2024-11-29 17:26:27 - Forma de pagamento definida com sucesso: BoletoStrategy
+2024-11-29 17:53:54 - Definindo forma de pagamento: BoletoStrategy
+2024-11-29 17:53:54 - Forma de pagamento definida com sucesso: BoletoStrategy
+2024-11-29 17:54:46 - Definindo forma de pagamento: CartaoCreditoStrategy
+2024-11-29 17:54:46 - Forma de pagamento definida com sucesso: CartaoCreditoStrategy
+2024-11-29 17:54:46 - Definindo forma de pagamento: CartaoCreditoStrategy
+2024-11-29 17:54:46 - Forma de pagamento definida com sucesso: CartaoCreditoStrategy
+2024-11-29 17:56:32 - Definindo forma de pagamento: CartaoCreditoStrategy
+2024-11-29 17:56:32 - Forma de pagamento definida com sucesso: CartaoCreditoStrategy
+2024-11-29 17:56:32 - Definindo forma de pagamento: CartaoCreditoStrategy
+2024-11-29 17:56:32 - Forma de pagamento definida com sucesso: CartaoCreditoStrategy
