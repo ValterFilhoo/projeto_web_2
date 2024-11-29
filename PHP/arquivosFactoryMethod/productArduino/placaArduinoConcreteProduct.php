@@ -31,6 +31,13 @@ class PlacaArduinoConcreteProduct extends Product {
     }
 
 
+    public function obterProdutos(): array {
+        throw new Exception("Método inválido. Apenas os produtos de tipo kit pode utilizá-los.");
+    }
+
+    public function definirProdutos(array $produtos): void {
+        throw new Exception("Método inválido. Apenas os produtos de tipo kit pode utilizá-los.");
+    }
 
 
 }

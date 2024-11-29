@@ -99,7 +99,18 @@
         
                     // Verifique se é um kit e serialize os produtos do kit se necessário
                     if ($tipo === 'Kit') {
-                        $produtosKit = json_encode($entidade->obterProdutos());
+                        $produtosKit = json_encode(array_map(function($produto) {
+                            return [
+                                'id' => $produto->getId(),
+                                'imagemProduto' => $produto->getImagem(),
+                                'nomeProduto' => $produto->getNome(),
+                                'valorProduto' => $produto->getValor(),
+                                'quantidade' => $produto->getQuantidade(),
+                                'categoria' => $produto->getCategoria(),
+                                'tipoProduto' => $produto->getTipo(),
+                                'descricaoProduto' => $produto->getDescricao()
+                            ];
+                        }, $entidade->obterProdutos()));
                         $declaracao->bind_param("ssdissss", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit);
                     } else {
                         $declaracao->bind_param("ssdisss", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao);
@@ -122,8 +133,19 @@
                     $id = $entidade->getId();
         
                     // Verifique se é um kit e serialize os produtos do kit se necessário
-                    if ($tipo === 'kit') {
-                        $produtosKit = json_encode($entidade->obterProdutos());
+                    if ($tipo === 'Kit') {
+                        $produtosKit = json_encode(array_map(function($produto) {
+                            return [
+                                'id' => $produto->getId(),
+                                'imagemProduto' => $produto->getImagem(),
+                                'nomeProduto' => $produto->getNome(),
+                                'valorProduto' => $produto->getValor(),
+                                'quantidade' => $produto->getQuantidade(),
+                                'categoria' => $produto->getCategoria(),
+                                'tipoProduto' => $produto->getTipo(),
+                                'descricaoProduto' => $produto->getDescricao()
+                            ];
+                        }, $entidade->obterProdutos()));
                         $declaracao->bind_param("ssdissssi", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit, $id);
                     } else {
                         $declaracao->bind_param("ssdisssi", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $id);
@@ -144,6 +166,7 @@
                     throw new Exception("Operação desconhecida: $operacao");
             }
         }
+        
         
         
         

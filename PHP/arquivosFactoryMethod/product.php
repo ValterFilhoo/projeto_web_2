@@ -97,4 +97,8 @@ abstract class Product implements ItemPedidoComponent {
         return $this->getValor();
     }
 
+    // Métodos abstratos para obter e definir produtos do kit 
+    abstract public function obterProdutos(): array; 
+    abstract public function definirProdutos(array $produtos): void;
+
 }
