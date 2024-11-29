@@ -55,9 +55,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('produto-kit-item');
                 itemDiv.innerHTML = `
-                    <p><strong>Produto:</strong> ${item.nome}</p>
+                    <p><strong>Produto:</strong> ${item.nomeProduto}</p> <!-- Acesso adequado ao nome do produto -->
                     <p><strong>Quantidade:</strong> ${item.quantidade}</p>
-                    <p><strong>Valor:</strong> R$ ${item.valor.toFixed(2)}</p>
+                    <p><strong>Valor:</strong> R$ ${item.valorProduto.toFixed(2)}</p>
                 `;
                 produtosKitDiv.appendChild(itemDiv);
             });
