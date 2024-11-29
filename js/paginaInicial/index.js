@@ -36,7 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
             // Criação do HTML interno do produto com botões de ações
             produtoDiv.innerHTML = `
-              <img src="../${produto.imagemProduto}" alt="${produto.nomeProduto}">
+              <a href="./produto.php?idProduto=${produto.id}">
+                  <img src="../${produto.imagemProduto}" alt="${produto.nomeProduto}">
+              </a>
               <h1>${produto.nomeProduto}</h1>
               <p>R$ ${produto.valorProduto.toFixed(2)}</p>
               <p>até 6x de R$ ${valorParcela}</p>

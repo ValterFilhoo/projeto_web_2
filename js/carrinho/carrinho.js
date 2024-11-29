@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     cartIcon.addEventListener('click', function() {
         cartModal.style.display = 'block';
+        // Adicionar um log para verificar se o modal está sendo aberto
+        console.log('Carrinho modal aberto');
     });
 
     closeBtn.addEventListener('click', function() {
@@ -44,6 +46,8 @@ function carregarItensDoCarrinho(userId) {
     let carrinho = localStorage.getItem(chaveCarrinho);
     const carrinhoItens = document.getElementById('carrinho-itens');
     const totalCarrinho = document.getElementById('total-carrinho');
+
+    console.log(`Carregando itens do carrinho para o usuário ${userId}`);
 
     if (carrinho) {
         carrinho = JSON.parse(carrinho);
@@ -103,6 +107,9 @@ function carregarItensDoCarrinho(userId) {
         carrinhoItens.innerHTML = '<p>O carrinho está vazio.</p>';
         totalCarrinho.textContent = '0,00';
     }
+
+    // Log para verificar se os itens foram carregados
+    console.log(`Itens carregados no carrinho: ${carrinhoItens.innerHTML}`);
 }
 
 function alterarQuantidadeProduto(userId, id, quantidade) {
@@ -160,6 +167,9 @@ function adicionarAoCarrinho(userId, produto) {
     localStorage.setItem(chaveCarrinho, JSON.stringify(carrinho));
 
     mostrarNotificacao('Produto adicionado ao carrinho com sucesso!'); // Exibir notificação em vez de alert
+
+    // Verificar imediatamente após atualizar o localStorage
+    console.log(`Itens no carrinho após adição: ${JSON.stringify(carrinho)}`);
 
     // Atualiza o modal do carrinho
     carregarItensDoCarrinho(userId);

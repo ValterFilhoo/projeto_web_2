@@ -33,14 +33,18 @@ document.addEventListener('DOMContentLoaded', function() {
               return resposta.json();
           })
           .then(dados => {
+
               const containerProdutos = document.getElementById('produtos'); // Contêiner onde os produtos serão exibidos
               containerProdutos.innerHTML = ''; // Limpa o contêiner antes de adicionar novos produtos
   
               if (dados.status === 'sucesso') {
+
                   const tipoConta = dados.tipoConta; // Armazena o tipo de conta do usuário autenticado
   
                   if (dados.produtos.length > 0) {
+
                       dados.produtos.forEach(produto => {
+
                           const valorParcela = (produto.valorProduto / 6).toFixed(2); // Calcula o valor da parcela em 6x
                           const produtoDiv = document.createElement('div');
                           produtoDiv.classList.add('notebook'); // Adiciona a classe CSS 'notebook' ao elemento div
@@ -68,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                           });
   
                           if (tipoConta === 'Admin') {
+
                               // Adiciona eventos de clique aos botões de remover
                               document.querySelectorAll('.btn-remover').forEach(button => {
                                   button.addEventListener('click', function() {
@@ -87,22 +92,29 @@ document.addEventListener('DOMContentLoaded', function() {
                                   });
                               });
                           }
+
                       });
+
                   } else {
                       containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem informada pelo servidor
                   }
+
               } else {
                   containerProdutos.innerHTML = `<p>${dados.mensagem}</p>`; // Exibe a mensagem de erro informada pelo servidor
               }
+
           })
           .catch(erro => {
+
               const containerProdutos = document.getElementById('produtos'); // Contêiner onde os produtos serão exibidos
               containerProdutos.innerHTML = `<p>${erro.message}</p>`; // Exibe a mensagem de erro informada pelo servidor
+
           });
+
   }
   
-  
-    // Chame a função `carregarProdutos` passando a categoria como parâmetro
+
+    // Chama a função `carregarProdutos` passando a categoria como parâmetro
     const categoria = window.categoriaProduto; // Categoria passada pela página
     carregarProdutos(categoria);
 
@@ -112,7 +124,9 @@ document.addEventListener('DOMContentLoaded', function() {
   function getUserId() {
     return document.body.getAttribute('data-user-id'); // Pega o ID do atributo data no html da página
   }
+
   function adicionarAoCarrinho(userId, produto) {
+
     const chaveCarrinho = `carrinho_${userId}`; // Chave única para o carrinho do usuário
     let carrinho = localStorage.getItem(chaveCarrinho);
 
@@ -139,5 +153,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Atualiza o modal do carrinho
     carregarItensDoCarrinho(userId);
+    
 }
 
