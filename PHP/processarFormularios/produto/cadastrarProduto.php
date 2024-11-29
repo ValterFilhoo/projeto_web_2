@@ -39,7 +39,7 @@ try {
         $logs[] = "Tipo: $tipo";
         $logs[] = "Descrição: $descricao";
         $logs[] = "Valor: $valor";
-        
+
         // Adicionar logs dos produtos do kit
         if ($produtosKit) {
             foreach ($produtosKit as $index => $produto) {
@@ -103,13 +103,7 @@ try {
 
                         // Criar instâncias dos produtos do kit
                         $produtoObj = $fabrica->criarProduto(
-                            -1, '', 
-                            $produto['nome'], 
-                            $valorProduto, 
-                            $quantidadeProduto, 
-                            $categoria, 
-                            $tipoProduto, 
-                            ""
+                            -1, '', $produto['nome'], $valorProduto, $quantidadeProduto, $categoria, $tipoProduto, "Produto do Kit de " . $categoria
                         );
 
                         $produtosKitInfo[] = $produtoObj;

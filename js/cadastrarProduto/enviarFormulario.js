@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             produtosKitItens.forEach((produtoDiv, index) => {
                 const quantidadeInput = produtoDiv.querySelector(`input[name^="quantidade_"]`);
                 const valorInput = produtoDiv.querySelector(`input[name^="valor_"]`);
-                const tipoInput = produtoDiv.querySelector(`select[name^="tipo_"]`); // Usando um <select> para tipo do produto no kit
+                const tipoInput = produtoDiv.querySelector(`input[name^="tipo_"]`); // Mudado para `input`
                 const produtoNome = produtoDiv.querySelector('label').textContent;
 
                 if (quantidadeInput && valorInput && tipoInput) {
@@ -60,11 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (dados.status === 'sucesso') {
                 mostrarNotificacao(dados.mensagem);
                // setTimeout(() => {
-                   // window.location.href = './index.php';
-              //  }, 2000); // Redireciona após 2 segundos
+                  //  window.location.href = './index.php';
+                //}, 2000); // Redireciona após 2 segundos
             } else {
                 mostrarNotificacao(dados.mensagem);
             }
+
+            // Exibir logs no console para verificação
+            console.log(dados.logs);
         })
         .catch(error => {
             console.error('Erro:', error);
