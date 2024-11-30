@@ -206,35 +206,6 @@ nav {
   background: #218838;
 }
 
-/* Estilo para o contêiner dos botões de ação */
-.botoes-acoes {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px; 
-}
-
-.botoes-acoes button {
-  padding: 10px 20px;
-  font-weight: bold;
-  color: #ffffff;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.btn-remover {
-  background-color: #EB1E1E;
-}
-
-.btn-editar {
-  background-color: #30E738;
-}
-
-.btn-remover:hover, .btn-editar:hover {
-  opacity: 0.8;
-}
-
 .contact {
   background-color: #f9f9f9;
   padding: 40px;
@@ -287,6 +258,37 @@ button {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+}
+
+
+
+/* Estilo para o contêiner dos botões de ação */
+.botoes-acoes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px; 
+}
+
+.botoes-acoes button {
+  padding: 10px 20px;
+  font-weight: bold;
+  color: #ffffff;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-remover {
+  background-color: #EB1E1E;
+}
+
+.btn-editar {
+  background-color: #30E738;
+}
+
+.btn-remover:hover, .btn-editar:hover {
+  opacity: 0.8;
 }
 
 

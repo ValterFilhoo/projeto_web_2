@@ -4,6 +4,7 @@
   $isAuthenticated = isset($_SESSION['autenticado']) && $_SESSION['autenticado'];
   $tipoUsuario = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : ''; 
   $userId = isset($_SESSION['id']) ? htmlspecialchars($_SESSION['id']) : '';
+  
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +53,7 @@
     </div>
 
     <ul class="navegacao-topicos">
-      <li><a href="#">Categorias</a></li>
+      <li><a href="./index.php">Página Inicial</a></li>
       <li><a href="./categoriaArduino.php">Arduino</a></li>
       <li><a href="./categoriaDisplay.php">Display</a></li>
       <li><a href="./categoriaMotor.php">Motor</a></li>

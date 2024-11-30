@@ -112,7 +112,27 @@ document.addEventListener('DOMContentLoaded', function() {
           });
 
   }
-  
+
+    // Função para remover o produto
+    function removerProduto(produtoId) {
+        fetch(`../PHP/excluirProduto/excluirProduto.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `id=${produtoId}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'sucesso') {
+                document.querySelector(`.notebook button[data-id="${produtoId}"]`).parentElement.remove();
+                mostrarNotificacao('Produto removido com sucesso!');
+            } else {
+                console.error('Erro ao remover o produto:', data.mensagem);
+            }
+        })
+        .catch(error => console.error('Erro ao remover o produto:', error));
+    }
 
     // Chama a função `carregarProdutos` passando a categoria como parâmetro
     const categoria = window.categoriaProduto; // Categoria passada pela página
@@ -155,4 +175,3 @@ document.addEventListener('DOMContentLoaded', function() {
     carregarItensDoCarrinho(userId);
     
 }
-

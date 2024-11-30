@@ -59,15 +59,14 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(dados => {
             if (dados.status === 'sucesso') {
                 mostrarNotificacao(dados.mensagem);
-               // setTimeout(() => {
-                  //  window.location.href = './index.php';
-                //}, 2000); // Redireciona após 2 segundos
+                setTimeout(() => {
+                   window.location.href = './index.php';
+                }, 3000); // Redireciona após 3 segundos
             } else {
                 mostrarNotificacao(dados.mensagem);
             }
 
-            // Exibir logs no console para verificação
-            console.log(dados.logs);
+           
         })
         .catch(error => {
             console.error('Erro:', error);

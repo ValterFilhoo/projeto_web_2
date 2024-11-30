@@ -162,7 +162,7 @@ class ProdutoFacade {
     
                 if (move_uploaded_file($imagem['tmp_name'], $caminhoFisicoDestino)) {
 
-                    if ($dadosProduto['imagemExistente'] && file_exists(realpath(__DIR__ . '/../../../' . $dadosProduto['imagemExistente']))) {
+                    if ($dadosProduto['imagemExistente'] && file_exists(realpath(__DIR__ . '/../../' . $dadosProduto['imagemExistente']))) {
 
                         if (!unlink(realpath(__DIR__ . '/../../' . $dadosProduto['imagemExistente']))) {
                             throw new Exception("Erro ao excluir a imagem antiga.");
@@ -247,6 +247,34 @@ class ProdutoFacade {
                     throw new Exception("Erro ao atualizar o produto no banco de dados.");
                 }
 
+            }
+
+        } catch (Exception $excecao) {
+            return ["status" => "erro", "mensagem" => $excecao->getMessage()];
+        }
+
+    }
+    
+
+    public function excluirProduto(int $id): array {
+
+        try {
+
+            // Verificar se o ID foi especificado
+            if (empty($id)) {
+                throw new Exception("ID não especificado.");
+            }
+    
+            // Instanciar a classe que contém os métodos CRUD
+            $crudProduto = new CrudProduto();
+    
+            // Chamar o método deletarEntidade
+            $resultado = $crudProduto->deletarEntidade($id);
+    
+            if ($resultado) {
+                return ["status" => "sucesso", "mensagem" => "Produto excluído com sucesso."];
+            } else {
+                return ["status" => "erro", "mensagem" => "Erro ao excluir o produto."];
             }
 
         } catch (Exception $excecao) {

@@ -43,7 +43,7 @@
     </div>
     
     <ul class="navegacao-topicos">
-        <li><a href="#" class="navegacao-item">Categorias</a></li>
+        <li><a href="./index.php">Página Inicial</a></li>
         <li><a href="./categoriaArduino.php" class="navegacao-item">Arduino</a></li>
         <li><a href="./categoriaDisplay.php" class="navegacao-item">Display</a></li>
         <li><a href="./categoriaMotor.php" class="navegacao-item">Motor</a></li>

@@ -58,7 +58,7 @@
     </div>
 
     <ul class="navegacao-topicos">
-      <li><a href="#">Categorias</a></li>
+      <li><a href="./index.php">Página Inicial</a></li>
       <li><a href="./categoriaArduino.php">Arduino</a></li>
       <li><a href="./categoriaDisplay.php">Display</a></li>
       <li><a href="./categoriaMotor.php">Motor</a></li>

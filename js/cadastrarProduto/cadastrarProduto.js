@@ -53,6 +53,7 @@ const produtosPredefinidos = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    
     const notificacao = document.getElementById('notificacao');
     const tipoSelect = document.getElementById('tipo-produto');
     const camposKit = document.getElementById('campos-kit');
@@ -71,37 +72,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const produtoId = urlParams.get('id');
 
     if (produtoId) {
+
         // Faz uma requisição para buscar os dados do produto
         fetch(`../PHP/processarFormularios/produto/buscarProduto.php?id=${produtoId}`)
             .then(resposta => {
+
                 if (!resposta.ok) {
                     throw new Error('Erro ao buscar dados do produto.');
                 }
                 return resposta.json(); // Converte a resposta para JSON
             })
             .then(dados => {
+
                 if (dados.status === 'sucesso') {
                     carregarDadosNoFormulario(dados.produto); // Chama função para carregar dados no formulário
                 } else {
                     alert(dados.mensagem);
                 }
+
             })
             .catch(erro => {
                 console.error('Erro:', erro);
                 alert('Ocorreu um erro ao carregar os dados do produto.');
             });
+
     } else {
-        alert('ID do produto não encontrado na URL.');
+        console.error("ID do produto não encontrado na URL.");
     }
+
 });
 
 function configurarPreviewImagem() {
+
     const imagemInput = document.getElementById('imagem-produto');
     const imagemPreview = document.getElementById('imagem-preview');
     const imagemMensagem = document.getElementById('imagem-mensagem');
 
     imagemInput.addEventListener('change', (event) => {
+
         const file = event.target.files[0];
+
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -110,17 +120,22 @@ function configurarPreviewImagem() {
                 imagemPreview.classList.add('preview'); // Adicionar a classe preview
                 imagemMensagem.style.display = 'none'; // Esconder a mensagem
             };
+
             reader.readAsDataURL(file);
+
         } else {
             imagemPreview.src = '../img/iconAdcionarImagem.png';
             imagemPreview.classList.remove('preview'); // Remover a classe preview
             imagemPreview.classList.add('icone'); // Adicionar a classe icone
             imagemMensagem.style.display = 'block'; // Mostrar a mensagem
         }
+
     });
+
 }
 
 function atualizarTipos() {
+
     const categoriaSelect = document.getElementById('categoria-produto');
     const tipoSelect = document.getElementById('tipo-produto');
     const categoria = categoriaSelect.value;
@@ -147,9 +162,11 @@ function atualizarTipos() {
 
     // Resetar os campos relacionados ao kit
     resetCamposKit();
+
 }
 
 function resetCamposKit() {
+
     const camposKit = document.getElementById('campos-kit');
     const produtosKitDetalhes = document.getElementById('produtos-kit-detalhes');
     const valorKitInput = document.getElementById('valor-produto');
@@ -175,9 +192,11 @@ function resetCamposKit() {
 
     // Reativar o campo de valor se não for kit
     valorKitInput.removeAttribute('disabled');
+
 }
 
 function atualizarFormulario() {
+
     const tipoProduto = document.getElementById('tipo-produto').value;
 
     const labelImagem = document.querySelector('label[for="imagem-produto"]');
@@ -192,6 +211,7 @@ function atualizarFormulario() {
     const valorKitInput = document.getElementById('valor-produto');
 
     if (tipoProduto === 'Kit') {
+        
         camposKit.style.display = 'block';
         carregarProdutosPredefinidos(); // Carregar produtos predefinidos para o kit
 
@@ -224,9 +244,11 @@ function atualizarFormulario() {
         // Reativar o campo de valor se não for kit
         valorKitInput.removeAttribute('disabled');
     }
+
 }
 
 function carregarDadosNoFormulario(produto) {
+
     document.getElementById('nome-produto').value = produto.nome;
     document.getElementById('descricao-produto').value = produto.descricao;
     document.getElementById('valor-produto').value = produto.valor;
@@ -236,6 +258,7 @@ function carregarDadosNoFormulario(produto) {
     document.getElementById('tipo-produto').value = produto.tipo;
 
     if (produto.tipo === 'Kit') {
+
         carregarProdutosPredefinidos(); // Carrega os produtos do kit
         produto.kit.forEach(item => {
             const produtoDiv = document.createElement('div');
@@ -275,10 +298,13 @@ function carregarDadosNoFormulario(produto) {
         });
         document.getElementById('campos-kit').style.display = 'block';
     }
+
 }
 
 function salvarProduto() {
+
     const produtoAtualizado = {
+
         nome: document.getElementById('nome-produto').value,
         descricao: document.getElementById('descricao-produto').value,
         valor: parseFloat(document.getElementById('valor-produto').value),
@@ -308,25 +334,31 @@ function salvarProduto() {
         body: JSON.stringify(produtoAtualizado)
     })
     .then(resposta => {
+
         if (!resposta.ok) {
             throw new Error('Erro ao atualizar o produto.');
         }
         return resposta.json();
+
     })
     .then(dados => {
+
         if (dados.status === 'sucesso') {
             mostrarNotificacao('Produto atualizado com sucesso!');
         } else {
             alert(dados.mensagem);
         }
+
     })
     .catch(erro => {
         console.error('Erro:', erro);
         alert('Ocorreu um erro ao atualizar o produto.');
     });
+
 }
 
 function calcularValorKit() {
+
     let valorTotal = 0;
 
     const produtosKitDetalhes = document.getElementById('produtos-kit-detalhes');
@@ -338,9 +370,11 @@ function calcularValorKit() {
 
     const valorKitInput = document.getElementById('valor-produto');
     valorKitInput.value = valorTotal.toFixed(2);
+
 }
 
 function carregarProdutosPredefinidos() {
+
     const categoria = document.getElementById('categoria-produto').value;
     const produtosKitCheckboxes = document.getElementById('produtos-kit-checkboxes');
     produtosKitCheckboxes.innerHTML = ''; // Limpar opções atuais
@@ -364,13 +398,16 @@ function carregarProdutosPredefinidos() {
             checkboxDiv.appendChild(label);
             produtosKitCheckboxes.appendChild(checkboxDiv);
         });
+
         mostrarNotificacao('Produtos específicos carregados para a categoria ' + categoria);
     } else {
         mostrarNotificacao('Erro ao carregar produtos específicos.');
     }
+
 }
 
 function atualizarCamposProdutosKit() {
+
     const produtosSelecionados = Array.from(document.querySelectorAll('input[name="produtos-kit"]:checked')).map(checkbox => checkbox.value);
     const produtosKitDetalhes = document.getElementById('produtos-kit-detalhes');
     produtosKitDetalhes.innerHTML = ''; // Limpar campos anteriores
@@ -409,9 +446,11 @@ function atualizarCamposProdutosKit() {
 
         produtosKitDetalhes.appendChild(produtoDiv);
     });
+
 }
 
 function mostrarNotificacao(mensagem, duracao = 3000) {
+
     const notificacao = document.getElementById('notificacao');
     notificacao.textContent = mensagem;
     notificacao.classList.add('mostrar');
@@ -421,6 +460,7 @@ function mostrarNotificacao(mensagem, duracao = 3000) {
         notificacao.classList.add('esconder');
         notificacao.classList.remove('mostrar');
     }, duracao);
+
 }
 
 // Evento de salvar produto
