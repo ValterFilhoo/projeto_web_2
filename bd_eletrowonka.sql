@@ -31,7 +31,8 @@ CREATE TABLE produto (
     quantidade INT NOT NULL,
     categoria VARCHAR(50) NOT NULL,
     tipoProduto VARCHAR(50) NOT NULL,
-    descricaoProduto TEXT NOT NULL
+    descricaoProduto TEXT NOT NULL,
+    produtosKit TEXT -- Adicionado para armazenar os produtos do kit, se houver
 );
 
 CREATE TABLE pedido ( 
@@ -44,6 +45,7 @@ CREATE TABLE pedido (
     quantidadeParcelas INT, 
     numeroBoleto VARCHAR(50), 
     valor DECIMAL(10, 2) NOT NULL, 
+    valorParcelas DECIMAL(10, 2), -- Nova coluna para armazenar o valor das parcelas
     FOREIGN KEY (idUsuario) REFERENCES usuario(id)
 );
 
@@ -52,7 +54,16 @@ CREATE TABLE pedido_produto (
     idProduto INT NOT NULL,
     quantidade INT NOT NULL,
     valorItem DECIMAL(10, 2) NOT NULL,
+    produtosKit TEXT,
     PRIMARY KEY (idPedido, idProduto),
     FOREIGN KEY (idPedido) REFERENCES pedido(id),
     FOREIGN KEY (idProduto) REFERENCES produto(id)
 );
+
+
+INSERT INTO usuario (
+    nomeCompleto, cpf, celular, sexo, email, senha, dataNascimento, cep, endereco, numeroEndereco, complemento, referencia, bairro, cidade, estado, tipoConta
+) VALUES (
+    'Admin', '12345678901', '999999999', 'Masculino', 'admin@gmail.com', '12345678', '1980-01-01', '12345678', 'Rua Exemplo', '123', 'Apto 1', 'Perto da praça', 'Centro', 'Cidade Exemplo', 'EX', 'Admin'
+);
+
