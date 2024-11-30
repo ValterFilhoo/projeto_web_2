@@ -206,6 +206,7 @@
         }
     
         public function listarEntidades(string $tipo): ?array {
+
             $sql = $this->sqlListar();
             $resultadoDaBusca = $this->conexaoBD->query($sql);
         
@@ -217,7 +218,9 @@
             $entidadesEncontradas = [];
         
             if ($resultadoDaBusca->num_rows > 0) {
+
                 while ($linha = $resultadoDaBusca->fetch_assoc()) {
+
                     $fabricaConcreta = $this->getFactory($tipo, $linha);
         
                     if (!$fabricaConcreta) {
@@ -229,23 +232,27 @@
                     if ($entidade) {
                         $entidadesEncontradas[] = $entidade;
                     }
+
                 }
         
                 return $entidadesEncontradas;
+
             } else {
                 echo 'Nenhuma entidade encontrada.';
                 return null;
             }
+
         }
         
         
-        
         protected function processarRegistro(string $tipo, object $fabricaConcreta, array $dados): ?object {
-            if (empty($dados)) {
+           
+             if (empty($dados)) {
                 return null;
             }
         
             switch ($tipo) {
+
                 case 'Produtos':
                     return $this->processarProduto($fabricaConcreta, $dados);
                 case 'Usuários':
@@ -258,20 +265,23 @@
                     echo "Tipo de entidade desconhecido: $tipo<br>";
                     return null;
             }
+
         }
         
         
-        
         // Método que retorna instancias de objetos de produtos concretos.
-        protected function processarProduto(object $fabricaConcreta, array $linha): ?ItemPedidoComponent {
-            $dadosProduto = isset($linha[0]) ? $linha[0] : $linha;
+        protected function processarProduto(object $fabricaConcreta, array $dados): ?ItemPedidoComponent {
+
+            $dadosProduto = isset($dados[0]) ? $dados[0] : $dados;
         
             $chavesNecessarias = ['id', 'imagemProduto', 'nomeProduto', 'valorProduto', 'quantidade', 'categoria', 'tipoProduto', 'descricaoProduto'];
         
             foreach ($chavesNecessarias as $chave) {
+
                 if (!isset($dadosProduto[$chave])) {
                     return null;
                 }
+
             }
         
             $dadosProduto['valorProduto'] = (float)$dadosProduto['valorProduto'];
@@ -283,9 +293,11 @@
             );
         
             if ($dadosProduto['tipoProduto'] === 'Kit' && !empty($dadosProduto['produtosKit'])) {
+
                 $produtosKit = json_decode($dadosProduto['produtosKit'], true);
         
                 if (is_array($produtosKit)) {
+
                     $produtosKitObjetos = array_map(function(array $produtoKit) use ($fabricaConcreta): ItemPedidoComponent {
                         return $fabricaConcreta->criarProduto(
                             $produtoKit['id'], $produtoKit['imagemProduto'], $produtoKit['nomeProduto'], $produtoKit['valorProduto'], 
@@ -293,12 +305,12 @@
                         );
                     }, $produtosKit);
         
-                    // Utilize definirProdutos em vez de setProdutosKit
                     if (method_exists($produto, 'definirProdutos')) {
                         $produto->definirProdutos($produtosKitObjetos);
                     } else {
                         echo "A classe " . get_class($produto) . " não possui o método definirProdutos.<br>";
                     }
+
                 }
             }
         
@@ -309,6 +321,7 @@
         
         // Método que retorna objetos do tipo concreto de Pedidos.
         protected function processarPedido(object $faPedido, object $faItem, object $faProduto, array $dados): ?Pedido {
+
             $itensPedido = []; // Inicializa o array de itens do pedido
             $idUsuario = null;
             $dataPedido = null;
@@ -322,6 +335,7 @@
         
             // Processa cada registro de item no array de registros
             foreach ($dados as $linha) {
+
                 $dadosItem = is_array($linha) && isset($linha[0]) ? $linha[0] : $linha;
         
                 // Seleciona a fábrica correta para o produto
@@ -334,9 +348,11 @@
         
                 // Verifica se os dados necessários estão presentes
                 if ($this->dadosNecessariosPresentes($dadosItem)) {
+
                     $itemPedido = $this->processarItemPedido($faProduto, $faItem, $dadosItem);
         
                     if ($itemPedido) {
+
                         if ($itemPedido instanceof ItemPedidoKit && isset($dadosItem['produtosKit'])) {
                             $produtosKit = json_decode($dadosItem['produtosKit'], true);
                             $itemPedido->definirProdutos($produtosKit);
@@ -372,12 +388,15 @@
                         if ($valorParcelas === null && isset($dadosItem['valorParcelas'])) {
                             $valorParcelas = floatval($dadosItem['valorParcelas']);
                         }
+
                     } else {
                         echo "Falha ao processar item do pedido: " . json_encode($dadosItem) . "<br>";
                     }
+
                 } else {
                     echo "Dados do item incompletos: " . json_encode($dadosItem) . "<br>";
                 }
+
             }
         
             // Verifica se os atributos necessários foram definidos
@@ -407,20 +426,8 @@
         
             return $pedido;
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    
+            
         // Método para verificar se todos os campos da tabela de produto foram retornados no registro.
         protected function dadosNecessariosPresentes(array $dadosItem): bool {
 
@@ -437,8 +444,8 @@
 
         }
         
-        // Exemplo de método processarItemPedido modificado
         protected function processarItemPedido(object $fabricaProduto, object $fabricaItemPedido, array $linha): ?ItemPedidoComponent {
+
             $produto = $this->processarProduto($fabricaProduto, $linha);
         
             if ($produto === null) {
@@ -453,17 +460,15 @@
             } else {
                 return new ItemPedidoConcrete($produto, $quantidade);
             }
+
         }
         
-        
-        
-        
-        
+    
         // Método que recebe registros de usuários do banco e retorna um vetor de objetos do tipo User (usuário).
-        protected function processarUsuario(object $fabricaConcreta, array $linha): ?User {
+        protected function processarUsuario(UserCreator $fabricaUsuario, array $dados): ?User {
 
             // Desencapsulando os dados caso estejam dentro de um array
-            $dadosUsuario = isset($linha[0]) ? $linha[0] : $linha;
+            $dadosUsuario = isset($dados[0]) ? $dados[0] : $dados;
         
             // Verificação de chaves presentes nos dados do usuário
             $chavesNecessarias = [
@@ -473,17 +478,19 @@
             ];
         
             foreach ($chavesNecessarias as $chave) {
+
                 if (!isset($dadosUsuario[$chave])) {
                     echo "Chave faltante: '{$chave}' nos dados: " . json_encode($dadosUsuario);
                     return null;
                 }
+
             }
         
             // Converte os campos apropriados para os tipos corretos
             $numeroEndereco = (int) $dadosUsuario['numeroEndereco']; // Converte para int
         
             // Cria o usuário sem o ID
-            $entidade = $fabricaConcreta->criarUsuario(
+            $entidade = $fabricaUsuario->criarUsuario(
                 $dadosUsuario['nomeCompleto'],
                 $dadosUsuario['email'],
                 $dadosUsuario['cpf'],
@@ -511,6 +518,7 @@
         
         // Método que dependendo do registro consultado no banco, retorna a fábrica concreta do factory method para instanciar seu objeto.
         protected function getFactory(string $tipo, array $dados): ArduinoConcreteCreator|DisplayConcreteCreator|ItemPedidoConcreteCreator|MotoresConcreteCreator|PedidoConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator|UserConcreteCreator|null {
+
             if ($tipo === 'Produtos') {
                 $dadosProduto = isset($dados[0]) ? $dados[0] : $dados;
         
@@ -534,9 +542,11 @@
                         echo "Categoria desconhecida: " . $dadosProduto['categoria'] . "<br>";
                         return null;
                 }
+
             }
         
             switch ($tipo) {
+
                 case 'Usuários':
                     return new UserConcreteCreator();
                 case 'Pedidos':
@@ -548,8 +558,8 @@
                     echo "Tipo de entidade desconhecido: $tipo<br>";
                     return null;
             }
+
         }
-        
         
         
         public function iniciarTransacao(): void { 
