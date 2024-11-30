@@ -15,7 +15,7 @@
         }
 
         public function sqlAtualizar(): string {
-            return "UPDATE produto SET imagemProduto = ?, nomeProduto = ?, valorProduto = ?, quantidade = ?, categoria = ?, tipoProduto = ?, descricaoProduto = ? WHERE id = ?";
+            return "UPDATE produto SET imagemProduto = ?, nomeProduto = ?, valorProduto = ?, quantidade = ?, categoria = ?, tipoProduto = ?, descricaoProduto = ?, produtosKit = ? WHERE id = ?";
         }
 
         public function sqlDeletar(): string {
@@ -87,7 +87,9 @@
 
        
         public function vincularParametros($declaracao, $entidade, $operacao): void {
+
             switch ($operacao) {
+
                 case "Criar":
                     $imagem = $entidade->getImagem();
                     $nome = $entidade->getNome();
@@ -109,12 +111,15 @@
                                 'tipoProduto' => $produto->getTipo(),
                                 'descricaoProduto' => $produto->getDescricao()
                             ];
+
                         }, $entidade->obterProdutos()));
                         $declaracao->bind_param("ssdissss", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit);
+
                     } else {
                         $produtosKit = null; // Para produtos individuais, `produtosKit` deve ser nulo
                         $declaracao->bind_param("ssdissss", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit); // 8 parâmetros
                     }
+
                     break;
         
                 case "Ler":
@@ -133,7 +138,8 @@
                     $id = $entidade->getId();
         
                     if ($tipo === 'Kit') {
-                        $produtosKit = json_encode(array_map(function($produto) {
+
+                        $produtosKit = json_encode(array_map(function($produto): array {
                             return [
                                 'id' => $produto->getId(),
                                 'imagemProduto' => $produto->getImagem(),
@@ -144,15 +150,20 @@
                                 'tipoProduto' => $produto->getTipo(),
                                 'descricaoProduto' => $produto->getDescricao()
                             ];
+
                         }, $entidade->obterProdutos()));
+
                         $declaracao->bind_param("ssdissssi", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit, $id);
+
                     } else {
                         $produtosKit = null; // Para produtos individuais, `produtosKit` deve ser nulo
                         $declaracao->bind_param("ssdissssi", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit, $id); // 9 parâmetros
                     }
+
                     break;
         
                 case "Deletar":
+
                     $id = $entidade; // Para a operação de deletar, $entidade é o ID
                     $declaracao->bind_param("i", $id);
                     break;
@@ -165,9 +176,8 @@
                 default:
                     throw new Exception("Operação desconhecida: $operacao");
             }
+            
         }
-        
-        
         
         
 

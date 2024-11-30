@@ -1,0 +1,300 @@
+body { 
+    display: flex; 
+    flex-direction: column; 
+    min-height: 100vh; 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os itens se movam para a próxima linha */
+    justify-content: space-between;
+    padding: 10px;
+    max-width: 97%;
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: right;
+    margin: 0;
+}
+
+.perfil {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.perfil a {
+    text-decoration: none;
+}
+
+.logo {
+    display: flex;
+    margin-left: 5rem;
+    align-items: center;
+    gap: 30px;
+}
+
+.search-bar {
+    margin-top: 14px;
+    position: relative;
+}
+
+.search-bar input {
+    padding: 8px 40px 8px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    height: 50px;
+    width: 500px;
+}
+
+.search-bar img {
+    position: absolute;
+    right: 10px;
+    top: 40%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-right select, .nav-right a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    padding: 8px;
+}
+
+.navegacao-topicos {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    list-style: none;
+    padding: 10px 0;
+    margin: 10px;
+}
+
+.navegacao-topicos li {
+    position: relative; /* Necessário para o posicionamento da barra */
+    padding: 0 15px;
+}
+
+.navegacao-topicos li:not(:last-child) {
+    border-right: 1px solid #ccc; /* Barra separadora */
+}
+
+.navegacao-topicos a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    padding: 5px;
+}
+
+.navegacao-topicos a:hover {
+    color: #007BFF;
+}
+
+section {
+    background-color: #2F448C; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    margin: 0;
+}
+
+.main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.formulario-container {
+    background-color: #FFFFFF;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    width: 80vw;
+    max-width: 35rem;
+    margin: 2rem 0;  /* Centralizando o formulário e adicionando margens superiores e inferiores */
+    box-sizing: border-box;
+}
+
+.formulario-container h2 {
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+.formulario-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.formulario-container input, .formulario-container select, .formulario-container textarea {
+    width: 100%;
+    padding: 0.625rem;
+    margin-bottom: 1rem;
+    border: 1px solid #CCC;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+}
+
+.formulario-container input[type="file"] {
+    padding: 0.188rem;
+}
+
+.formulario-container .button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.formulario-container .button-container a,
+.formulario-container .button-container button {
+    width: 48%;
+    padding: 0.625rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.formulario-container .button-container a {
+    background-color: red;
+    color: #FFF;
+    text-decoration: none;
+}
+
+.formulario-container .button-container button {
+    background-color: #2980B9;
+    color: #FFF;
+}
+
+.formulario-container .button-container button:hover {
+    background-color: #1A5276;
+}
+
+.input-imagem-container {
+    width: 100%;
+    max-width: 30rem;
+    height: 10rem;
+    background-color: #F0F0F0; /* Fundo cinza */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2980B9;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    overflow: hidden; /* Garantir que a imagem não transborde do contêiner */
+}
+
+.input-imagem-container:hover {
+    background-color: #E8F4FA;
+}
+
+.input-imagem-container input {
+    display: none;
+}
+
+.input-imagem-placeholder {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.input-imagem-placeholder img {
+    display: block;
+    margin: 0 auto;
+}
+
+.icone {
+    max-width: 50%; /* Tamanho inicial do ícone menor */
+    max-height: 50%; /* Tamanho inicial do ícone menor */
+}
+
+.preview {
+    width: 100%; /* Ajustar a largura da imagem de pré-visualização para 100% */
+    height: 100%; /* Ajustar a altura da imagem de pré-visualização para 100% */
+    object-fit: contain; /* Garantir que a imagem preencha o contêiner sem distorcer */
+}
+
+#imagem-mensagem {
+    color: #333;
+}
+
+#produtos-kit-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 0.5rem;
+    transform: scale(1.2); /* Aumentar o tamanho da caixa de seleção */
+}
+
+.produto-kit-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 10px;
+}
+
+.footer-section h3 {
+    color: black;
+}
+
+.footer-section a {
+    color: black;
+    text-decoration: none;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0px 0px 0px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer-bottom p {
+    margin: 0;
+}

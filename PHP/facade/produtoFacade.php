@@ -117,6 +117,146 @@ class ProdutoFacade {
 
     }
 
+
+    // Método para editar um produto existente
+    public function editarProduto($dadosProduto, $imagem): array {
+
+        try {
+
+            // Variáveis para armazenar os dados do formulário
+            $idProduto = intval($dadosProduto['id']);
+            $nome = htmlspecialchars($dadosProduto['nome']);
+            $quantidade = intval($dadosProduto['quantidade']);
+            $categoria = htmlspecialchars($dadosProduto['categoria']);
+            $tipo = htmlspecialchars($dadosProduto['tipo']);
+            $descricao = isset($dadosProduto['descricao']) ? htmlspecialchars($dadosProduto['descricao']) : '';
+            $tipoPrincipal = isset($dadosProduto['tipoPrincipal']) ? htmlspecialchars($dadosProduto['tipoPrincipal']) : '';
+            $produtosKit = isset($dadosProduto['produtosKit']) ? json_decode($dadosProduto['produtosKit'], true) : [];
+            $valor = isset($dadosProduto['valor']) ? floatval($dadosProduto['valor']) : 0;
+    
+            // Verificar se uma nova imagem foi enviada
+            if ($imagem && is_array($imagem) && $imagem['error'] == UPLOAD_ERR_OK) {
+
+                $nomeImagemOriginal = basename($imagem['name']);
+                $nomeImagem = preg_replace('/[^a-zA-Z0-9-_\.]/', '-', strtolower($nomeImagemOriginal));
+                $nomeImagem = str_replace(' ', '-', $nomeImagem);
+    
+                $diretorioDestino = realpath(__DIR__ . '/../../img/produtos');
+
+                if (!$diretorioDestino) {
+                    throw new Exception("Erro ao resolver o caminho do diretório.");
+                }
+
+                $caminhoFisicoDestino = $diretorioDestino . '/' . $nomeImagem;
+                $caminhoRelativoBanco = 'img/produtos/' . $nomeImagem;
+    
+                if (!file_exists($diretorioDestino)) {
+                    if (!mkdir($diretorioDestino, 0777, true)) {
+                        throw new Exception("Falha ao criar diretório: $diretorioDestino");
+                    }
+                }
+    
+                if (!is_writable($diretorioDestino)) {
+                    throw new Exception("O diretório $diretorioDestino não tem permissão de escrita.");
+                }
+    
+                if (move_uploaded_file($imagem['tmp_name'], $caminhoFisicoDestino)) {
+
+                    if ($dadosProduto['imagemExistente'] && file_exists(realpath(__DIR__ . '/../../../' . $dadosProduto['imagemExistente']))) {
+
+                        if (!unlink(realpath(__DIR__ . '/../../' . $dadosProduto['imagemExistente']))) {
+                            throw new Exception("Erro ao excluir a imagem antiga.");
+                        }
+
+                    }
+
+                } else {
+                    throw new Exception("Erro ao mover a nova imagem para $caminhoFisicoDestino.");
+                }
+
+            } else {
+                $caminhoRelativoBanco = $dadosProduto['imagemExistente'];
+            }
+    
+            $dadosProduto['imagem'] = $caminhoRelativoBanco;
+    
+            // Instanciar a fábrica concreta de acordo com a categoria do produto
+            $fabrica = $this->obterFabrica($categoria);
+    
+            if ($tipo === 'Kit' && !empty($produtosKit)) {
+
+                $valorKit = 0;
+                $produtosKitInfo = [];
+    
+                foreach ($produtosKit as $produto) {
+
+                    $valorProduto = floatval($produto['valorProduto']);
+                    $quantidadeProduto = intval($produto['quantidade']);
+                    $tipoProduto = htmlspecialchars($produto['tipoProduto']);
+                    $descricaoProduto = isset($produto['descricao']) ? htmlspecialchars($produto['descricao']) : '';
+                    $valorKit += $valorProduto * $quantidadeProduto;
+    
+                    $produtoObj = $fabrica->criarProduto(
+                        -1, 
+                        '', 
+                        $produto['nomeProduto'], 
+                        $valorProduto, 
+                        $quantidadeProduto, 
+                        $categoria, 
+                        $tipoProduto, 
+                        "Produto do Kit de " . $categoria
+                    );
+    
+                    $produtosKitInfo[] = $produtoObj;
+                }
+    
+                $kitProduto = $fabrica->criarProduto(
+                    $idProduto, 
+                    $caminhoRelativoBanco, 
+                    $nome, 
+                    $valorKit, 
+                    $quantidade, 
+                    $categoria, 
+                    $tipo, 
+                    $descricao, 
+                    $produtosKitInfo
+                );
+    
+                if ($this->crudProduto->atualizarEntidade($kitProduto)) {
+                    return ["status" => "sucesso", "mensagem" => "Kit atualizado com sucesso."];
+                } else {
+                    throw new Exception("Erro ao atualizar o kit no banco de dados.");
+                }
+
+            } else {
+
+                $produto = $fabrica->criarProduto(
+                    $idProduto, 
+                    $caminhoRelativoBanco, 
+                    $nome, 
+                    $valor, 
+                    $quantidade,
+                    $categoria, 
+                    $tipo, 
+                    $descricao
+                );
+    
+                if ($this->crudProduto->atualizarEntidade($produto)) {
+                    return ["status" => "sucesso", "mensagem" => "Produto atualizado com sucesso."];
+                } else {
+                    throw new Exception("Erro ao atualizar o produto no banco de dados.");
+                }
+
+            }
+
+        } catch (Exception $excecao) {
+            return ["status" => "erro", "mensagem" => $excecao->getMessage()];
+        }
+
+    }
+    
+    
+
     // Método para obter a fábrica correspondente à categoria do produto
     private function obterFabrica($categoria): ArduinoConcreteCreator|DisplayConcreteCreator|MotoresConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator {
         switch ($categoria) {
@@ -134,6 +274,8 @@ class ProdutoFacade {
                 throw new Exception("Categoria de produto inválida.");
         }
     }
+
+
 
 
     // Método para ler um produto pelo ID
@@ -319,8 +461,5 @@ class ProdutoFacade {
 
     }
     
-    
-    
-
 
 }

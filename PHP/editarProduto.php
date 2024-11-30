@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../Css/style.css">
-    <link rel="stylesheet" href="../Css/cadastrarProduto.css">
+    <link rel="stylesheet" href="../Css/editarProduto.css">
 </head>
 <body>
   <nav class="cabecalho">
@@ -66,9 +66,10 @@
       <h2>Editar Produto</h2> 
 
       <form>
-        <label for="imagem-produto" class="input-label">Imagem do Produto</label>
-        <div class="input-imagem-container" onclick="document.getElementById('imagem-produto').click();">   
+        <label for="imagem-produto" class="input-label">Imagem do Produto</label> 
+        <div class="input-imagem-container" onclick="document.getElementById('imagem-produto').click();">
           <input type="file" id="imagem-produto" name="imagem" accept="image/*" required> 
+          <input type="hidden" id="imagem-atual" name="imagem-atual"> 
           <div class="input-imagem-placeholder"> 
             <img id="imagem-preview" class="icone" src="../img/iconAdcionarImagem.png" alt="Adicionar imagem"> 
             <p id="imagem-mensagem">Selecione uma imagem para o produto clicando aqui.</p> 
@@ -113,7 +114,11 @@
           </div>
         </div>
 
-        <button type="submit">Editarr</button>
+        <div class="button-container">
+          <a id="cancelar" href="index.php">Cancelar</a>
+          <button id="salvar-produto" type="submit">Editar</button>
+      </div>
+
       </form>
     </div>
   </section>
@@ -140,7 +145,5 @@
   </footer>
 
   <script src="../js/editarProduto/carregarDadosProduto.js"></script>
-  <script src="../js/cadastrarProduto/enviarFormulario.js"></script>
-  <script src="../js/cadastrarProduto/cadastrarProduto.js"></script>
 </body>
 </html>

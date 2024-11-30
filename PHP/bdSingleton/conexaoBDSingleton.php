@@ -30,54 +30,54 @@ class ConexaoBDSingleton {
 
     }
 
-    public function setUsuario($usuarioBD) {
+    public function setUsuario($usuarioBD): void {
         $this -> usuario = $usuarioBD;
     }
 
-    public function setSenha($senhaBD) {
+    public function setSenha($senhaBD): void {
         $this -> senhaBD = $senhaBD;
     }
 
-    public function setEsquema($esquema) {
+    public function setEsquema($esquema): void {
         $this -> esquema = $esquema;
     }
 
-    public function setPorta($porta) {
+    public function setPorta($porta): void {
         $this -> porta = $porta;
     }
 
-    public function setHost($host) {
+    public function setHost($host): void {
         $this -> host = $host;
     }
 
-    public function getUsuario() {
+    public function getUsuario(): mixed {
         return $this -> usuario;
     }
 
-    public function getSenha() {
+    public function getSenha(): mixed {
         return $this -> senhaBD;
     }
 
-    public function getEsquema() {
+    public function getEsquema(): mixed {
         return $this -> esquema;
     }
 
-    public function getPorta() {
+    public function getPorta(): mixed {
         return $this -> porta;
     }
 
-    public function getHost() {
+    public function getHost(): mixed {
         return $this -> host;
     }
 
-    public function getConexao() {
+    public function getConexao(): mysqli {
 
         return $this->conexao;
 
     }
 
     // Método para executar a conexão com o banco.
-    public function verificarConexao() {
+    public function verificarConexao(): void {
         
         // Verifica se a conexão não houve erro.
         if ($this -> conexao -> connect_error) {
@@ -93,7 +93,7 @@ class ConexaoBDSingleton {
     }
 
     // Método para terminar a conexão com o banco de dados.
-    public function encerrarConexao() {
+    public function encerrarConexao(): void {
         
         if ($this -> conexao -> close()) {
 
@@ -108,7 +108,7 @@ class ConexaoBDSingleton {
     }
 
     // Método estático para pegar a instância unica da conexão, seguindo o padrão singleton.
-    public static function getInstancia($hostBD, $usuarioBD, $senhaBD, $esquemaBD, $portaBD) {
+    public static function getInstancia($hostBD, $usuarioBD, $senhaBD, $esquemaBD, $portaBD): mixed {
         
         // Pegando a intância unica que é estática, verificando se ela já foi instanciada.
         // utilizando "self", pois em php para ter acesso a atributos "static" só por meio dessa palavra chave.
