@@ -36,10 +36,13 @@ class ArduinoConcreteKit extends Product {
     }
 
     public function calcularValorTotal(): float {
+
         $valorTotal = 0;
         foreach ($this->produtos as $produto) {
             $valorTotal += $produto->calcularValorPedido() * $produto->getQuantidade();
         }
+        
         return $valorTotal;
     }
+
 }

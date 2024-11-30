@@ -12,4 +12,5 @@ interface ItemPedidoComponent {
     public function calcularValorPedido(): float;
     public function obterProdutos(): array;
     public function definirProdutos(array $produtos): void;
+    
 }

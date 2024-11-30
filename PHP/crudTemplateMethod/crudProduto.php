@@ -75,7 +75,6 @@
                     return $produtosEncontrados;
 
                 } else {
-                    echo 'Nenhum produto encontrado para a categoria especificada.';
                     return null;
                 }
 

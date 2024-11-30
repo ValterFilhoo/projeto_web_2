@@ -7,6 +7,7 @@ require_once __DIR__ . "/../crudTemplateMethod/crudItemPedido.php";
 require_once __DIR__ . "/../encontrarFabricaEspecifica/gerenciadorFabrica.php";
 
 class PedidoFacade {
+
     private $pedidoComposite;
     private $fabricaPedido;
     private $crudPedido;
@@ -22,42 +23,8 @@ class PedidoFacade {
     }
 
 
-    // Método para criar um produto concreto a partir dos dados fornecidos
-    private function criarProdutoConcreto($produtoData): ItemPedidoComponent {
-
-        // Obtém a fábrica correspondente à categoria do produto
-        $fabricaProduto = $this->gerenciadorDeFabrica->obterFabrica($produtoData['categoria']);
-
-        // Verifica se a fábrica foi encontrada
-        if (!$fabricaProduto) {
-            throw new Exception("Fábrica não encontrada para categoria: " . $produtoData['categoria']);
-        }
-
-        // Cria uma instância do produto usando a fábrica
-        $produto = $fabricaProduto->retornarInstanciaProduto(
-            $produtoData['id'],
-            $produtoData['imagemProduto'],
-            $produtoData['nomeProduto'],
-            $produtoData['valorProduto'],
-            $produtoData['quantidade'],
-            $produtoData['categoria'],
-            $produtoData['tipoProduto'],
-            $produtoData['descricaoProduto'],
-            isset($produtoData['produtosKit']) ? $produtoData['produtosKit'] : []
-        );
-
-        // Verifica se o produto criado é um objeto válido
-        if (!is_object($produto)) {
-            throw new Exception("Erro ao criar produto concreto: não é um objeto.");
-        }
-
-        // Retorna o produto criado
-        return $produto;
-
-    }
-
     // Método para criar um pedido
-    public function criarPedido($userId, $dadosPedido, $detalhesPagamento): array {
+    public function criarPedido(int $userId, $dadosPedido, $detalhesPagamento): array {
 
         try {
 
@@ -147,7 +114,7 @@ class PedidoFacade {
 
 
     // Método para adicionar um item ao pedido
-    private function adicionarItemAoPedido($produto) {
+    private function adicionarItemAoPedido($produto): void {
 
         // Obtém a fábrica correspondente à categoria do produto
         $fabrica = $this->gerenciadorDeFabrica->obterFabrica($produto['categoria']);
@@ -156,7 +123,7 @@ class PedidoFacade {
         $produtosKit = isset($produto['produtosKit']) ? $this->criarProdutosKit($produto['produtosKit']) : [];
         
         // Cria uma instância do produto usando a fábrica
-        $produtoItem = $fabrica->retornarInstanciaProduto(
+        $produtoItem = $fabrica->criarProduto(
             $produto['id'], 
             $produto['imagemProduto'], 
             $produto['nomeProduto'], 
@@ -170,7 +137,7 @@ class PedidoFacade {
 
         // Cria uma instância de ItemPedido usando a fábrica de itens de pedido
         $fabricaItemPedido = new ItemPedidoConcreteCreator();
-        $itemPedido = $fabricaItemPedido->retornarInstanciaItemPedido($produtoItem, $produto['quantidade']);
+        $itemPedido = $fabricaItemPedido->criarItemPedido($produtoItem, $produto['quantidade']);
         
         // Adiciona o item ao pedido se for uma instância de ItemPedidoComponent
         if ($itemPedido instanceof ItemPedidoComponent) {
@@ -182,7 +149,7 @@ class PedidoFacade {
     }
 
     // Método para criar produtos do kit
-    private function criarProdutosKit($produtos) {
+    private function criarProdutosKit($produtos): array {
 
         return array_map(function ($produtoData) {
 
@@ -193,7 +160,7 @@ class PedidoFacade {
             }
             
             // Cria uma instância do produto usando a fábrica
-            $produto = $fabricaProduto->retornarInstanciaProduto(
+            $produto = $fabricaProduto->criarProduto(
                 $produtoData['id'],
                 $produtoData['imagemProduto'],
                 $produtoData['nomeProduto'],
@@ -226,7 +193,7 @@ class PedidoFacade {
     }
 
     // Método para criar a estratégia de pagamento
-    private function criarEstrategiaPagamento($metodoPagamento, $detalhesPagamento) {
+    private function criarEstrategiaPagamento($metodoPagamento, $detalhesPagamento): BoletoStrategy|CartaoCreditoStrategy|PixStrategy {
 
         if (!isset($metodoPagamento)) {
             throw new Exception('Forma de pagamento inválida.');

@@ -25,7 +25,7 @@ try {
 
         if ($produto) {
 
-            if ($produto['tipoProduto'] === 'Kit' && isset($produto['produtosKit'])) {
+            if ($produto['tipoProduto'] === 'Kit' && isset($produto['produtosKit']) && is_string($produto['produtosKit'])) {
                 $produto['produtosKit'] = json_decode($produto['produtosKit'], true);
             }
 

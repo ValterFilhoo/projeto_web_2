@@ -125,7 +125,7 @@
 
         }
 
-        public function listarPedidosPorUsuario($idUsuario) {
+        public function listarPedidosPorUsuario($idUsuario): array {
 
             $sql = "
                 SELECT 

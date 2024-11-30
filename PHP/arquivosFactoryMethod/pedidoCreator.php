@@ -8,37 +8,37 @@ abstract class PedidoCreator {
     private Pedido $pedido; 
 
     abstract public function retornarInstanciaPedido(int $idUsuario, 
-    string $dataPedido, 
-    string $tipoPagamento, 
-    array $itensPedido, 
+    string $data, 
+    string $tipoPag, 
+    array $itens, 
     float $valor, 
     ?string $chavePix, 
     ?string $numeroCartao, 
-    ?int $quantidadeParcelas, 
-    ?string $numeroBoleto, 
+    ?int $qtdParcelas, 
+    ?string $boleto, 
     ?float $valorParcelas): Pedido;
 
 
     public function criarPedido(int $idUsuario, 
-    string $dataPedido, 
-    string $tipoPagamento, 
-    array $itensPedido, 
+    string $data, 
+    string $tipoPag, 
+    array $itens, 
     float $valor, 
     ?string $chavePix, 
     ?string $numeroCartao, 
-    ?int $quantidadeParcelas, 
-    ?string $numeroBoleto, 
+    ?int $qtdParcelas, 
+    ?string $boleto, 
     ?float $valorParcelas): Pedido {
         
         return $this->pedido = $this->retornarInstanciaPedido($idUsuario, 
-        $dataPedido, 
-        $tipoPagamento, 
-        $itensPedido, 
+        $data, 
+        $tipoPag, 
+        $itens, 
         $valor, 
         $chavePix, 
         $numeroCartao, 
-        $quantidadeParcelas, 
-        $numeroBoleto, 
+        $qtdParcelas, 
+        $boleto, 
         $valorParcelas);
     }
 

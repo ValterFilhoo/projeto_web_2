@@ -56,4 +56,5 @@ class CartaoCreditoStrategy extends FormaPagamentoStrategy {
     public function getValorParcelas(): float {
         return $this->valorParcelas;
     }
+    
 }

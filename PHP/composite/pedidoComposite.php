@@ -15,22 +15,27 @@ class PedidoComposite implements ItemPedidoComponent {
     }
 
     public function removerItem(ItemPedidoComponent $item): bool {
+
         $indiceDoItem = array_search($item, $this->itensPedido);
         if ($indiceDoItem !== false) {
             unset($this->itensPedido[$indiceDoItem]);
             $this->itensPedido = array_values($this->itensPedido);
             return true;
         }
+        
         return false;
+
     }
 
+
     public function definirFormaPagamento(FormaPagamentoStrategy $strategy): void {
-        $this->log("Definindo forma de pagamento: " . get_class($strategy));
+
         $this->pagamentoStrategy = $strategy;
+
         if ($this->pagamentoStrategy === null) {
             throw new Exception("Erro. A estratégia de pagamento está nula após atribuição.");
         }
-        $this->log("Forma de pagamento definida com sucesso: " . get_class($this->pagamentoStrategy));
+
     }
 
     public function calcularValorPedido(): float {
@@ -49,9 +54,7 @@ class PedidoComposite implements ItemPedidoComponent {
         return $this->getValorTotalPedido();
     }
 
-    private function log($message): void {
-        file_put_contents(__DIR__ . "/pedido_composite_log.txt", date('Y-m-d H:i:s') . " - " . $message . "\n", FILE_APPEND);
-    }
+  
 
     public function getValorTotalPedido(): float {
         return $this->valorTotalPedido;

@@ -8,27 +8,27 @@ class PedidoConcreteCreator extends PedidoCreator {
 
     public function retornarInstanciaPedido(
         int $idUsuario, 
-        string $dataPedido, 
-        string $tipoPagamento, 
-        array $itensPedido, 
+        string $data, 
+        string $tipoPag, 
+        array $itens, 
         float $valor, 
         ?string $chavePix, 
         ?string $numeroCartao, 
-        ?int $quantidadeParcelas, 
-        ?string $numeroBoleto, 
+        ?int $qtdParcelas, 
+        ?string $boleto, 
         ?float $valorParcelas
     ): Pedido {
         return new PedidoConcrete(
-            $idUsuario, 
-            $dataPedido, 
-            $tipoPagamento, 
-            $itensPedido, 
-            $valor, 
-            $chavePix, 
-            $numeroCartao, 
-            $quantidadeParcelas, 
-            $numeroBoleto, 
-            $valorParcelas
+        $idUsuario, 
+        $data, 
+        $tipoPag, 
+        $itens, 
+        $valor, 
+        $chavePix, 
+        $numeroCartao, 
+        $qtdParcelas, 
+        $boleto, 
+        $valorParcelas
         );
 
     }

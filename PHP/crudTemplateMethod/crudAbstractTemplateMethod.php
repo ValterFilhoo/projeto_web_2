@@ -243,23 +243,23 @@
         }
         
         
-        protected function processarRegistro($tipo, $fabricaConcreta, $linha): array|null {
+        protected function processarRegistro($tipo, $fabricaConcreta, $dados): array|null {
             
-            if (empty($linha)) {
-                return null; // Retorna null se a linha estiver vazia
+            if (empty($dados)) {
+                return null; // Retorna null se os dados estiver vazio
             }
         
             // Seleciona o método de processamento com base no tipo de entidade
             switch ($tipo) {
 
                 case 'Produtos':
-                    return $this->processarProduto($fabricaConcreta, $linha);
+                    return $this->processarProduto($fabricaConcreta, $dados);
                 case 'Usuários':
-                    return $this->processarUsuario($fabricaConcreta, $linha);
+                    return $this->processarUsuario($fabricaConcreta, $dados);
                 case 'Pedidos':
-                    $fabricaItemPedido = $this->getFactory('ItensPedido', $linha);
-                    $fabricaProduto = $this->getFactory('Produtos', $linha);
-                    return $this->processarPedido($fabricaConcreta, $fabricaItemPedido, $fabricaProduto, $linha);
+                    $fabricaItemPedido = $this->getFactory('ItensPedido', $dados);
+                    $fabricaProduto = $this->getFactory('Produtos', $dados);
+                    return $this->processarPedido($fabricaConcreta, $fabricaItemPedido, $fabricaProduto, $dados);
                 default:
                     echo "Tipo de entidade desconhecido: $tipo<br>";
                     return null; // Retorna null para tipo de entidade desconhecido
@@ -351,17 +351,19 @@
         
         
         // Método que retorna objetos do tipo concreto de Pedidos.
-        protected function processarPedido($fabricaPedido, $fabricaItemPedido, $fabricaProduto, $linhas): array {
+        protected function processarPedido($faPedido, $faItem, $faProduto, $dados): array {
+            
             $itensPedido = []; // Inicializa o array de itens do pedido
         
             // Processa cada registro de item no array de registros
-            foreach ($linhas as $linha) {
+            foreach ($dados as $linha) {
+
                 $dadosItem = is_array($linha) && isset($linha[0]) ? $linha[0] : $linha;
         
                 // Seleciona a fábrica correta para o produto
-                $fabricaProduto = $this->getFactory('Produtos', $dadosItem);
+                $faProduto = $this->getFactory('Produtos', $dadosItem);
         
-                if (!$fabricaProduto) {
+                if (!$faProduto) {
                     echo "Erro ao obter fábrica para produto: " . $dadosItem['nomeProduto'] . "<br>";
                     continue; // Pula o item se a fábrica não for encontrada
                 }
@@ -369,7 +371,7 @@
                 // Verifica se os dados necessários estão presentes
                 if ($this->dadosNecessariosPresentes($dadosItem)) {
 
-                    $itemPedido = $this->processarItemPedido($fabricaProduto, $fabricaItemPedido, $dadosItem);
+                    $itemPedido = $this->processarItemPedido($faProduto, $faItem, $dadosItem);
         
                     if ($itemPedido) {
 
@@ -391,21 +393,21 @@
             }
         
             // Cria a entidade de pedido usando a fábrica concreta de pedidos
-            $entidade = $fabricaPedido->criarPedido(
-                $linhas[0]['idUsuario'],
-                $linhas[0]['dataPedido'],
-                $linhas[0]['tipoPagamento'],
+            $entidade = $faPedido->criarPedido(
+                $dados[0]['idUsuario'],
+                $dados[0]['dataPedido'],
+                $dados[0]['tipoPagamento'],
                 $itensPedido,
-                $linhas[0]['valor'],
-                $linhas[0]['chavePix'] ?? null,
-                $linhas[0]['numeroCartao'] ?? null,
-                $linhas[0]['quantidadeParcelas'] ?? null,
-                $linhas[0]['numeroBoleto'] ?? null,
-                $linhas[0]['valorParcelas'] ?? null
+                $dados[0]['valor'],
+                $dados[0]['chavePix'] ?? null,
+                $dados[0]['numeroCartao'] ?? null,
+                $dados[0]['quantidadeParcelas'] ?? null,
+                $dados[0]['numeroBoleto'] ?? null,
+                $dados[0]['valorParcelas'] ?? null
             );
         
             // Define o ID da entidade criada
-            $entidade->setId($linhas[0]['id']);
+            $entidade->setId($dados[0]['id']);
         
             // Retorna um array associativo com os dados do pedido e seus itens
             return [
