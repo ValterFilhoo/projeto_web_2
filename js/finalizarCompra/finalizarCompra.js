@@ -49,18 +49,16 @@ function mostrarNotificacao(mensagem, duracao = 3000) {
 }
 
 function carregarDadosUsuario(userId, apiUsuarioUrl) {
-
+    
     fetch(`${apiUsuarioUrl}?id=${userId}`)
         .then(response => response.json())
         .then(data => {
-
             if (data.status === 'sucesso') {
-
                 const usuario = data.entidade;
-                document.getElementById('nome').value = usuario.nomeCompleto;
+                document.getElementById('nome').value = usuario.nome;
                 document.getElementById('cpf').value = usuario.cpf;
                 document.getElementById('email').value = usuario.email;
-                document.getElementById('telefone').value = usuario.celular;
+                document.getElementById('telefone').value = usuario.telefone; // Corrigido aqui
 
                 // Inserir os campos adicionais do usuário
                 document.getElementById('sexo').value = usuario.sexo;
@@ -73,16 +71,13 @@ function carregarDadosUsuario(userId, apiUsuarioUrl) {
                 document.getElementById('bairro').value = usuario.bairro;
                 document.getElementById('cidade').value = usuario.cidade;
                 document.getElementById('estado').value = usuario.estado;
-
             } else {
                 console.error('Erro ao carregar os dados do usuário:', data.mensagem);
             }
-
         })
         .catch(error => {
             console.error('Erro na requisição:', error);
         });
-        
 }
 
 function carregarProdutosSelecionados(userId) {

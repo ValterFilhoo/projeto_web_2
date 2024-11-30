@@ -293,6 +293,34 @@ select:focus {
   background-color: #0056b3;
 }
 
+
+/* Estilo para notificações */
+.notificacao {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: 'Roboto', sans-serif;
+  z-index: 1000;
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.notificacao.mostrar {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.notificacao.esconder {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
 footer {
   margin-top: 2rem;
   text-align: center;

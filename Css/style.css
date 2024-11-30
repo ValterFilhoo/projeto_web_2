@@ -279,18 +279,21 @@ button {
   font-size: 16px;
 }
 
-.btn-remover {
+.botoes-acoes .btn-remover {
   background-color: #EB1E1E;
 }
 
-.btn-editar {
+.botoes-acoes .btn-editar {
   background-color: #30E738;
 }
 
-.btn-remover:hover, .btn-editar:hover {
-  opacity: 0.8;
+.botoes-acoes .btn-remover:hover {
+  background-color: #D21717;  /* Use uma cor vermelha mais escura para o hover */
 }
 
+.botoes-acoes .btn-editar:hover {
+  background-color: #28C72A;  /* Use uma cor verde mais escura para o hover */
+}
 
 
 /* Estilo para o modal do carrinho */

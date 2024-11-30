@@ -9,6 +9,7 @@
     require_once __DIR__ . "/../arquivosFactoryMethod/fabricaSensores/sensoresConcreteCreator.php";
     require_once __DIR__ . "/../arquivosFactoryMethod/fabricaItemPedido/itemPedidoConcreteCreator.php";
     require_once __DIR__ . "/../arquivosFactoryMethod/pedidoConcrete/pedidoConcrete.php";
+    require_once __DIR__ . "/../arquivosFactoryMethod/fabricaUser/userConcretCreate.php";
 
 
 
@@ -53,7 +54,7 @@
 
         }
 
-        public function lerEntidade(int $id, string $tipo): array|null {
+        public function lerEntidade(int $id, string $tipo): object|null   {
             
             $operacao = "Ler";
             
@@ -204,8 +205,7 @@
 
         }
     
-        public function listarEntidades(string $tipo): array|null{
-
+        public function listarEntidades(string $tipo): ?array {
             $sql = $this->sqlListar();
             $resultadoDaBusca = $this->conexaoBD->query($sql);
         
@@ -217,7 +217,6 @@
             $entidadesEncontradas = [];
         
             if ($resultadoDaBusca->num_rows > 0) {
-
                 while ($linha = $resultadoDaBusca->fetch_assoc()) {
                     $fabricaConcreta = $this->getFactory($tipo, $linha);
         
@@ -225,33 +224,28 @@
                         continue;
                     }
         
-                    $entidade = $this->processarRegistro($tipo, $fabricaConcreta, $linha);
-
+                    $entidade = $this->processarRegistro($tipo, $fabricaConcreta, [$linha]);
+        
                     if ($entidade) {
                         $entidadesEncontradas[] = $entidade;
                     }
-
                 }
-
+        
                 return $entidadesEncontradas;
-
             } else {
                 echo 'Nenhuma entidade encontrada.';
                 return null;
             }
-
         }
         
         
-        protected function processarRegistro(string $tipo, object $fabricaConcreta, array $dados): array|null {
-            
+        
+        protected function processarRegistro(string $tipo, object $fabricaConcreta, array $dados): ?object {
             if (empty($dados)) {
-                return null; // Retorna null se os dados estiver vazio
+                return null;
             }
         
-            // Seleciona o método de processamento com base no tipo de entidade
             switch ($tipo) {
-
                 case 'Produtos':
                     return $this->processarProduto($fabricaConcreta, $dados);
                 case 'Usuários':
@@ -262,102 +256,72 @@
                     return $this->processarPedido($fabricaConcreta, $fabricaItemPedido, $fabricaProduto, $dados);
                 default:
                     echo "Tipo de entidade desconhecido: $tipo<br>";
-                    return null; // Retorna null para tipo de entidade desconhecido
+                    return null;
             }
-
         }
         
         
+        
         // Método que retorna instancias de objetos de produtos concretos.
-        protected function processarProduto(object $fabricaConcreta, array $linha): array|null {
-
+        protected function processarProduto(object $fabricaConcreta, array $linha): ?ItemPedidoComponent {
             $dadosProduto = isset($linha[0]) ? $linha[0] : $linha;
         
             $chavesNecessarias = ['id', 'imagemProduto', 'nomeProduto', 'valorProduto', 'quantidade', 'categoria', 'tipoProduto', 'descricaoProduto'];
         
             foreach ($chavesNecessarias as $chave) {
-
                 if (!isset($dadosProduto[$chave])) {
                     return null;
                 }
-
             }
         
             $dadosProduto['valorProduto'] = (float)$dadosProduto['valorProduto'];
             $dadosProduto['quantidade'] = (int)$dadosProduto['quantidade'];
         
-            $entidade = $fabricaConcreta->criarProduto(
+            $produto = $fabricaConcreta->criarProduto(
                 $dadosProduto['id'], $dadosProduto['imagemProduto'], $dadosProduto['nomeProduto'], $dadosProduto['valorProduto'], 
                 $dadosProduto['quantidade'], $dadosProduto['categoria'], $dadosProduto['tipoProduto'], $dadosProduto['descricaoProduto']
             );
         
-            $produtoArray = [
-                'id' => $entidade->getId(),
-                'imagemProduto' => $entidade->getImagem(),
-                'nomeProduto' => $entidade->getNome(),
-                'valorProduto' => $entidade->getValor(),
-                'quantidade' => $entidade->getQuantidade(),
-                'categoria' => $entidade->getCategoria(),
-                'tipoProduto' => $entidade->getTipo(),
-                'descricaoProduto' => $entidade->getDescricao()
-            ];
-        
-            // Se for um kit, adicione os produtos do kit ao array
             if ($dadosProduto['tipoProduto'] === 'Kit' && !empty($dadosProduto['produtosKit'])) {
                 $produtosKit = json_decode($dadosProduto['produtosKit'], true);
         
                 if (is_array($produtosKit)) {
-
-                    $produtoArray['produtosKit'] = array_map(function($produtoKit) use ($fabricaConcreta) {
-
-                        // Garantir que todos os produtos do kit têm as chaves necessárias
-                        $produtoKit = [
-                            'id' => isset($produtoKit['id']) ? (int)$produtoKit['id'] : 0,
-                            'imagemProduto' => $produtoKit['imagemProduto'] ?? '',
-                            'nomeProduto' => $produtoKit['nomeProduto'] ?? '',
-                            'valorProduto' => isset($produtoKit['valorProduto']) ? (float)$produtoKit['valorProduto'] : 0.0,
-                            'quantidade' => isset($produtoKit['quantidade']) ? (int)$produtoKit['quantidade'] : 0,
-                            'categoria' => $produtoKit['categoria'] ?? '',
-                            'tipoProduto' => $produtoKit['tipoProduto'] ?? '',
-                            'descricaoProduto' => $produtoKit['descricaoProduto'] ?? ''
-                        ];
-        
-                        $produtoKitObj = $fabricaConcreta->criarProduto(
+                    $produtosKitObjetos = array_map(function(array $produtoKit) use ($fabricaConcreta): ItemPedidoComponent {
+                        return $fabricaConcreta->criarProduto(
                             $produtoKit['id'], $produtoKit['imagemProduto'], $produtoKit['nomeProduto'], $produtoKit['valorProduto'], 
                             $produtoKit['quantidade'], $produtoKit['categoria'], $produtoKit['tipoProduto'], $produtoKit['descricaoProduto']
                         );
-        
-                        return [
-                            'id' => $produtoKitObj->getId(),
-                            'imagemProduto' => $produtoKitObj->getImagem(),
-                            'nomeProduto' => $produtoKitObj->getNome(),
-                            'valorProduto' => $produtoKitObj->getValor(),
-                            'quantidade' => $produtoKitObj->getQuantidade(),
-                            'categoria' => $produtoKitObj->getCategoria(),
-                            'tipoProduto' => $produtoKitObj->getTipo(),
-                            'descricaoProduto' => $produtoKitObj->getDescricao()
-                        ];
-
                     }, $produtosKit);
-
-                } else {
-                    $produtoArray['produtosKit'] = [];
+        
+                    // Utilize definirProdutos em vez de setProdutosKit
+                    if (method_exists($produto, 'definirProdutos')) {
+                        $produto->definirProdutos($produtosKitObjetos);
+                    } else {
+                        echo "A classe " . get_class($produto) . " não possui o método definirProdutos.<br>";
+                    }
                 }
-
             }
         
-            return $produtoArray;
+            return $produto;
         }
         
         
+        
         // Método que retorna objetos do tipo concreto de Pedidos.
-        protected function processarPedido(object $faPedido, object $faItem, object $faProduto, array $dados): array {
-            
+        protected function processarPedido(object $faPedido, object $faItem, object $faProduto, array $dados): ?Pedido {
             $itensPedido = []; // Inicializa o array de itens do pedido
+            $idUsuario = null;
+            $dataPedido = null;
+            $tipoPagamento = null;
+            $valorTotal = 0.0;
+            $chavePix = null;
+            $numeroCartao = null;
+            $quantidadeParcelas = null;
+            $numeroBoleto = null;
+            $valorParcelas = null;
         
             // Processa cada registro de item no array de registros
             foreach ($dados as $linha) {
-
                 $dadosItem = is_array($linha) && isset($linha[0]) ? $linha[0] : $linha;
         
                 // Seleciona a fábrica correta para o produto
@@ -370,72 +334,86 @@
         
                 // Verifica se os dados necessários estão presentes
                 if ($this->dadosNecessariosPresentes($dadosItem)) {
-
                     $itemPedido = $this->processarItemPedido($faProduto, $faItem, $dadosItem);
         
                     if ($itemPedido) {
-
-                        if (isset($dadosItem['tipoProduto']) && $dadosItem['tipoProduto'] === 'Kit') {
-                            $produtosKit = isset($dadosItem['produtosKit']) ? json_decode($dadosItem['produtosKit'], true) : [];
-                            $itemPedido->setProdutosKit(json_encode($produtosKit));  // Passando como string JSON
-                        } else {
-                            $itemPedido->setProdutosKit(null);
+                        if ($itemPedido instanceof ItemPedidoKit && isset($dadosItem['produtosKit'])) {
+                            $produtosKit = json_decode($dadosItem['produtosKit'], true);
+                            $itemPedido->definirProdutos($produtosKit);
                         }
-                        
+        
                         $itensPedido[] = $itemPedido;
+        
+                        // Define outros atributos do pedido se ainda não estiverem definidos
+                        if ($idUsuario === null && isset($dadosItem['idUsuario'])) {
+                            $idUsuario = intval($dadosItem['idUsuario']);
+                        }
+                        if ($dataPedido === null && isset($dadosItem['dataPedido'])) {
+                            $dataPedido = $dadosItem['dataPedido'];
+                        }
+                        if ($tipoPagamento === null && isset($dadosItem['tipoPagamento'])) {
+                            $tipoPagamento = $dadosItem['tipoPagamento'];
+                        }
+                        if (isset($dadosItem['valorItem'])) {
+                            $valorTotal += floatval($dadosItem['valorItem']) * $itemPedido->getQuantidade();
+                        }
+                        if ($chavePix === null && isset($dadosItem['chavePix'])) {
+                            $chavePix = $dadosItem['chavePix'];
+                        }
+                        if ($numeroCartao === null && isset($dadosItem['numeroCartao'])) {
+                            $numeroCartao = $dadosItem['numeroCartao'];
+                        }
+                        if ($quantidadeParcelas === null && isset($dadosItem['quantidadeParcelas'])) {
+                            $quantidadeParcelas = intval($dadosItem['quantidadeParcelas']);
+                        }
+                        if ($numeroBoleto === null && isset($dadosItem['numeroBoleto'])) {
+                            $numeroBoleto = $dadosItem['numeroBoleto'];
+                        }
+                        if ($valorParcelas === null && isset($dadosItem['valorParcelas'])) {
+                            $valorParcelas = floatval($dadosItem['valorParcelas']);
+                        }
                     } else {
                         echo "Falha ao processar item do pedido: " . json_encode($dadosItem) . "<br>";
                     }
-
                 } else {
                     echo "Dados do item incompletos: " . json_encode($dadosItem) . "<br>";
                 }
             }
         
-            // Cria a entidade de pedido usando a fábrica concreta de pedidos
-            $entidade = $faPedido->criarPedido(
-                $dados[0]['idUsuario'],
-                $dados[0]['dataPedido'],
-                $dados[0]['tipoPagamento'],
+            // Verifica se os atributos necessários foram definidos
+            if ($idUsuario === null || $dataPedido === null || $tipoPagamento === null) {
+                echo "Atributos do pedido incompletos.";
+                return null;
+            }
+        
+            // Criação do pedido e retorno (exemplo simplificado)
+            $pedido = $faPedido->criarPedido(
+                $idUsuario,
+                $dataPedido,
+                $tipoPagamento,
                 $itensPedido,
-                $dados[0]['valor'],
-                $dados[0]['chavePix'] ?? null,
-                $dados[0]['numeroCartao'] ?? null,
-                $dados[0]['quantidadeParcelas'] ?? null,
-                $dados[0]['numeroBoleto'] ?? null,
-                $dados[0]['valorParcelas'] ?? null
+                $valorTotal,
+                $chavePix,
+                $numeroCartao,
+                $quantidadeParcelas,
+                $numeroBoleto,
+                $valorParcelas
             );
         
-            // Define o ID da entidade criada
-            $entidade->setId($dados[0]['id']);
+            // Certifique-se de que o ID do pedido foi definido
+            if ($pedido instanceof PedidoConcrete) {
+                $pedido->setId($this->obterUltimoIdInserido());
+            }
         
-            // Retorna um array associativo com os dados do pedido e seus itens
-            return [
-                'id' => $entidade->getId(),
-                'idUsuario' => $entidade->getIdUsuario(),
-                'dataPedido' => $entidade->getDataPedido(),
-                'tipoPagamento' => $entidade->getTipoPagamento(),
-                'valor' => $entidade->getValor(),
-                'chavePix' => $entidade->getChavePix(),
-                'numeroCartao' => $entidade->getNumeroCartao(),
-                'quantidadeParcelas' => $entidade->getQuantidadeParcelas(),
-                'numeroBoleto' => $entidade->getNumeroBoleto(),
-                'valorParcelas' => $entidade->getValorParcelas(),
-                'itens' => array_map(function($item) {
-                    return [
-                        'idProduto' => $item->getId(),
-                        'nomeProduto' => $item->getNome(),
-                        'quantidade' => $item->getQuantidade(),
-                        'valor' => $item->getValor(),
-                        'categoriaProduto' => $item->getCategoria(),
-                        'tipoProduto' => $item->getTipo(),
-                        'descricaoProduto' => $item->getDescricao(),
-                        'imagemProduto' => $item->getImagem(),
-                        'produtosKit' => $item->getTipo() === 'Kit' ? json_decode($item->getProdutosKit(), true) : []
-                    ];
-                }, $entidade->getItensPedido())
-            ];
+            return $pedido;
         }
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -459,34 +437,30 @@
 
         }
         
-        protected function processarItemPedido(object $fabricaProduto, object $fabricaItemPedido, array $linha): mixed {
-
-            // Cria o produto usando a fábrica de produtos
-            $produto = $fabricaProduto->criarProduto(
-                $linha['idProduto'], $linha['imagemProduto'], $linha['nomeProduto'], $linha['valorProduto'], 
-                $linha['quantidade'], $linha['categoria'], $linha['tipoProduto'], $linha['descricaoProduto']
-            );
+        // Exemplo de método processarItemPedido modificado
+        protected function processarItemPedido(object $fabricaProduto, object $fabricaItemPedido, array $linha): ?ItemPedidoComponent {
+            $produto = $this->processarProduto($fabricaProduto, $linha);
         
-            // Verifica se a criação do produto foi bem-sucedida
-            if (!$produto) {
-                echo "Falha ao criar produto.<br>";
+            if ($produto === null) {
                 return null;
             }
         
-            // Cria o item de pedido usando a fábrica de itens de pedido
-            $entidade = $fabricaItemPedido->criarItemPedido($produto, $linha['quantidade']);
+            $quantidade = isset($linha['quantidade']) ? intval($linha['quantidade']) : 1;
         
-            // Verifica se a criação do item de pedido foi bem-sucedida
-            if (!$entidade) {
-                echo "Falha ao criar item de pedido.<br>";
+            // Verifica o tipo do produto e instancia o item de pedido correto
+            if ($produto->getTipo() === 'Kit') {
+                return new ItemPedidoKit($produto, $quantidade);
+            } else {
+                return new ItemPedidoConcrete($produto, $quantidade);
             }
-        
-            return $entidade;
         }
         
         
+        
+        
+        
         // Método que recebe registros de usuários do banco e retorna um vetor de objetos do tipo User (usuário).
-        protected function processarUsuario(object $fabricaConcreta, array $linha): array|null {
+        protected function processarUsuario(object $fabricaConcreta, array $linha): ?User {
 
             // Desencapsulando os dados caso estejam dentro de um array
             $dadosUsuario = isset($linha[0]) ? $linha[0] : $linha;
@@ -497,16 +471,13 @@
                 'dataNascimento', 'cep', 'endereco', 'numeroEndereco', 'complemento', 
                 'referencia', 'bairro', 'cidade', 'estado', 'tipoConta'
             ];
-
+        
             foreach ($chavesNecessarias as $chave) {
-
                 if (!isset($dadosUsuario[$chave])) {
                     echo "Chave faltante: '{$chave}' nos dados: " . json_encode($dadosUsuario);
                     return null;
                 }
-
             }
-
         
             // Converte os campos apropriados para os tipos corretos
             $numeroEndereco = (int) $dadosUsuario['numeroEndereco']; // Converte para int
@@ -534,28 +505,9 @@
             // Define o ID usando um método set
             $entidade->setId($dadosUsuario['id']);
         
-            // Retorna um array associativo com os dados do usuário
-            return [
-                'id' => $entidade->getId(), // Use o getter aqui
-                'nomeCompleto' => $entidade->getNomeCompleto(),
-                'cpf' => $entidade->getCpf(),
-                'celular' => $entidade->getCelular(),
-                'sexo' => $entidade->getSexo(),
-                'email' => $entidade->getEmail(),
-                'senha' => $entidade->getSenha(),
-                'dataNascimento' => $entidade->getDataNascimento(),
-                'cep' => $entidade->getCep(),
-                'endereco' => $entidade->getEndereco(),
-                'numeroEndereco' => $entidade->getNumeroEndereco(),
-                'complemento' => $entidade->getComplemento(),
-                'referencia' => $entidade->getReferencia(),
-                'bairro' => $entidade->getBairro(),
-                'cidade' => $entidade->getCidade(),
-                'estado' => $entidade->getEstado(),
-                'tipoConta' => $entidade->getTipoConta()
-            ];
-
+            return $entidade;
         }
+        
         
         // Método que dependendo do registro consultado no banco, retorna a fábrica concreta do factory method para instanciar seu objeto.
         protected function getFactory(string $tipo, array $dados): ArduinoConcreteCreator|DisplayConcreteCreator|ItemPedidoConcreteCreator|MotoresConcreteCreator|PedidoConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator|UserConcreteCreator|null {

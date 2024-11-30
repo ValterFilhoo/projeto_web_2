@@ -4,26 +4,27 @@ require_once __DIR__ . '/../product.php';
 require_once __DIR__ . '/../../composite/itemPedidoComponent.php';
 
 class ItemPedidoKit implements ItemPedidoComponent {
-    
-    private $idPedido;
-    private $produto;
-    private $quantidade;
-    private $produtosKit;
 
-    public function __construct(Product $produto, int $quantidade) {
+    private int $idPedido;
+    private ItemPedidoComponent $produto;
+    private int $quantidade;
+    private ?string $produtosKit;  // Pode ser uma string JSON ou null
+
+    public function __construct(ItemPedidoComponent $produto, int $quantidade) {
         $this->produto = $produto;
         $this->quantidade = $quantidade;
+        $this->produtosKit = null;
     }
 
-    public function setProduto(Product $produto): void {
+    public function setProduto(ItemPedidoComponent $produto): void {
         $this->produto = $produto;
     }
 
-    public function setIdPedido($idPedido): void { 
-        $this->idPedido = $idPedido; 
+    public function setIdPedido(int $idPedido): void {
+        $this->idPedido = $idPedido;
     }
 
-    public function getProduto(): Product {
+    public function getProduto(): ItemPedidoComponent {
         return $this->produto;
     }
 
@@ -63,12 +64,12 @@ class ItemPedidoKit implements ItemPedidoComponent {
         return $this->produto->getImagem();
     }
 
-    public function calcularValorPedido(): float { 
-        return $this->quantidade * $this->produto->getValor(); 
+    public function calcularValorPedido(): float {
+        return $this->quantidade * $this->produto->getValor();
     }
 
     public function obterProdutos(): array {
-        return $this->produto->obterProdutos();
+        return json_decode($this->produtosKit, true) ?: [];
     }
 
     public function definirProdutos(array $produtos): void {

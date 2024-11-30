@@ -30,8 +30,8 @@ function carregarDetalhesPedido(apiDetalhesPedidoUrl, pedidoId) {
                             <p class="quantidade-produto">Quantidade: ${item.quantidade}</p>
                             <p class="valor-produto">Valor Unitário: R$ ${item.valor.toFixed(2)}</p>`;
                     
-                    if (item.categoriaProduto) {
-                        itensHtml += `<p class="categoria-produto">Categoria: ${item.categoriaProduto}</p>`;
+                    if (item.categoria) {
+                        itensHtml += `<p class="categoria-produto">Categoria: ${item.categoria}</p>`;
                     }
                     if (item.tipoProduto) {
                         itensHtml += `<p class="tipo-produto">Tipo: ${item.tipoProduto}</p>`;

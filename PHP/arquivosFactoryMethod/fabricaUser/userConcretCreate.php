@@ -9,7 +9,22 @@
     class UserConcreteCreator extends UserCreator {
 
         // Implementando o método do padrão de projeto para criação do produto especifico dessa fábrica.
-        public function factoryMethod(string $nomeCompleto, string $email, string $cpf, string $celular, string $sexo, string $senha, string $dataNascimento, string $cep, string $endereco, int $numeroEndereco, string $complemento, string $referencia, string $bairro, $cidade, string $estado, string $tipoConta): User {
+        public function retornarInstanciaUsuario(string $nomeCompleto, 
+        string $email, 
+        string $cpf, 
+        string $celular, 
+        string $sexo, 
+        string $senha, 
+        string $dataNascimento, 
+        string $cep, 
+        string $endereco, 
+        int $numeroEndereco, 
+        string $complemento, 
+        string $referencia, 
+        string $bairro, 
+        string $cidade, 
+        string $estado, 
+        string $tipoConta): User {
             
         switch ($tipoConta) {
 

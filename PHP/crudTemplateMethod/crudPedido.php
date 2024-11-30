@@ -21,10 +21,11 @@
                     pedido.quantidadeParcelas,
                     pedido.numeroBoleto,
                     pedido.valor,
-                    pedido.valorParcelas,  -- Adicionando o campo valorParcelas
+                    pedido.valorParcelas,
                     pedido_produto.idProduto, 
                     pedido_produto.quantidade, 
                     pedido_produto.valorItem,
+                    pedido_produto.produtosKit,  -- Incluindo o campo produtosKit
                     produto.imagemProduto, 
                     produto.nomeProduto, 
                     produto.valorProduto, 
@@ -66,6 +67,7 @@
                     pedido_produto.idProduto, 
                     pedido_produto.quantidade, 
                     pedido_produto.valorItem,
+                    pedido_produto.produtosKit
                     produto.imagemProduto, 
                     produto.nomeProduto, 
                     produto.valorProduto, 

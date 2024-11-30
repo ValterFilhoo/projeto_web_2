@@ -25,93 +25,96 @@ class PedidoFacade {
 
     // Método para criar um pedido
     public function criarPedido(int $userId, array $dadosPedido, array $detalhesPagamento): array {
-
         try {
-
             // Inicia uma transação no banco de dados
             $this->crudPedido->iniciarTransacao();
-
+    
             // Adiciona cada produto ao pedido
             foreach ($dadosPedido['produtos'] as $produto) {
                 $this->adicionarItemAoPedido($produto);
             }
-
+    
             // Cria a estratégia de pagamento com base no método de pagamento fornecido
             $pagamento = $this->criarEstrategiaPagamento($detalhesPagamento['metodoPagamento'], $detalhesPagamento);
             if ($pagamento === null) {
                 throw new Exception('Erro. A estratégia de pagamento está nula.');
             }
-
+    
             // Define a forma de pagamento no pedido
             $this->pedidoComposite->definirFormaPagamento($pagamento);
-
+    
             // Calcula o valor total do pedido
             $valorTotal = $this->pedidoComposite->calcularValorPedido();
-
+    
             // Se o pagamento for por cartão de crédito, define o valor das parcelas
             if ($pagamento instanceof CartaoCreditoStrategy) {
                 $detalhesPagamento['valorParcelas'] = $pagamento->getValorParcelas();
             }
-
+    
             // Cria uma instância do pedido usando a fábrica de pedidos
-            $pedido = $this->fabricaPedido->criarPedido(
-                $userId, 
-                date('Y-m-d H:i:s'), 
-                $detalhesPagamento['metodoPagamento'], 
-                $this->pedidoComposite->getItensPedido(), 
-                $valorTotal, 
-                $detalhesPagamento['chavePix'] ?? null, 
-                $detalhesPagamento['numeroCartao'] ?? null, 
-                $detalhesPagamento['quantidadeParcelas'] ?? null, 
-                $detalhesPagamento['numeroBoleto'] ?? null, 
-                $detalhesPagamento['valorParcelas'] ?? null
-            );
-
+            $pedido = $this->criarInstanciaPedido($userId, $detalhesPagamento, $valorTotal);
+    
             // Salva o pedido no banco de dados
             $this->crudPedido->criarEntidade($pedido);
-
+    
             // Obtém o ID do pedido recém-criado
             $idPedido = $this->crudPedido->obterUltimoIdInserido();
-
+    
             // Adiciona cada item do pedido ao banco de dados
-            foreach ($this->pedidoComposite->getItensPedido() as $itemPedido) {
-
-                $itemPedido->setIdPedido($idPedido);
-
-                $produto = $itemPedido->getProduto();
-
-                if ($produto->getTipo() === 'Kit') {
-                    $produtosKit = $this->criarProdutosKit($produto->obterProdutos());
-
-                    if (empty($produtosKit)) {
-                        // Nenhum produto encontrado no kit.
-                    } else {
-                        $produtosKitJson = json_encode($produtosKit);
-                        $itemPedido->setProdutosKit($produtosKitJson);
-                    }
-
-                } else {
-                    $itemPedido->setProdutosKit(null);
-                }
-
-                $this->crudItemPedido->criarEntidade($itemPedido);
-            }
-
+            $this->adicionarItensAoBanco($idPedido);
+    
             // Confirma a transação no banco de dados
             $this->crudPedido->commitTransacao();
-
+    
             // Retorna o status de sucesso e o ID do pedido
             return ["status" => "sucesso", "idPedido" => $idPedido];
-
+    
         } catch (Exception $excecao) {
-
             // Em caso de erro, desfaz a transação no banco de dados
             $this->crudPedido->rollbackTransacao();
             return ["status" => "erro", "mensagem" => $excecao->getMessage()];
         }
-
     }
-
+    
+    private function criarInstanciaPedido(int $userId, array $detalhesPagamento, float $valorTotal): Pedido {
+        return $this->fabricaPedido->criarPedido(
+            $userId, 
+            date('Y-m-d H:i:s'), 
+            $detalhesPagamento['metodoPagamento'], 
+            $this->pedidoComposite->getItensPedido(), 
+            $valorTotal, 
+            $detalhesPagamento['chavePix'] ?? null, 
+            $detalhesPagamento['numeroCartao'] ?? null, 
+            $detalhesPagamento['quantidadeParcelas'] ?? null, 
+            $detalhesPagamento['numeroBoleto'] ?? null, 
+            $detalhesPagamento['valorParcelas'] ?? null
+        );
+    }
+    
+    private function adicionarItensAoBanco(int $idPedido): void {
+        foreach ($this->pedidoComposite->getItensPedido() as $itemPedido) {
+            $itemPedido->setIdPedido($idPedido);
+    
+            $produto = $itemPedido->getProduto();
+    
+            if ($produto->getTipo() === 'Kit') {
+                $produtosKit = $this->criarProdutosKit($produto->obterProdutos());
+    
+                if (empty($produtosKit)) {
+                    // Nenhum produto encontrado no kit.
+                    $itemPedido->setProdutosKit(null);
+                } else {
+                    $produtosKitJson = json_encode($produtosKit);
+                    $itemPedido->setProdutosKit($produtosKitJson);
+                }
+            } else {
+                $itemPedido->setProdutosKit(null);
+            }
+    
+            $this->crudItemPedido->criarEntidade($itemPedido);
+        }
+    }
+    
 
     // Método para adicionar um item ao pedido
     private function adicionarItemAoPedido(array $produto): void {
@@ -238,7 +241,7 @@ class PedidoFacade {
                     $valorTotal = $this->pedidoComposite->calcularValorPedido();
                     $valorFinal = $pagamento->calcularValorFinal($valorTotal);
                     $pagamento->calcularValorDasParcelas($valorFinal);
-                    
+
                 } else {
                     throw new Exception('Dados do cartão de crédito incompletos.');
                 }
@@ -263,7 +266,76 @@ class PedidoFacade {
         return $pagamento;
     }
 
+    private function obterFabrica(string $categoria) {
+        // Implementação do método para retornar a fábrica correta com base na categoria
+        return $this->gerenciadorDeFabrica->obterFabrica($categoria);
+    }
+
+    
+    public function buscarPedidoPorId(int $pedidoId): array {
+        try {
+            $pedido = $this->crudPedido->lerEntidade($pedidoId, "Pedidos");
+    
+            if ($pedido === null) {
+                return ['status' => 'erro', 'mensagem' => 'Pedido não encontrado.'];
+            }
+    
+            $itensPedido = $pedido->getItensPedido();
+            $itensArray = array_map(function($item) {
+                $itemArray = [
+                    'idProduto' => $item->getProduto()->getId(),
+                    'nomeProduto' => $item->getProduto()->getNome(),
+                    'imagemProduto' => $item->getProduto()->getImagem(),
+                    'tipoProduto' => $item->getProduto()->getTipo(),
+                    'quantidade' => $item->getQuantidade(),
+                    'valor' => $item->getValor(),
+                    'categoria' => $item->getProduto()->getCategoria()
+                ];
+    
+                if ($item instanceof ItemPedidoKit) {
+                    $itemArray['produtosKit'] = $item->getTipo() === 'Kit' ? array_map(function($produto) {
+                        return [
+                            'idProduto' => $produto['id'],
+                            'imagemProduto' => $produto['imagemProduto'],
+                            'nomeProduto' => $produto['nomeProduto'],
+                            'valorProduto' => $produto['valorProduto'],
+                            'quantidade' => $produto['quantidade'],
+                            'categoria' => $produto['categoria'],
+                            'tipoProduto' => $produto['tipoProduto'],
+                            'descricaoProduto' => $produto['descricaoProduto']
+                        ];
+                    }, $item->obterProdutos()) : [];
+                }
+    
+                return $itemArray;
+            }, $itensPedido);
+    
+            return [
+                'status' => 'sucesso',
+                'pedido' => [
+                    'id' => $pedido->getId(),
+                    'dataPedido' => $pedido->getDataPedido(),
+                    'tipoPagamento' => $pedido->getTipoPagamento(),
+                    'chavePix' => $pedido->getChavePix(),
+                    'numeroCartao' => $pedido->getNumeroCartao(),
+                    'quantidadeParcelas' => $pedido->getQuantidadeParcelas(),
+                    'numeroBoleto' => $pedido->getNumeroBoleto(),
+                    'valor' => $pedido->getValor(),
+                    'valorParcelas' => $pedido->getValorParcelas(),
+                    'itens' => $itensArray
+                ]
+            ];
+    
+        } catch (Exception $e) {
+            return ['status' => 'erro', 'mensagem' => $e->getMessage()];
+        }
+    }
+    
+    
+    
 
 
+
+    
 }
 

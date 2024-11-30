@@ -18,105 +18,109 @@ class ProdutoFacade {
     }
 
     // Método para criar um produto
+   
     public function criarProduto(array $dadosProduto, array $imagem): array {
-
         try {
-
-            // Variáveis para armazenar os dados do formulário
-            $nome = htmlspecialchars($dadosProduto['nome']);
-            $quantidade = intval($dadosProduto['quantidade']); // Certificando-se que a quantidade seja um inteiro
-            $categoria = htmlspecialchars($dadosProduto['categoria']);
-            $tipo = htmlspecialchars($dadosProduto['tipo']);
-            $descricao = isset($dadosProduto['descricao']) ? htmlspecialchars($dadosProduto['descricao']) : ''; // Garantindo que a descrição seja uma string
-            $tipoPrincipal = isset($dadosProduto['tipoPrincipal']) ? htmlspecialchars($dadosProduto['tipoPrincipal']) : '';
-            $produtosKit = isset($dadosProduto['kit']['produtos']) ? $dadosProduto['kit']['produtos'] : null; // Produtos do kit, se existirem
-            $valor = isset($dadosProduto['valor']) ? floatval($dadosProduto['valor']) : 0; // Valor do produto individual
-
-            // Verificar se uma imagem foi enviada
-            if ($imagem['error'] == UPLOAD_ERR_OK) {
-
-                $nomeImagem = basename($imagem['name']);
-                $diretorioDestino = __DIR__ . '/../../../img/produtos';
-                $caminhoFisicoDestino = $diretorioDestino . '/' . $nomeImagem;
-                $caminhoRelativoBanco = 'img/produtos/' . $nomeImagem; // Caminho limpo para salvar no banco de dados
-
-                // Criar o diretório de destino se não existir.
-                if (!file_exists($diretorioDestino)) {
-
-                    if (!mkdir($diretorioDestino, 0777, true)) {
-                        throw new Exception("Falha ao criar diretório: $diretorioDestino");
-                    }
-
-                }
-
-                // Mover a imagem para o diretório de destino
-                if (move_uploaded_file($imagem['tmp_name'], $caminhoFisicoDestino)) {
-
-                    // Instanciar a fábrica concreta de acordo com a categoria do produto
-                    $fabrica = $this->obterFabrica($categoria);
-
-                    if ($tipoPrincipal === 'Kit' && $produtosKit) {
-
-                        // Calcular o valor do kit com base nos valores dos produtos individuais e suas quantidades
-                        $valorKit = 0;
-                        $produtosKitInfo = [];
-
-                        foreach ($produtosKit as $produto) {
-
-                            $valorProduto = floatval($produto['valor']);
-                            $quantidadeProduto = intval($produto['quantidade']);
-                            $tipoProduto = htmlspecialchars($produto['tipo']); // Obter o tipo do produto do kit
-                            $descricaoProduto = isset($produto['descricao']) ? htmlspecialchars($produto['descricao']) : '';
-                            $valorKit += $valorProduto * $quantidadeProduto;
-
-                            // Criar instâncias dos produtos do kit
-                            $produtoObj = $fabrica->criarProduto(
-                                -1, '', $produto['nome'], $valorProduto, $quantidadeProduto, $categoria, $tipoProduto, "Produto do Kit de " . $categoria
-                            );
-
-                            $produtosKitInfo[] = $produtoObj;
-                        }
-
-                        // Criar instância do Kit e salvar no banco de dados
-                        $kitProduto = $fabrica->criarProduto(
-                            -1, $caminhoRelativoBanco, $nome, $valorKit, $quantidade, $categoria, $tipo, $descricao, $produtosKitInfo
-                        );
-
-                        if ($this->crudProduto->criarEntidade($kitProduto)) {
-                            return ["status" => "sucesso", "mensagem" => "Kit cadastrado com sucesso."];
-                        } else {
-                            throw new Exception("Erro ao cadastrar o kit no banco de dados.");
-                        }
-
-                    } else {
-
-                        // Criar um produto individual
-                        $produto = $fabrica->criarProduto(
-                            -1, $caminhoRelativoBanco, $nome, $valor, $quantidade, $categoria, $tipo, $descricao
-                        );
-
-                        if ($this->crudProduto->criarEntidade($produto)) {
-                            return ["status" => "sucesso", "mensagem" => "Produto cadastrado com sucesso."];
-                        } else {
-                            throw new Exception("Erro ao cadastrar o produto no banco de dados.");
-                        }
-
-                    }
-
-                } else {
-                    throw new Exception("Erro ao enviar a imagem.");
-                }
-
+            $produto = $this->processarDadosProduto($dadosProduto, $imagem);
+    
+            if ($this->crudProduto->criarEntidade($produto)) {
+                return ["status" => "sucesso", "mensagem" => "Produto cadastrado com sucesso."];
             } else {
-                throw new Exception("Nenhuma imagem enviada.");
+                throw new Exception("Erro ao cadastrar o produto no banco de dados.");
             }
-
         } catch (Exception $excecao) {
             return ["status" => "erro", "mensagem" => $excecao->getMessage()];
         }
+    }
+    
+    private function processarDadosProduto(array $dadosProduto, array $imagem): ItemPedidoComponent {
+
+        // Variáveis para armazenar os dados do formulário
+        $nome = htmlspecialchars($dadosProduto['nome']);
+        $quantidade = intval($dadosProduto['quantidade']);
+        $categoria = htmlspecialchars($dadosProduto['categoria']);
+        $tipo = htmlspecialchars($dadosProduto['tipo']);
+        $descricao = isset($dadosProduto['descricao']) ? htmlspecialchars($dadosProduto['descricao']) : '';
+        $tipoPrincipal = isset($dadosProduto['tipoPrincipal']) ? htmlspecialchars($dadosProduto['tipoPrincipal']) : '';
+        $produtosKit = isset($dadosProduto['kit']['produtos']) ? $dadosProduto['kit']['produtos'] : null;
+        $valor = isset($dadosProduto['valor']) ? floatval($dadosProduto['valor']) : 0;
+    
+        $caminhoRelativoBanco = $this->processarImagem($imagem);
+    
+        // Instanciar a fábrica concreta de acordo com a categoria do produto
+        $fabrica = $this->obterFabrica($categoria);
+    
+        if ($tipoPrincipal === 'Kit' && $produtosKit) {
+            return $this->criarKit($fabrica, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $caminhoRelativoBanco, $produtosKit);
+        } else {
+            return $fabrica->criarProduto(
+                -1, $caminhoRelativoBanco, $nome, $valor, $quantidade, $categoria, $tipo, $descricao
+            );
+
+        }
 
     }
+    
+    private function processarImagem(array $imagem): string {
 
+        if ($imagem['error'] == UPLOAD_ERR_OK) {
+
+            $nomeImagem = basename($imagem['name']);
+            $diretorioDestino = __DIR__ . '/../../img/produtos';
+            $caminhoFisicoDestino = $diretorioDestino . '/' . $nomeImagem;
+            $caminhoRelativoBanco = 'img/produtos/' . $nomeImagem;
+    
+            if (!file_exists($diretorioDestino)) {
+                if (!mkdir($diretorioDestino, 0777, true)) {
+                    throw new Exception("Falha ao criar diretório: $diretorioDestino");
+                }
+            }
+    
+            if (move_uploaded_file($imagem['tmp_name'], $caminhoFisicoDestino)) {
+                return $caminhoRelativoBanco;
+            } else {
+                throw new Exception("Erro ao enviar a imagem.");
+            }
+
+        } else {
+            throw new Exception("Nenhuma imagem enviada.");
+        }
+
+    }
+    
+    private function criarKit(
+        $fabrica,
+        string $nome,
+        float $valor,
+        int $quantidade,
+        string $categoria,
+        string $tipo,
+        string $descricao,
+        string $caminhoRelativoBanco,
+        array $produtosKit
+    ): Product {
+        $valorKit = 0;
+        $produtosKitInfo = [];
+    
+        foreach ($produtosKit as $produto) {
+            $valorProduto = floatval($produto['valor']);
+            $quantidadeProduto = intval($produto['quantidade']);
+            $tipoProduto = htmlspecialchars($produto['tipo']);
+            $descricaoProduto = isset($produto['descricao']) ? htmlspecialchars($produto['descricao']) : '';
+            $valorKit += $valorProduto * $quantidadeProduto;
+    
+            $produtoObj = $fabrica->criarProduto(
+                -1, '', $produto['nome'], $valorProduto, $quantidadeProduto, $categoria, $tipoProduto, "Produto do Kit de " . $categoria
+            );
+    
+            $produtosKitInfo[] = $produtoObj;
+        }
+    
+        return $fabrica->criarProduto(
+            -1, $caminhoRelativoBanco, $nome, $valorKit, $quantidade, $categoria, $tipo, $descricao, $produtosKitInfo
+        );
+    }
+    
 
     // Método para editar um produto existente
     public function editarProduto(array $dadosProduto, array $imagem): array {
@@ -308,48 +312,87 @@ class ProdutoFacade {
 
     // Método para ler um produto pelo ID
     public function lerProdutoPorId(int $id): array {
-
         try {
-            
             // Verificar se o ID é válido
             if (!isset($id) || !is_int($id)) {
                 throw new Exception("ID do produto não especificado ou inválido.");
             }
-
-            // Ler a entidade do produto pelo ID
+    
+            // Ler a entidade do produto pelo ID, agora retornando um objeto
             $entidade = $this->crudProduto->lerEntidade($id, 'Produtos');
-
+    
             if ($entidade === null) {
                 return ["status" => "erro", "mensagem" => "Entidade não encontrada."];
             } else {
-
                 // Se for um kit, processar os produtos do kit
-                if ($entidade['tipoProduto'] === 'Kit' && !empty($entidade['produtosKit'])) {
-
-                    $entidade['produtosKit'] = array_map(function($produto) {
-                        return [
-                            'id' => $produto['id'] ?? null,
-                            'imagemProduto' => $produto['imagemProduto'] ?? null,
-                            'nomeProduto' => $produto['nomeProduto'] ?? null,
-                            'valorProduto' => $produto['valorProduto'] ?? null,
-                            'quantidade' => $produto['quantidade'] ?? null,
-                            'categoria' => $produto['categoria'] ?? null,
-                            'tipoProduto' => $produto['tipoProduto'] ?? null,
-                            'descricaoProduto' => $produto['descricaoProduto'] ?? null
-                        ];
-                    }, $entidade['produtosKit']);
+                if ($entidade instanceof ItemPedidoComponent && $entidade->getTipo() === 'Kit') {
+                    // Verifica se a entidade tem os métodos 'obterProdutos' e 'definirProdutos'
+                    if (method_exists($entidade, 'obterProdutos') && method_exists($entidade, 'definirProdutos')) {
+                        $produtosKit = $entidade->obterProdutos();
+    
+                        if (is_array($produtosKit)) {
+                            // Utilizar o método obterFabrica para criar produtos do kit
+                            $produtosKitObjetos = array_map(function($produtoKit) {
+                                if (is_object($produtoKit)) {
+                                    return $produtoKit; // já é um objeto, então retornamos diretamente
+                                } else if (is_array($produtoKit)) {
+                                    // Obter a fábrica correta com base na categoria do produto
+                                    $fabrica = $this->obterFabrica($produtoKit['categoria']);
+                                    // Criar um novo produto usando a fábrica
+                                    return $fabrica->criarProduto(
+                                        $produtoKit['id'],
+                                        $produtoKit['imagemProduto'],
+                                        $produtoKit['nomeProduto'],
+                                        (float)$produtoKit['valorProduto'],
+                                        (int)$produtoKit['quantidade'],
+                                        $produtoKit['categoria'],
+                                        $produtoKit['tipoProduto'],
+                                        $produtoKit['descricaoProduto']
+                                    );
+                                }
+                                throw new Exception("Produto do kit não é um objeto ou array válido.");
+                            }, $produtosKit);
+    
+                            $entidade->definirProdutos($produtosKitObjetos);
+                        } else {
+                            $entidade->definirProdutos([]);
+                        }
+                    }
                 }
-
-                return ["status" => "sucesso", "entidade" => $entidade];
+    
+                // Converter a entidade em array para resposta JSON
+                $entidadeArray = [
+                    'id' => $entidade->getId(),
+                    'imagemProduto' => $entidade->getImagem(),
+                    'nomeProduto' => $entidade->getNome(),
+                    'valorProduto' => $entidade->getValor(),
+                    'quantidade' => $entidade->getQuantidade(),
+                    'categoria' => $entidade->getCategoria(),
+                    'tipoProduto' => $entidade->getTipo(),
+                    'descricaoProduto' => $entidade->getDescricao(),
+                    'produtosKit' => $entidade->getTipo() === 'Kit' ? array_map(function($produto) {
+                        // Convertendo objetos para arrays
+                        return [
+                            'id' => $produto->getId(),
+                            'imagemProduto' => $produto->getImagem(),
+                            'nomeProduto' => $produto->getNome(),
+                            'valorProduto' => $produto->getValor(),
+                            'quantidade' => $produto->getQuantidade(),
+                            'categoria' => $produto->getCategoria(),
+                            'tipoProduto' => $produto->getTipo(),
+                            'descricaoProduto' => $produto->getDescricao()
+                        ];
+                    }, $entidade->obterProdutos()) : []
+                ];
+    
+                return ["status" => "sucesso", "entidade" => $entidadeArray];
             }
-
         } catch (Exception $excecao) {
             return ["status" => "erro", "mensagem" => $excecao->getMessage()];
         }
-
     }
-
-
+    
+    
     // Método para buscar produtos por categoria
     public function buscarProdutosPorCategoria(string $categoria): array {
 
@@ -402,9 +445,7 @@ class ProdutoFacade {
     }
 
     public function listarTodosProdutos(string $tipo): array {
-
         try {
-
             // Verificar se o tipo é válido
             if (!isset($tipo) || empty($tipo)) {
                 throw new Exception("Tipo de entidade não especificado.");
@@ -414,54 +455,33 @@ class ProdutoFacade {
             $entidades = $this->crudProduto->listarEntidades($tipo);
     
             if (empty($entidades)) {
-
                 return ["status" => "erro", "mensagem" => "Nenhuma entidade encontrada."];
-
             } else {
-
                 // Verifica se a conta autenticada é "Admin"
                 $tipoConta = isset($_SESSION['tipoConta']) ? $_SESSION['tipoConta'] : 'Guest';
     
-                // Processa cada entidade para incluir produtos do kit, se necessário
-                foreach ($entidades as &$entidade) {
-
-                    // Verifica se a entidade é uma instância de Produto e se é um Kit
-                    if ($entidade instanceof Product && $entidade->getTipo() === 'Kit') {
-
-                        // Verifica se a entidade tem os métodos 'obterProdutos' e 'definirProdutos'
-                        if (method_exists($entidade, 'obterProdutos') && method_exists($entidade, 'definirProdutos')) {
-                            $produtosKit = $entidade->obterProdutos();
-    
-                            if (is_string($produtosKit)) {
-                                $produtosKit = json_decode($produtosKit, true);
-                            }
-    
-                            if (is_array($produtosKit)) {
-                                $produtosKitArray = array_map(function($produtoKit) {
-                                    return [
-                                        'id' => isset($produtoKit['id']) ? (int)$produtoKit['id'] : 0,
-                                        'imagemProduto' => $produtoKit['imagemProduto'] ?? '',
-                                        'nomeProduto' => $produtoKit['nomeProduto'] ?? '',
-                                        'valorProduto' => isset($produtoKit['valorProduto']) ? (float)$produtoKit['valorProduto'] : 0.0,
-                                        'quantidade' => isset($produtoKit['quantidade']) ? (int)$produtoKit['quantidade'] : 0,
-                                        'categoria' => $produtoKit['categoria'] ?? '',
-                                        'tipoProduto' => $produtoKit['tipoProduto'] ?? '',
-                                        'descricaoProduto' => $produtoKit['descricaoProduto'] ?? ''
-                                    ];
-                                }, $produtosKit);
-    
-                                $entidade->definirProdutos($produtosKitArray);
-                            } else {
-                                $entidade->definirProdutos([]);
-                            }
-                        }
-                    }
-                }
-    
                 // Converte as entidades em arrays para JSON
                 $entidadesArray = array_map(function($entidade) {
-                    // Garantir que a entidade é um objeto antes de chamar métodos
                     if (is_object($entidade)) {
+                        $produtosKit = [];
+                        if ($entidade->getTipo() === 'Kit' && method_exists($entidade, 'obterProdutos')) {
+                            $produtosKit = array_map(function($produto) {
+                                if (is_object($produto)) {
+                                    return [
+                                        'id' => $produto->getId(),
+                                        'imagemProduto' => $produto->getImagem(),
+                                        'nomeProduto' => $produto->getNome(),
+                                        'valorProduto' => $produto->getValor(),
+                                        'quantidade' => $produto->getQuantidade(),
+                                        'categoria' => $produto->getCategoria(),
+                                        'tipoProduto' => $produto->getTipo(),
+                                        'descricaoProduto' => $produto->getDescricao()
+                                    ];
+                                }
+                                return null;
+                            }, $entidade->obterProdutos());
+                        }
+    
                         return [
                             'id' => $entidade->getId(),
                             'imagemProduto' => $entidade->getImagem(),
@@ -471,23 +491,22 @@ class ProdutoFacade {
                             'categoria' => $entidade->getCategoria(),
                             'tipoProduto' => $entidade->getTipo(),
                             'descricaoProduto' => $entidade->getDescricao(),
-                            'produtosKit' => method_exists($entidade, 'obterProdutos') ? $entidade->obterProdutos() : []
+                            'produtosKit' => $produtosKit
                         ];
-
                     } else {
                         return $entidade;
                     }
-
                 }, $entidades);
     
                 return ["status" => "sucesso", "entidades" => $entidadesArray, "tipoConta" => $tipoConta];
             }
-
         } catch (Exception $excecao) {
             return ["status" => "erro", "mensagem" => $excecao->getMessage()];
         }
-
     }
+    
+    
+    
     
 
 }

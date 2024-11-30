@@ -86,10 +86,8 @@
         }
 
        
-        public function vincularParametros(mysqli_stmt $declaracao, object|array|int $entidade, string $operacao): void {
-
+        public function vincularParametros(mysqli_stmt $declaracao, object|array|int|string $entidade, string $operacao): void {
             switch ($operacao) {
-
                 case "Criar":
                     $imagem = $entidade->getImagem();
                     $nome = $entidade->getNome();
@@ -111,15 +109,12 @@
                                 'tipoProduto' => $produto->getTipo(),
                                 'descricaoProduto' => $produto->getDescricao()
                             ];
-
                         }, $entidade->obterProdutos()));
                         $declaracao->bind_param("ssdissss", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit);
-
                     } else {
                         $produtosKit = null; // Para produtos individuais, `produtosKit` deve ser nulo
                         $declaracao->bind_param("ssdissss", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit); // 8 parâmetros
                     }
-
                     break;
         
                 case "Ler":
@@ -138,7 +133,6 @@
                     $id = $entidade->getId();
         
                     if ($tipo === 'Kit') {
-
                         $produtosKit = json_encode(array_map(function($produto): array {
                             return [
                                 'id' => $produto->getId(),
@@ -150,20 +144,15 @@
                                 'tipoProduto' => $produto->getTipo(),
                                 'descricaoProduto' => $produto->getDescricao()
                             ];
-
                         }, $entidade->obterProdutos()));
-
                         $declaracao->bind_param("ssdissssi", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit, $id);
-
                     } else {
                         $produtosKit = null; // Para produtos individuais, `produtosKit` deve ser nulo
                         $declaracao->bind_param("ssdissssi", $imagem, $nome, $valor, $quantidade, $categoria, $tipo, $descricao, $produtosKit, $id); // 9 parâmetros
                     }
-
                     break;
         
                 case "Deletar":
-
                     $id = $entidade; // Para a operação de deletar, $entidade é o ID
                     $declaracao->bind_param("i", $id);
                     break;
@@ -176,8 +165,8 @@
                 default:
                     throw new Exception("Operação desconhecida: $operacao");
             }
-            
         }
+        
         
         
 
