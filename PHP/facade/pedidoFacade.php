@@ -25,7 +25,9 @@ class PedidoFacade {
 
     // Método para criar um pedido
     public function criarPedido(int $userId, array $dadosPedido, array $detalhesPagamento): array {
+
         try {
+
             // Inicia uma transação no banco de dados
             $this->crudPedido->iniciarTransacao();
     
@@ -36,6 +38,7 @@ class PedidoFacade {
     
             // Cria a estratégia de pagamento com base no método de pagamento fornecido
             $pagamento = $this->criarEstrategiaPagamento($detalhesPagamento['metodoPagamento'], $detalhesPagamento);
+
             if ($pagamento === null) {
                 throw new Exception('Erro. A estratégia de pagamento está nula.');
             }
@@ -74,9 +77,11 @@ class PedidoFacade {
             $this->crudPedido->rollbackTransacao();
             return ["status" => "erro", "mensagem" => $excecao->getMessage()];
         }
+
     }
     
     private function criarInstanciaPedido(int $userId, array $detalhesPagamento, float $valorTotal): Pedido {
+
         return $this->fabricaPedido->criarPedido(
             $userId, 
             date('Y-m-d H:i:s'), 
@@ -89,15 +94,19 @@ class PedidoFacade {
             $detalhesPagamento['numeroBoleto'] ?? null, 
             $detalhesPagamento['valorParcelas'] ?? null
         );
+
     }
     
     private function adicionarItensAoBanco(int $idPedido): void {
+
         foreach ($this->pedidoComposite->getItensPedido() as $itemPedido) {
+
             $itemPedido->setIdPedido($idPedido);
     
             $produto = $itemPedido->getProduto();
     
             if ($produto->getTipo() === 'Kit') {
+
                 $produtosKit = $this->criarProdutosKit($produto->obterProdutos());
     
                 if (empty($produtosKit)) {
@@ -107,6 +116,7 @@ class PedidoFacade {
                     $produtosKitJson = json_encode($produtosKit);
                     $itemPedido->setProdutosKit($produtosKitJson);
                 }
+
             } else {
                 $itemPedido->setProdutosKit(null);
             }
@@ -266,14 +276,11 @@ class PedidoFacade {
         return $pagamento;
     }
 
-    private function obterFabrica(string $categoria) {
-        // Implementação do método para retornar a fábrica correta com base na categoria
-        return $this->gerenciadorDeFabrica->obterFabrica($categoria);
-    }
 
-    
     public function buscarPedidoPorId(int $pedidoId): array {
+
         try {
+
             $pedido = $this->crudPedido->lerEntidade($pedidoId, "Pedidos");
     
             if ($pedido === null) {
@@ -281,7 +288,7 @@ class PedidoFacade {
             }
     
             $itensPedido = $pedido->getItensPedido();
-            $itensArray = array_map(function($item) {
+            $itensArray = array_map(function($item): array {
                 $itemArray = [
                     'idProduto' => $item->getProduto()->getId(),
                     'nomeProduto' => $item->getProduto()->getNome(),
@@ -324,18 +331,14 @@ class PedidoFacade {
                     'valorParcelas' => $pedido->getValorParcelas(),
                     'itens' => $itensArray
                 ]
+                
             ];
     
         } catch (Exception $e) {
             return ['status' => 'erro', 'mensagem' => $e->getMessage()];
         }
+
     }
     
     
-    
-
-
-
-    
 }
-

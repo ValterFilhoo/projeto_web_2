@@ -96,7 +96,7 @@ class ProdutoFacade {
         string $categoria,
         string $tipo,
         string $descricao,
-        string $caminhoRelativoBanco,
+        string $caminhoBanco,
         array $produtosKit
     ): Product {
         $valorKit = 0;
@@ -117,7 +117,7 @@ class ProdutoFacade {
         }
     
         return $fabrica->criarProduto(
-            -1, $caminhoRelativoBanco, $nome, $valorKit, $quantidade, $categoria, $tipo, $descricao, $produtosKitInfo
+            -1, $caminhoBanco, $nome, $valorKit, $quantidade, $categoria, $tipo, $descricao, $produtosKitInfo
         );
     }
     
