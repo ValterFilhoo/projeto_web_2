@@ -83,7 +83,7 @@
             ";
         }
 
-        public function vincularParametros($declaracao, $entidade, $operacao): void {
+        public function vincularParametros(mysqli_stmt $declaracao, object|array|int $entidade, string $operacao): void {
 
             switch ($operacao) {
 
@@ -125,7 +125,7 @@
 
         }
 
-        public function listarPedidosPorUsuario($idUsuario): array {
+        public function listarPedidosPorUsuario(int $idUsuario): array {
 
             $sql = "
                 SELECT 
@@ -186,11 +186,11 @@
         
         
 
-        public function obterCaminhoImagemSeNecessario($id) {
+        public function obterCaminhoImagemSeNecessario(int $id): never {
             throw new Exception("Esta classe não pode usar este método.");
         }
         
-        public function excluirImagemSeExistir($caminhoImagem) {
+        public function excluirImagemSeExistir(string $caminhoImagem): never {
             throw new Exception("Esta classe não pode usar este método.");
         }
         

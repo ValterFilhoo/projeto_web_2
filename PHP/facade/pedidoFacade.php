@@ -8,11 +8,11 @@ require_once __DIR__ . "/../encontrarFabricaEspecifica/gerenciadorFabrica.php";
 
 class PedidoFacade {
 
-    private $pedidoComposite;
-    private $fabricaPedido;
-    private $crudPedido;
-    private $crudItemPedido;
-    private $gerenciadorDeFabrica;
+    private PedidoComposite $pedidoComposite;
+    private PedidoConcreteCreator $fabricaPedido;
+    private CrudPedido $crudPedido;
+    private CrudItemPedido $crudItemPedido;
+    private GerenciadorDeFabrica $gerenciadorDeFabrica;
 
     public function __construct() {
         $this->pedidoComposite = new PedidoComposite();
@@ -24,7 +24,7 @@ class PedidoFacade {
 
 
     // Método para criar um pedido
-    public function criarPedido(int $userId, $dadosPedido, $detalhesPagamento): array {
+    public function criarPedido(int $userId, array $dadosPedido, array $detalhesPagamento): array {
 
         try {
 
@@ -114,7 +114,7 @@ class PedidoFacade {
 
 
     // Método para adicionar um item ao pedido
-    private function adicionarItemAoPedido($produto): void {
+    private function adicionarItemAoPedido(array $produto): void {
 
         // Obtém a fábrica correspondente à categoria do produto
         $fabrica = $this->gerenciadorDeFabrica->obterFabrica($produto['categoria']);
@@ -149,9 +149,9 @@ class PedidoFacade {
     }
 
     // Método para criar produtos do kit
-    private function criarProdutosKit($produtos): array {
+    private function criarProdutosKit(array $produtos): array {
 
-        return array_map(function ($produtoData) {
+        return array_map(function ($produtoData): array {
 
             // Obtém a fábrica correspondente à categoria do produto
             $fabricaProduto = $this->gerenciadorDeFabrica->obterFabrica($produtoData['categoria']);
@@ -193,7 +193,7 @@ class PedidoFacade {
     }
 
     // Método para criar a estratégia de pagamento
-    private function criarEstrategiaPagamento($metodoPagamento, $detalhesPagamento): BoletoStrategy|CartaoCreditoStrategy|PixStrategy {
+    private function criarEstrategiaPagamento(string $metodoPagamento, array $detalhesPagamento): BoletoStrategy|CartaoCreditoStrategy|PixStrategy {
 
         if (!isset($metodoPagamento)) {
             throw new Exception('Forma de pagamento inválida.');
@@ -224,6 +224,7 @@ class PedidoFacade {
                 }
 
                 if (isset($detalhesPagamento['numeroCartao']) && isset($detalhesPagamento['quantidadeParcelas'])) {
+
                     $pagamento->setNumeroCartao($detalhesPagamento['numeroCartao']);
                     $pagamento->setQuantidadeParcelas($detalhesPagamento['quantidadeParcelas']);
                     
@@ -237,6 +238,7 @@ class PedidoFacade {
                     $valorTotal = $this->pedidoComposite->calcularValorPedido();
                     $valorFinal = $pagamento->calcularValorFinal($valorTotal);
                     $pagamento->calcularValorDasParcelas($valorFinal);
+                    
                 } else {
                     throw new Exception('Dados do cartão de crédito incompletos.');
                 }

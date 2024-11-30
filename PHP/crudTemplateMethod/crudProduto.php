@@ -30,7 +30,7 @@
             return "SELECT * FROM produto WHERE categoria = ? ORDER BY id DESC";
         }
 
-        public function buscarProdutosPorCategoria($categoria): array|null {
+        public function buscarProdutosPorCategoria(string $categoria): array|null {
 
             $operacao = "BuscarPorCategoria";
 
@@ -86,7 +86,7 @@
         }
 
        
-        public function vincularParametros($declaracao, $entidade, $operacao): void {
+        public function vincularParametros(mysqli_stmt $declaracao, object|array|int $entidade, string $operacao): void {
 
             switch ($operacao) {
 
@@ -182,7 +182,7 @@
         
 
         // Método para obter o caminho da imagem do produto
-        public function obterCaminhoImagemSeNecessario($id): string|null {
+        public function obterCaminhoImagemSeNecessario(int $id): string|null {
 
             $sqlBuscarImagem = "SELECT imagemProduto FROM NomeDaTabelaProdutos WHERE id = ?";
             
@@ -216,7 +216,7 @@
         }
         
 
-        public function excluirImagemSeExistir($caminhoImagem): void {
+        public function excluirImagemSeExistir(string $caminhoImagem): void {
 
             echo 'Tentando excluir a imagem: ' . $caminhoImagem;
             

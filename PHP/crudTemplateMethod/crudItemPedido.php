@@ -25,8 +25,10 @@ class CrudItemPedido extends CrudTemplateMethod {
         return "SELECT * FROM pedido_produto";
     }
 
-    public function vincularParametros($declaracao, $entidadeOuId, $operacao): void {
+    public function vincularParametros(mysqli_stmt $declaracao, object|array|int $entidadeOuId, string $operacao): void {
+
         switch ($operacao) {
+
             case "Criar":
                 $idPedido = $entidadeOuId->getIdPedido();
                 $idProduto = $entidadeOuId->getId();
@@ -35,7 +37,8 @@ class CrudItemPedido extends CrudTemplateMethod {
                 $produtosKit = null;
     
                 if ($entidadeOuId->getTipo() === 'Kit') {
-                    $produtosKit = json_encode(array_map(function($produto) {
+
+                    $produtosKit = json_encode(array_map(function($produto): array {
                         return [
                             'id' => is_object($produto) ? $produto->getId() : $produto['id'],
                             'imagemProduto' => is_object($produto) ? $produto->getImagem() : $produto['imagemProduto'],
@@ -46,8 +49,11 @@ class CrudItemPedido extends CrudTemplateMethod {
                             'tipoProduto' => is_object($produto) ? $produto->getTipo() : $produto['tipoProduto'],
                             'descricaoProduto' => is_object($produto) ? $produto->getDescricao() : $produto['descricaoProduto']
                         ];
+
                     }, $entidadeOuId->obterProdutos()));
+                    
                 }
+
     
                 $declaracao->bind_param("iiids", $idPedido, $idProduto, $quantidade, $valorItem, $produtosKit);
                 break;
@@ -83,11 +89,11 @@ class CrudItemPedido extends CrudTemplateMethod {
         }
     }
 
-    public function obterCaminhoImagemSeNecessario($id) {
+    public function obterCaminhoImagemSeNecessario(int $id): never {
         throw new Exception("Esta classe não pode usar este método.");
     }
 
-    public function excluirImagemSeExistir($caminhoImagem) {
+    public function excluirImagemSeExistir(string $caminhoImagem): never {
         throw new Exception("Esta classe não pode usar este método.");
     }
 }

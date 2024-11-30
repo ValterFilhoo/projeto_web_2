@@ -14,7 +14,7 @@
 
     abstract class CrudTemplateMethod {
 
-        protected $conexaoBD;
+        protected mysqli $conexaoBD;
 
         public function __construct() {
 
@@ -22,7 +22,7 @@
 
         }
 
-        public function criarEntidade($entidade): bool {
+        public function criarEntidade(object|array $entidade): bool {
             
             $operacao = "Criar";
             
@@ -104,7 +104,7 @@
         }
         
         
-        public function atualizarEntidade($entidade): bool {
+        public function atualizarEntidade(object|array $entidade): bool {
 
             try {
 
@@ -144,7 +144,7 @@
         }
         
 
-        public function deletarEntidade($id): bool {
+        public function deletarEntidade(int $id): bool {
 
             $caminhoImagem = null;
         
@@ -204,7 +204,7 @@
 
         }
     
-        public function listarEntidades($tipo): array|null{
+        public function listarEntidades(string $tipo): array|null{
 
             $sql = $this->sqlListar();
             $resultadoDaBusca = $this->conexaoBD->query($sql);
@@ -243,7 +243,7 @@
         }
         
         
-        protected function processarRegistro($tipo, $fabricaConcreta, $dados): array|null {
+        protected function processarRegistro(string $tipo, object $fabricaConcreta, array $dados): array|null {
             
             if (empty($dados)) {
                 return null; // Retorna null se os dados estiver vazio
@@ -269,7 +269,7 @@
         
         
         // Método que retorna instancias de objetos de produtos concretos.
-        protected function processarProduto($fabricaConcreta, $linha): array|null {
+        protected function processarProduto(object $fabricaConcreta, array $linha): array|null {
 
             $dadosProduto = isset($linha[0]) ? $linha[0] : $linha;
         
@@ -351,7 +351,7 @@
         
         
         // Método que retorna objetos do tipo concreto de Pedidos.
-        protected function processarPedido($faPedido, $faItem, $faProduto, $dados): array {
+        protected function processarPedido(object $faPedido, object $faItem, object $faProduto, array $dados): array {
             
             $itensPedido = []; // Inicializa o array de itens do pedido
         
@@ -459,7 +459,7 @@
 
         }
         
-        protected function processarItemPedido($fabricaProduto, $fabricaItemPedido, $linha): mixed {
+        protected function processarItemPedido(object $fabricaProduto, object $fabricaItemPedido, array $linha): mixed {
 
             // Cria o produto usando a fábrica de produtos
             $produto = $fabricaProduto->criarProduto(
@@ -486,7 +486,7 @@
         
         
         // Método que recebe registros de usuários do banco e retorna um vetor de objetos do tipo User (usuário).
-        protected function processarUsuario($fabricaConcreta, $linha): array|null {
+        protected function processarUsuario(object $fabricaConcreta, array $linha): array|null {
 
             // Desencapsulando os dados caso estejam dentro de um array
             $dadosUsuario = isset($linha[0]) ? $linha[0] : $linha;
@@ -558,7 +558,7 @@
         }
         
         // Método que dependendo do registro consultado no banco, retorna a fábrica concreta do factory method para instanciar seu objeto.
-        protected function getFactory($tipo, $dados): ArduinoConcreteCreator|DisplayConcreteCreator|ItemPedidoConcreteCreator|MotoresConcreteCreator|PedidoConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator|UserConcreteCreator|null {
+        protected function getFactory(string $tipo, array $dados): ArduinoConcreteCreator|DisplayConcreteCreator|ItemPedidoConcreteCreator|MotoresConcreteCreator|PedidoConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator|UserConcreteCreator|null {
             if ($tipo === 'Produtos') {
                 $dadosProduto = isset($dados[0]) ? $dados[0] : $dados;
         
@@ -624,11 +624,11 @@
 
         abstract public function sqlListar(): string;
 
-        abstract public function vincularParametros($declaracao, $entidade, $operacao): void;
+        abstract public function vincularParametros(mysqli_stmt $declaracao, object|array|int $entidade, string $operacao): void;
 
-        abstract public function obterCaminhoImagemSeNecessario($id); 
+        abstract public function obterCaminhoImagemSeNecessario(int $id): string|null; 
         
-        abstract public function excluirImagemSeExistir($caminhoImagem);
+        abstract public function excluirImagemSeExistir(string $caminhoImagem): void;
 
 
     }

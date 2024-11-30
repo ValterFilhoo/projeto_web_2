@@ -11,14 +11,14 @@ require_once __DIR__ . "/../crudTemplateMethod/crudProduto.php";
 
 class ProdutoFacade {
     
-    private $crudProduto;
+    private CrudProduto $crudProduto;
 
     public function __construct() {
         $this->crudProduto = new CrudProduto();
     }
 
     // Método para criar um produto
-    public function criarProduto($dadosProduto, $imagem): array {
+    public function criarProduto(array $dadosProduto, array $imagem): array {
 
         try {
 
@@ -119,7 +119,7 @@ class ProdutoFacade {
 
 
     // Método para editar um produto existente
-    public function editarProduto($dadosProduto, $imagem): array {
+    public function editarProduto(array $dadosProduto, array $imagem): array {
 
         try {
 
@@ -286,7 +286,7 @@ class ProdutoFacade {
     
 
     // Método para obter a fábrica correspondente à categoria do produto
-    private function obterFabrica($categoria): ArduinoConcreteCreator|DisplayConcreteCreator|MotoresConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator {
+    private function obterFabrica(string $categoria): ArduinoConcreteCreator|DisplayConcreteCreator|MotoresConcreteCreator|RaspberryPiConcreteCreator|SensoresConcreteCreator {
         switch ($categoria) {
             case "Arduino": 
                 return new ArduinoConcreteCreator();
@@ -307,7 +307,7 @@ class ProdutoFacade {
 
 
     // Método para ler um produto pelo ID
-    public function lerProdutoPorId($id): array {
+    public function lerProdutoPorId(int $id): array {
 
         try {
             
@@ -351,7 +351,7 @@ class ProdutoFacade {
 
 
     // Método para buscar produtos por categoria
-    public function buscarProdutosPorCategoria($categoria): array {
+    public function buscarProdutosPorCategoria(string $categoria): array {
 
         try {
 
@@ -401,7 +401,7 @@ class ProdutoFacade {
 
     }
 
-    public function listarTodosProdutos($tipo): array {
+    public function listarTodosProdutos(string $tipo): array {
 
         try {
 

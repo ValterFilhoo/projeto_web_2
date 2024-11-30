@@ -6,7 +6,7 @@ require_once __DIR__ . "/../arquivosFactoryMethod/product.php";
 
 class PedidoComposite implements ItemPedidoComponent {
 
-    private $itensPedido = [];
+    private array $itensPedido = [];
     private ?FormaPagamentoStrategy $pagamentoStrategy = null;
     private float $valorTotalPedido;
 

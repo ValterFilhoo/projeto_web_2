@@ -53,7 +53,7 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
 
         }
 
-        public function autenticarUsuario(string $email, string $senha) {
+        public function autenticarUsuario(string $email, string $senha): mixed {
 
             // Verificando primeiro se existe um usuário com aquele email.
             $sql = "SELECT * FROM Usuario WHERE email = ?";
@@ -111,7 +111,7 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
         }
         
         
-        public function vincularParametros($declaracao, $entidade, $operacao): void {
+        public function vincularParametros(mysqli_stmt $declaracao, object|array|int $entidade, string $operacao): void {
 
             switch ($operacao) {
 
@@ -151,11 +151,11 @@ require_once __DIR__ . '/crudAbstractTemplateMethod.php';
 
         }
         
-        public function obterCaminhoImagemSeNecessario($id) {
+        public function obterCaminhoImagemSeNecessario(int $id): never {
             throw new Exception("Esta classe não pode usar este método.");
         }
         
-        public function excluirImagemSeExistir($caminhoImagem) {
+        public function excluirImagemSeExistir(string $caminhoImagem): never {
             throw new Exception("Esta classe não pode usar este método.");
         }
 
