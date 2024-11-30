@@ -1,200 +1,80 @@
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // Obtém o ID do produto da URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const produtoId = urlParams.get('id');
+// Obtém o ID do produto da URL
+const urlParams = new URLSearchParams(window.location.search);
+const produtoId = urlParams.get('id');
 
-    if (produtoId) {
-
-        // Faz uma requisição para buscar os dados do produto.
-        fetch(`../PHP/processarFormularios/produto/buscarProduto.php?id=${produtoId}`)
-            .then(resposta => {
-
-                if (!resposta.ok) {
-                    throw new Error('Erro ao buscar dados do produto.');
-                }
-
-                return resposta.json(); // Converte a resposta para JSON.
-            })
-            .then(dados => {
-
-                if (dados.status === 'sucesso') {
-
-                    carregarDadosNoFormulario(dados.produto);
-
-                } else {
-
-                    alert(dados.mensagem);
-
-                }
-
-            })
-            .catch(erro => {
-
-                console.error('Erro:', erro);
-                alert('Ocorreu um erro ao carregar os dados do produto.');
-
-            });
-
-    } else {
-
-        alert('ID do produto não encontrado na URL.');
-
-    }
-
-    // Função para exibir a pré-visualização da imagem selecionada
-    document.getElementById('imagem-produto').addEventListener('change', function(evento) {
-
-        const arquivo = evento.target.files[0]; // Obter o primeiro arquivo selecionado.
-
-        if (arquivo) {
-
-            const leitor = new FileReader(); // Criar uma instância do FileReader.
-
-            leitor.onload = function(e) {
-
-                const imagemPreview = document.getElementById('imagem-preview');
-                const imagemMensagem = document.getElementById('imagem-mensagem');
-                imagemPreview.src = e.target.result; // Definir a origem da imagem como o resultado do FileReader.
-                imagemPreview.classList.remove('icone'); // Remover a classe de ícone.
-                imagemPreview.classList.add('preview'); // Adicionar a classe de pré-visualização.
-                imagemMensagem.style.display = 'none'; // Esconder o parágrafo.
-
-            };
-
-            leitor.readAsDataURL(arquivo); // Ler o arquivo como uma URL de dados.
-
-        }
-
-    });
-
-    // Função para submeter o formulário de edição de produto
-    document.querySelector('form').addEventListener('submit', function(evento) {
-
-        evento.preventDefault(); // Evita o envio padrão do formulário.
-
-        const formData = new FormData(evento.target); // Cria um objeto FormData com os dados do formulário.
-        formData.append('id', produtoId); // Adiciona o ID do produto.
-
-        const inputImagem = document.getElementById('imagem-produto');
-
-        if (inputImagem.files.length === 0 && inputImagem.dataset.imagemExistente) {
-            formData.append('imagemExistente', inputImagem.dataset.imagemExistente); // Adiciona a imagem existente.
-        }
-
-        fetch('../PHP/processarFormularios/produto/editarProduto.php', {
-            method: 'POST',
-            body: formData
-        })
+if (produtoId) {
+    // Faz uma requisição para buscar os dados do produto
+    fetch(`../PHP/processarFormularios/produto/buscarProduto.php?id=${produtoId}`)
         .then(resposta => {
-
             if (!resposta.ok) {
-                throw new Error('Erro ao enviar dados do formulário.');
+                throw new Error('Erro ao buscar dados do produto.');
             }
-            return resposta.json(); // Converte a resposta para JSON.
-
+            return resposta.json(); // Converte a resposta para JSON
         })
         .then(dados => {
-
             if (dados.status === 'sucesso') {
-
-                alert('Produto editado com sucesso!');
-
-                // Redireciona ou atualiza a página inicial.
-                window.location.href = "../PHP/index.php";
-
+                carregarDadosNoFormulario(dados.produto); // Chama função para carregar dados no formulário
             } else {
-
                 alert(dados.mensagem);
-
             }
-
         })
         .catch(erro => {
             console.error('Erro:', erro);
-            alert('Ocorreu um erro ao enviar os dados do formulário.');
+            alert('Ocorreu um erro ao carregar os dados do produto.');
         });
+} else {
+    alert('ID do produto não encontrado na URL.');
+}
 
-    });
-
-});
-
-// Objeto com os tipos de produtos.
-const tipos = {
-
-    Arduino: [
-        { value: 'Placa', text: 'Placa' }
-    ],
-
-    Display: [
-        { value: 'LCD', text: 'LCD' },
-        { value: 'LED', text: 'LED' },
-        { value: 'OLED', text: 'OLED' }
-    ],
-
-    Motor: [
-        { value: 'Bomba', text: 'Bomba' },
-        { value: 'Motor DC', text: 'Motor DC' }
-    ],
-    
-    RaspberryPI: [
-        { value: 'Acessório para RaspberryPi', text: 'Acessório para RaspberryPI' },
-        { value: 'Placa para RaspberryPi', text: 'Placa para RaspberryPI' }
-    ],
-
-    Sensores: [
-        { value: 'Sensor de áudio', text: 'Sensor de Audio' },
-        { value: 'Sensor de temperatura', text: 'Sensor de Temperatura' }
-    ]
-
-};
-
+// Função para carregar dados do produto selecionado e preencher o formulário
 function carregarDadosNoFormulario(produto) {
-
-    document.getElementById('nome-produto').value = produto.nomeProduto;
-    document.getElementById('valor-produto').value = produto.valorProduto;
+    document.getElementById('nome-produto').value = produto.nome;
+    document.getElementById('descricao-produto').value = produto.descricao;
+    document.getElementById('valor-produto').value = produto.valor;
     document.getElementById('quantidade-produto').value = produto.quantidade;
     document.getElementById('categoria-produto').value = produto.categoria;
-    atualizarTipos(); // Atualiza a lista de tipos de produto com base na categoria.
-    document.getElementById('tipo-produto').value = produto.tipoProduto;
-    document.getElementById('descricao-produto').value = produto.descricaoProduto;
+    atualizarTipos(); // Atualiza os tipos com base na categoria
+    document.getElementById('tipo-produto').value = produto.tipo;
 
-    // Pré-visualização da imagem do produto.
-    const imagemPreview = document.getElementById('imagem-preview');
-    const imagemMensagem = document.getElementById('imagem-mensagem');
-    imagemPreview.src = `../${produto.imagemProduto}`;
-    imagemPreview.classList.remove('icone');
-    imagemPreview.classList.add('preview');
-    imagemMensagem.style.display = 'none';
+    if (produto.tipo === 'Kit') {
+        carregarProdutosPredefinidos(); // Carrega os produtos do kit
+        // Preencher os campos específicos do kit
+        produto.kit.forEach(item => {
+            const produtoDiv = document.createElement('div');
+            produtoDiv.classList.add('produto-kit-item');
 
-    // Armazena a imagem existente para enviar caso não seja alterada.
-    document.getElementById('imagem-produto').dataset.imagemExistente = produto.imagemProduto;
+            const labelNomeProduto = document.createElement('label');
+            labelNomeProduto.textContent = item.nome;
+            produtoDiv.appendChild(labelNomeProduto);
 
-};
+            const inputQuantidade = document.createElement('input');
+            inputQuantidade.type = 'number';
+            inputQuantidade.name = `quantidade_${item.nome}`;
+            inputQuantidade.placeholder = 'Quantidade';
+            inputQuantidade.min = '0';
+            inputQuantidade.value = item.quantidade;
+            inputQuantidade.addEventListener('input', calcularValorKit);
+            produtoDiv.appendChild(inputQuantidade);
 
-function atualizarTipos() {
+            const inputValor = document.createElement('input');
+            inputValor.type = 'number';
+            inputValor.name = `valor_${item.nome}`;
+            inputValor.placeholder = 'Valor Individual';
+            inputValor.step = '0.01';
+            inputValor.min = '0';
+            inputValor.value = item.valor;
+            inputValor.addEventListener('input', calcularValorKit);
+            produtoDiv.appendChild(inputValor);
 
-    const categoria = document.getElementById('categoria-produto').value;
-    const tipoSelect = document.getElementById('tipo-produto');
+            const inputTipo = document.createElement('input');
+            inputTipo.type = 'text';
+            inputTipo.name = `tipo_${item.nome}`;
+            inputTipo.value = item.tipo;
+            inputTipo.readOnly = true; // Tornar o campo somente leitura
+            produtoDiv.appendChild(inputTipo);
 
-    // Limpa os tipos de produto antes de adicionar novos.
-    tipoSelect.innerHTML = '';
-
-    if (tipos[categoria]) {
-        tipos[categoria].forEach(function(tipo) {
-            const option = document.createElement('option');
-            option.value = tipo.value;
-            option.text = tipo.text;
-            tipoSelect.add(option);
+            document.getElementById('produtos-kit-detalhes').appendChild(produtoDiv);
         });
-
-    } else {
-
-        const option = document.createElement('option');
-        option.value = '';
-        option.text = 'Selecione uma categoria primeiro';
-        tipoSelect.add(option);
-
-    };
-
-};
+        document.getElementById('campos-kit').style.display = 'block';
+    }
+}
