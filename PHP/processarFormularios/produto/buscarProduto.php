@@ -24,14 +24,40 @@ try {
         $produto = $crudProduto->lerEntidade($idProduto, "Produtos");
 
         if ($produto) {
+            $produtoArray = [
+                'id' => $produto->getId(),
+                'imagemProduto' => $produto->getImagem(),
+                'nomeProduto' => $produto->getNome(),
+                'valorProduto' => $produto->getValor(),
+                'quantidade' => $produto->getQuantidade(),
+                'categoria' => $produto->getCategoria(),
+                'tipoProduto' => $produto->getTipo(),
+                'descricaoProduto' => $produto->getDescricao()
+            ];
 
-            if ($produto['tipoProduto'] === 'Kit' && isset($produto['produtosKit']) && is_string($produto['produtosKit'])) {
-                $produto['produtosKit'] = json_decode($produto['produtosKit'], true);
+            // Verifica se o produto é do tipo 'Kit' antes de acessar a propriedade 'produtosKit'
+            if ($produto->getTipo() === 'Kit') {
+                if (isset($produto->produtos) && is_string($produto->obterProdutos())) {
+                    $produto->definirProdutos(json_decode($produto->obterProdutos(), true));
+                }
+                $produtosKit = $produto->obterProdutos();
+                $produtoArray['produtosKit'] = array_map(function($produtoKit) {
+                    return [
+                        'idProduto' => $produtoKit->getId(),
+                        'imagemProduto' => $produtoKit->getImagem(),
+                        'nomeProduto' => $produtoKit->getNome(),
+                        'valorProduto' => $produtoKit->getValor(),
+                        'quantidade' => $produtoKit->getQuantidade(),
+                        'categoria' => $produtoKit->getCategoria(),
+                        'tipoProduto' => $produtoKit->getTipo(),
+                        'descricaoProduto' => $produtoKit->getDescricao()
+                    ];
+                }, $produtosKit);
             }
 
             echo json_encode([
                 "status" => "sucesso",
-                "produto" => $produto
+                "produto" => $produtoArray
             ]);
 
         } else {
@@ -42,20 +68,16 @@ try {
         }
 
     } else {
-
         echo json_encode([
             "status" => "erro",
             "mensagem" => "ID do produto não fornecido."
         ]);
-
     }
 
 } catch (Exception $excecao) {
-
     // Capturar e exibir mensagens de erro
     echo json_encode([
         "status" => "erro",
         "mensagem" => $excecao->getMessage()
     ]);
-
 }

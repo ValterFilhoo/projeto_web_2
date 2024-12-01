@@ -1,14 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../product.php';
-require_once __DIR__ . '/../../composite/itemPedidoComponent.php';
-
 class ItemPedidoKit implements ItemPedidoComponent {
-
+    
     private int $idPedido;
     private ItemPedidoComponent $produto;
     private int $quantidade;
-    private ?string $produtosKit;  // Pode ser uma string JSON ou null
+    private ?string $produtosKit;
 
     public function __construct(ItemPedidoComponent $produto, int $quantidade) {
         $this->produto = $produto;
@@ -73,7 +70,7 @@ class ItemPedidoKit implements ItemPedidoComponent {
     }
 
     public function definirProdutos(array $produtos): void {
-        $this->produto->definirProdutos($produtos);
+        $this->produtosKit = json_encode($produtos);
     }
 
     public function setProdutosKit(?string $produtosKit): void {

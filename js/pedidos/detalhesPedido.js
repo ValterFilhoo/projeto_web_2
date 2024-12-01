@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Função para carregar os detalhes do pedido
 function carregarDetalhesPedido(apiDetalhesPedidoUrl, pedidoId) {
+    
     fetch(`${apiDetalhesPedidoUrl}?id=${pedidoId}`)
         .then(response => response.json())
         .then(data => {
@@ -47,12 +48,12 @@ function carregarDetalhesPedido(apiDetalhesPedidoUrl, pedidoId) {
 
                         item.produtosKit.forEach(produto => {
                             itensHtml += `<li class="produto-kit">
-                                <p>Nome: ${produto.nomeProduto}</p>
-                                <p>Quantidade: ${produto.quantidade}</p>
-                                <p>Valor: R$ ${produto.valorProduto.toFixed(2)}</p>
-                                <p>Categoria: ${produto.categoria}</p>
-                                <p>Tipo: ${produto.tipoProduto}</p>
-                                <p>Descrição: ${produto.descricaoProduto}</p>
+                                <p class="nome-kit-produto">Nome: ${produto.nomeProduto}</p>
+                                <p class="quantidade-kit-produto">Quantidade: ${produto.quantidade}</p>
+                                <p class="valor-kit-produto">Valor: R$ ${produto.valorProduto.toFixed(2)}</p>
+                                <p class="categoria-kit-produto">Categoria: ${produto.categoria}</p>
+                                <p class="tipo-kit-produto">Tipo: ${produto.tipoProduto}</p>
+                                <p class="descricao-kit-produto">Descrição: ${produto.descricaoProduto}</p>
                             </li>`;
                         });
 

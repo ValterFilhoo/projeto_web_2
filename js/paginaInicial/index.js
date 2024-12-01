@@ -64,8 +64,10 @@ document.addEventListener('DOMContentLoaded', function() {
                           <img src="../${produto.imagemProduto}" alt="${produto.nomeProduto}">
                       </a>
                       <h1>${produto.nomeProduto}</h1>
-                      <p>R$ ${produto.valorProduto.toFixed(2)}</p>
-                      <p>até 6x de R$ ${valorParcela}</p>
+                      <div class="preco"> 
+                        <span>R$ ${produto.valorProduto.toFixed(2)}</span> 
+                        <span>até 6x de R$ ${valorParcela}</span> 
+                      </div>
                       <button class="adicionar-carrinho" data-id="${produto.id}">Adicionar ao Carrinho</button>
                       ${tipoConta === 'Admin' ? `
                       <div class="botoes-acoes">

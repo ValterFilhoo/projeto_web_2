@@ -280,7 +280,7 @@ class PedidoFacade {
     public function buscarPedidoPorId(int $pedidoId): array {
 
         try {
-
+            
             $pedido = $this->crudPedido->lerEntidade($pedidoId, "Pedidos");
     
             if ($pedido === null) {
@@ -300,18 +300,29 @@ class PedidoFacade {
                 ];
     
                 if ($item instanceof ItemPedidoKit) {
-                    $itemArray['produtosKit'] = $item->getTipo() === 'Kit' ? array_map(function($produto) {
-                        return [
-                            'idProduto' => $produto['id'],
-                            'imagemProduto' => $produto['imagemProduto'],
-                            'nomeProduto' => $produto['nomeProduto'],
-                            'valorProduto' => $produto['valorProduto'],
-                            'quantidade' => $produto['quantidade'],
-                            'categoria' => $produto['categoria'],
-                            'tipoProduto' => $produto['tipoProduto'],
-                            'descricaoProduto' => $produto['descricaoProduto']
-                        ];
-                    }, $item->obterProdutos()) : [];
+
+                    $produtosKit = $item->obterProdutos();
+
+                    if (!empty($produtosKit)) {
+                        $itemArray['produtosKit'] = array_map(function($produto) {
+                            return [
+                                'idProduto' => $produto['id'] ?? null,
+                                'imagemProduto' => $produto['imagemProduto'] ?? null,
+                                'nomeProduto' => $produto['nomeProduto'] ?? null,
+                                'valorProduto' => $produto['valorProduto'] ?? null,
+                                'quantidade' => $produto['quantidade'] ?? null,
+                                'categoria' => $produto['categoria'] ?? null,
+                                'tipoProduto' => $produto['tipoProduto'] ?? null,
+                                'descricaoProduto' => $produto['descricaoProduto'] ?? null
+                            ];
+                        }, $produtosKit);
+
+                    } else {
+                        $itemArray['produtosKit'] = [];
+                    }
+
+                } else {
+                    $itemArray['produtosKit'] = null; // Assegurar que produtosKit seja null para itens que não são kits
                 }
     
                 return $itemArray;
@@ -331,7 +342,6 @@ class PedidoFacade {
                     'valorParcelas' => $pedido->getValorParcelas(),
                     'itens' => $itensArray
                 ]
-                
             ];
     
         } catch (Exception $e) {

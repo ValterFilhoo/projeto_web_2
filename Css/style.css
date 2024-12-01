@@ -136,6 +136,8 @@ nav {
   font-weight: bold;
 }
 
+
+
 /* Estilos dos Produtos */
 .produtos {
   margin-top: 4rem;
@@ -148,28 +150,35 @@ nav {
 .notebook {
   display: grid;
   padding: 20px;
-  max-width: 300px; /* Limitar a largura do container */
+  width: 300px; /* Define uma largura fixa para todos os contêineres */
+  height: 500px; /* Define uma altura fixa para todos os contêineres */
   background: #FFFFFF;
   box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  grid-template-rows: 150px auto auto auto; /* Garante que a imagem, o conteúdo e os botões tenham espaços definidos */
 }
 
 .notebook img {
   max-width: 100%; /* Garantir que a imagem não ultrapasse o tamanho do container */
-  height: auto;
+  height: 150px; /* Define uma altura fixa para as imagens */
   display: block;
   margin: 0 auto;
 }
 
-.notebook:hover {
-  transform: scale(1.05);
-  box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.2);
+.notebook h1 {
+  text-align: center;
+  margin-top: 10px; /* Adiciona margem superior para separar o nome da imagem */
 }
 
-.notebook h1,
-.notebook p,
-.notebook button {
+.notebook .preco {
+  display: flex;
+  flex-direction: column; /* Exibe os preços em colunas */
   text-align: center;
+  margin: 10px 0; /* Adiciona margens para espaçamento */
+}
+
+.notebook .preco p {
+  margin: 5px 0; /* Margem vertical entre os preços */
 }
 
 .notebook button {
@@ -180,12 +189,19 @@ nav {
   background: #007BFF;
   border-radius: 4px;
   padding: 10px 20px;
+  margin-top: auto; /* Adiciona margem superior automática para empurrar o botão para o final do contêiner */
+  align-self: end; /* Garante que os botões estejam alinhados ao final do contêiner */
+}
+
+/* Restaurar efeito 3D */
+.notebook:hover {
+  transform: scale(1.05);
+  box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 .notebook button:hover {
   background: #0056b3;
 }
-
 
 /* Estilo para o botão de adicionar ao carrinho */
 .adicionar-carrinho {
@@ -200,11 +216,52 @@ nav {
   cursor: pointer;
   font-size: 16px;
   margin-top: 10px; /* Margem superior para espaçamento */
+  align-self: end; /* Garante que os botões estejam alinhados ao final do contêiner */
 }
 
 .adicionar-carrinho:hover {
   background: #218838;
 }
+
+/* Estilo para o contêiner dos botões de ação */
+.botoes-acoes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px; 
+}
+
+.botoes-acoes button {
+  width: 100px; /* Define uma largura fixa */
+  height: 40px; /* Define uma altura fixa */
+  font-weight: bold;
+  color: #ffffff;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.botoes-acoes .btn-remover {
+  background-color: #EB1E1E;
+}
+
+.botoes-acoes .btn-editar {
+  background-color: #30E738;
+}
+
+.botoes-acoes .btn-remover:hover {
+  background-color: #D21717;  /* Use uma cor vermelha mais escura para o hover */
+}
+
+.botoes-acoes .btn-editar:hover {
+  background-color: #28C72A;  /* Use uma cor verde mais escura para o hover */
+}
+
+
+
 
 .contact {
   background-color: #f9f9f9;
@@ -262,38 +319,6 @@ button {
 
 
 
-/* Estilo para o contêiner dos botões de ação */
-.botoes-acoes {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px; 
-}
-
-.botoes-acoes button {
-  padding: 10px 20px;
-  font-weight: bold;
-  color: #ffffff;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.botoes-acoes .btn-remover {
-  background-color: #EB1E1E;
-}
-
-.botoes-acoes .btn-editar {
-  background-color: #30E738;
-}
-
-.botoes-acoes .btn-remover:hover {
-  background-color: #D21717;  /* Use uma cor vermelha mais escura para o hover */
-}
-
-.botoes-acoes .btn-editar:hover {
-  background-color: #28C72A;  /* Use uma cor verde mais escura para o hover */
-}
 
 
 /* Estilo para o modal do carrinho */
@@ -516,10 +541,14 @@ button {
   transform: translateY(-20px);
 }
 
+
 footer {
-  background-color: #f8f8f8;
-  color: black;
-  padding: 20px 0;
+  background-color: #f8f8f8; /* Fundo claro */
+  color: #333; /* Texto escuro para contraste */
+  padding: 30px 0;
+  border-top: 3px solid #3498db; /* Borda superior azul clara */
+  border-bottom: 3px solid #3498db; /* Borda inferior azul clara */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .footer-content {
@@ -528,26 +557,53 @@ footer {
   max-width: 1200px;
   margin: auto;
   padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff; /* Fundo das seções */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .footer-section {
   flex: 1;
-  padding: 10px;
+  padding: 10px 20px;
+  background-color: #ffffff; /* Fundo das seções */
 }
 
 .footer-section h3 {
-  color: black;
+  color: #333; /* Título escuro */
+  border-bottom: 2px solid #3498db; /* Borda inferior azul clara */
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 18px;
 }
 
-.footer-section a {
-  color: black;
+/* Removendo os marcadores da lista na seção de links úteis */
+.footer-section.links ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Estilizando os links úteis */
+.footer-section.links ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section.links a {
+  color: inherit; /* Retira as cores dos links úteis */
   text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section.links a:hover {
+  text-decoration: underline;
 }
 
 .footer-bottom {
   text-align: center;
-  padding: 10px;
-  box-shadow: 0px 0px 0px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  background-color: #ecf0f1; /* Fundo cinza claro */
+  color: #333; /* Texto escuro */
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .footer-bottom p {
