@@ -112,14 +112,40 @@
 
         <div class="resumo-carrinho">
             <span class="total" id="total-carrinho2">Total: R$ 0,00</span>
-           <a href="realizarCompra.php"> <button class="finalizar-compra">Finalizar Compra</button> </a> 
             <a href="index.php" class="continuar-comprando">Continuar Comprando</a>
+            <a href="realizarCompra.php"> <button class="finalizar-compra">Finalizar Compra</button> </a> 
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2024 Minha Loja - Todos os direitos reservados.</p>
+      <div class="footer-content">
+        <div class="footer-section about">
+            <h3>Sobre Nós</h3>
+            <p>Somos uma empresa dedicada a fornecer soluções inovadoras para melhorar o dia a dia dos nossos clientes. Comprometidos com a qualidade e excelência.</p>
+        </div>
+        <div class="footer-section links">
+            <h3>Links Úteis</h3>
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Serviços</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </div>
+   
+        <div class="footer-section contact">
+            <h3>Contato</h3>
+            <p>Email: contato@eletrowonka.com</p>
+            <p>Telefone: (71) 1234-5678</p>
+            <p>Endereço: Rua Exemplo, 123, Cidade, Estado</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 ELETROWONKA | Todos os direitos reservados.</p>
+    </div>
     </footer>
+
+
     <script src="../js/carrinho/carregarCarrinho.js"></script>
     <script src="../js/carrinho/carrinho.js"></script>
     <script src="../js/paginaInicial/modalPerfil.js"></script>

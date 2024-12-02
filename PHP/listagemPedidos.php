@@ -154,13 +154,13 @@ $userId = isset($_SESSION['id']) ? htmlspecialchars($_SESSION['id']) : ''
    
         <div class="footer-section contact">
             <h3>Contato</h3>
-            <p>Email: contato@empresa.com</p>
-            <p>Telefone: (11) 1234-5678</p>
+            <p>Email: contato@eletrowonka.com</p>
+            <p>Telefone: (71) 1234-5678</p>
             <p>Endereço: Rua Exemplo, 123, Cidade, Estado</p>
         </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; 2024 Empresa | Todos os direitos reservados.</p>
+        <p>&copy; 2024 ELETROWONKA | Todos os direitos reservados.</p>
     </div>
     </footer>
 

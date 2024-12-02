@@ -294,7 +294,9 @@ function gerarNumeroBoleto() {
     return 'boleto_' + uniqid(); // Gera um número de boleto único
 }
 
+// função que cria valores ficticios para chave pix ou boleto.
 function uniqid(prefix = '', more_entropy = false) {
+
     let id = Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
     if (more_entropy) {
         id += Math.random().toString(36).substring(2, 7);

@@ -144,7 +144,7 @@ button.remover:hover {
 }
 
 button.finalizar-compra {
-  background-color: #28A745;
+  background-color: #007BFF;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -154,23 +154,22 @@ button.finalizar-compra {
 }
 
 button.finalizar-compra:hover {
-  background-color: #218838;
+  background-color: #0469d4;
 }
 
 a.continuar-comprando {
   display: inline-block;
   margin-top: 15px;
   text-decoration: none;
-  color: #007BFF;
+  color: white;
+  background-color: #EB1E1E; 
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
 }
 
 a.continuar-comprando:hover {
-  text-decoration: underline;
-}
-
-
-footer {
-  margin-top: 20px;
-  text-align: center;
-  color: #777;
+  background-color: #cd1a1a; 
 }

@@ -161,21 +161,45 @@ section {
     padding: 0.188rem;
 }
 
-.formulario-container button {
-    width: 100%;
-    padding: 0.625rem;
-    background-color: #2980B9;
-    color: #FFF;
+/* Container para centralizar e alinhar os botões */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Espaçamento entre os botões */
+    margin-top: 20px; /* Margem superior para dar espaço acima dos botões */
+  }
+  
+  /* Estilo comum para ambos os botões */
+  .btn-cancelar, .btn-cadastrar {
+    flex: 1;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
     border: none;
-    border-radius: 0.25rem;
-    font-size: 1rem;
+    border-radius: 5px;
     cursor: pointer;
-    box-sizing: border-box;
-}
-
-.formulario-container button:hover {
-    background-color: #1A5276;
-}
+  }
+  
+  /* Estilo específico para o botão Cancelar */
+  .btn-cancelar {
+    background-color: #dc3545;
+  }
+  
+  /* Estilo específico para o botão Cadastrar */
+  .btn-cadastrar {
+    background-color: #007BFF;
+  }
+  
+  /* Efeito de hover para ambos os botões */
+  .btn-cancelar:hover {
+    background-color: #c82333;
+  }
+  
+  .btn-cadastrar:hover {
+    background-color: #0056b3;
+  }
+  
 
 .input-imagem-container {
     width: 100%;

@@ -110,8 +110,6 @@ function carregarItensDoCarrinho(userId) {
         totalCarrinho.textContent = '0,00';
     }
 
-    // Log para verificar se os itens foram carregados
-    console.log(`Itens carregados no carrinho: ${carrinhoItens.innerHTML}`);
 }
 
 function alterarQuantidadeProduto(userId, id, quantidade) {
@@ -145,38 +143,36 @@ function adicionarAoCarrinho(userId, produto) {
         carrinho = [];
     }
 
-    // Verifica se o produto já está no carrinho
-    const produtoExistente = carrinho.find(item => item.id === produto.id);
+    // Verifica se o produto é um kit
+    if (produto.tipoProduto === 'Kit' && produto.produtosKit) {
+        // Verifica se o kit já está no carrinho
+        const kitExistente = carrinho.find(item => item.id === produto.id && item.tipoProduto === 'Kit');
 
-    if (produtoExistente) {
-        produtoExistente.quantidade += 1; // Incrementa a quantidade se o produto já estiver no carrinho
+        if (kitExistente) {
+            kitExistente.quantidade += 1; // Incrementa a quantidade se o kit já estiver no carrinho
+        } else {
+            // Adiciona o kit ao carrinho
+            carrinho.push({ ...produto, quantidade: 1 });
+        }
     } else {
-        // Adiciona o novo produto ao carrinho
-        carrinho.push({ ...produto, quantidade: 1 });
+        // Verifica se o produto já está no carrinho
+        const produtoExistente = carrinho.find(item => item.id === produto.id && item.tipoProduto !== 'Kit');
 
-        // Se o produto for um kit, adicione os produtos do kit ao carrinho
-        if (produto.tipoProduto === 'Kit' && Array.isArray(produto.produtosKit)) {
-            produto.produtosKit.forEach(item => {
-                const itemExistente = carrinho.find(itemCarrinho => itemCarrinho.id === item.produto_id);
-                if (itemExistente) {
-                    itemExistente.quantidade += item.quantidade;
-                } else {
-                    carrinho.push({ ...item, quantidade: item.quantidade });
-                }
-            });
+        if (produtoExistente) {
+            produtoExistente.quantidade += 1; // Incrementa a quantidade se o produto já estiver no carrinho
+        } else {
+            // Adiciona o novo produto ao carrinho
+            carrinho.push({ ...produto, quantidade: 1 });
         }
     }
 
     // Atualiza o localStorage com o carrinho atualizado
     localStorage.setItem(chaveCarrinho, JSON.stringify(carrinho));
 
-    mostrarNotificacao('Produto adicionado ao carrinho com sucesso!'); // Exibir notificação em vez de alert
-
-    // Verificar imediatamente após atualizar o localStorage
-    console.log(`Itens no carrinho após adição: ${JSON.stringify(carrinho)}`);
-
     // Atualiza o modal do carrinho
     carregarItensDoCarrinho(userId);
+
+    mostrarNotificacao('Produto adicionado ao carrinho com sucesso!'); // Exibir notificação em vez de alert
 }
 
 function removerDoCarrinho(userId, id) {

@@ -176,9 +176,13 @@ section {
 }
 
 .formulario-container .button-container a {
-    background-color: red;
+    background-color: #EB1E1E;
     color: #FFF;
     text-decoration: none;
+}
+
+.formulario-container .button-container a:hover {
+    background-color: #c41a1a;
 }
 
 .formulario-container .button-container button {
@@ -265,6 +269,15 @@ section {
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
+}
+
+
+#salvar-produto {
+    background-color: #007BFF;
+}
+
+#salvar-produto:hover {
+    background-color: #0b5fb8;
 }
 
 .footer-content {

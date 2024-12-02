@@ -148,8 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function adicionarAoCarrinho(userId, produto) {
-
-    const chaveCarrinho = `carrinho_${userId}`; // Chave única para o carrinho do usuário
+    const chaveCarrinho = `carrinho_${userId}`; // Cria uma chave única para o carrinho do usuário
     let carrinho = localStorage.getItem(chaveCarrinho);
 
     if (carrinho) {
@@ -158,22 +157,34 @@ document.addEventListener('DOMContentLoaded', function() {
         carrinho = [];
     }
 
-    // Verifica se o produto já está no carrinho
-    const produtoExistente = carrinho.find(item => item.id === produto.id);
+    // Verifica se o produto é um kit
+    if (produto.tipoProduto === 'Kit' && Array.isArray(produto.produtosKit)) {
+        // Verifica se o kit já está no carrinho
+        const kitExistente = carrinho.find(item => item.id === produto.id && item.tipoProduto === 'Kit');
 
-    if (produtoExistente) {
-        produtoExistente.quantidade += 1; // Incrementa a quantidade se o produto já estiver no carrinho
+        if (kitExistente) {
+            kitExistente.quantidade += 1; // Incrementa a quantidade se o kit já estiver no carrinho
+        } else {
+            // Adiciona o kit ao carrinho
+            carrinho.push({ ...produto, quantidade: 1 });
+        }
     } else {
-        // Adiciona o novo produto ao carrinho
-        carrinho.push({ ...produto, quantidade: 1 });
+        // Verifica se o produto já está no carrinho
+        const produtoExistente = carrinho.find(item => item.id === produto.id && item.tipoProduto !== 'Kit');
+
+        if (produtoExistente) {
+            produtoExistente.quantidade += 1; // Incrementa a quantidade se o produto já estiver no carrinho
+        } else {
+            // Adiciona o novo produto ao carrinho
+            carrinho.push({ ...produto, quantidade: 1 });
+        }
     }
-
-    // Atualiza o localStorage com o carrinho atualizado
-    localStorage.setItem(chaveCarrinho, JSON.stringify(carrinho));
-
-    mostrarNotificacao('Produto adicionado ao carrinho com sucesso!'); // Exibir notificação em vez de alert
 
     // Atualiza o modal do carrinho
     carregarItensDoCarrinho(userId);
+
+    // Atualiza o localStorage com o carrinho atualizado
+    localStorage.setItem(chaveCarrinho, JSON.stringify(carrinho));
     
+    mostrarNotificacao('Produto adicionado ao carrinho com sucesso!'); // Exibir notificação em vez de alert
 }

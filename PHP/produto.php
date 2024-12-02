@@ -118,7 +118,7 @@
 </div>
 
 <footer>
-    <div class="footer-content">
+      <div class="footer-content">
         <div class="footer-section about">
             <h3>Sobre Nós</h3>
             <p>Somos uma empresa dedicada a fornecer soluções inovadoras para melhorar o dia a dia dos nossos clientes. Comprometidos com a qualidade e excelência.</p>
@@ -132,17 +132,19 @@
                 <li><a href="#">Contato</a></li>
             </ul>
         </div>
+   
         <div class="footer-section contact">
             <h3>Contato</h3>
-            <p>Email: contato@empresa.com</p>
-            <p>Telefone: (11) 1234-5678</p>
+            <p>Email: contato@eletrowonka.com</p>
+            <p>Telefone: (71) 1234-5678</p>
             <p>Endereço: Rua Exemplo, 123, Cidade, Estado</p>
         </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; 2024 Empresa | Todos os direitos reservados.</p>
+        <p>&copy; 2024 ELETROWONKA | Todos os direitos reservados.</p>
     </div>
-</footer>
+    </footer>
+
 
 <script src="../js/produto/produto.js"></script>
 <script src="../js/carrinho/carrinho.js"></script>

@@ -286,7 +286,6 @@ function atualizarTipos() {
         });
 
         tipoSelect.disabled = false; // Habilitar o campo de tipo de produto
-        mostrarNotificacao('Tipos atualizados com sucesso.');
 
     } else {
 
@@ -438,7 +437,7 @@ function salvarProduto() {
 
         if (data.status === 'sucesso') {
 
-            mostrarNotificacao('Produto atualizado com sucesso!');
+            mostrarNotificacao('Produto editado com sucesso!');
             setTimeout(() => {
                 window.location.href = 'index.php'; 
             }, 3000); // 3 segundos de delay
@@ -500,7 +499,6 @@ function carregarProdutosPredefinidos() {
             produtosKitCheckboxes.appendChild(checkboxDiv);
         });
 
-        mostrarNotificacao('Produtos específicos carregados para a categoria ' + categoria);
 
     } else {
         mostrarNotificacao('Erro ao carregar produtos específicos.');

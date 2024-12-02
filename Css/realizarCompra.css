@@ -167,6 +167,72 @@ section {
   overflow-y: auto; /* Adiciona rolagem vertical se necessário */
 }
 
+
+
+/* Estilo para o Modal do Perfil */
+.modal-perfil {
+  display: none; /* Escondido por padrão */
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  width: 300px; /* Ajuste a largura conforme necessário */
+  height: 50%; /* Definir a altura para 70% da tela */
+  background-color: #f4f4f4; /* Fundo sólido claro */
+}
+
+.modal-content-perfil {
+  background-color: #ffffff; /* Fundo branco */
+  margin: 15% auto; /* Ajuste de margem para centralizar verticalmente */
+  padding: 20px;
+  border: 1px solid #ddd; /* Borda cinza clara */
+  border-radius: 8px; /* Cantos arredondados */
+  height: 100%;
+  overflow-y: auto; /* Permite rolagem vertical */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para um efeito de profundidade */
+  font-family: 'Roboto', sans-serif; /* Fonte Roboto para um toque moderno */
+}
+
+.close-perfil {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-perfil:hover,
+.close-perfil:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilo para o conteúdo do modal */
+#modal-content-dynamic ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#modal-content-dynamic ul li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+#modal-content-dynamic ul li a,
+#modal-content-dynamic a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+#modal-content-dynamic ul li a:hover,
+#modal-content-dynamic a:hover {
+  color: #007BFF; /* Cor de destaque ao passar o mouse */
+}
+
+
+
 .resumo-titulo, .informacoes-titulo, .opcoes-titulo {
   font-size: 1.5rem;
   margin-bottom: 20px;
@@ -321,8 +387,136 @@ select:focus {
   transform: translateY(-20px);
 }
 
+
+/* Estilo para o Modal do Perfil */
+.modal-perfil {
+  display: none; /* Escondido por padrão */
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  width: 300px; /* Ajuste a largura conforme necessário */
+  height: 50%; /* Definir a altura para 70% da tela */
+  background-color: #f4f4f4; /* Fundo sólido claro */
+}
+
+.modal-content-perfil {
+  background-color: #ffffff; /* Fundo branco */
+  margin: 15% auto; /* Ajuste de margem para centralizar verticalmente */
+  padding: 20px;
+  border: 1px solid #ddd; /* Borda cinza clara */
+  border-radius: 8px; /* Cantos arredondados */
+  height: 100%;
+  overflow-y: auto; /* Permite rolagem vertical */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para um efeito de profundidade */
+  font-family: 'Roboto', sans-serif; /* Fonte Roboto para um toque moderno */
+}
+
+.close-perfil {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-perfil:hover,
+.close-perfil:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilo para o conteúdo do modal */
+#modal-content-dynamic ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#modal-content-dynamic ul li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+#modal-content-dynamic ul li a,
+#modal-content-dynamic a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+#modal-content-dynamic ul li a:hover,
+#modal-content-dynamic a:hover {
+  color: #007BFF; /* Cor de destaque ao passar o mouse */
+}
+
+
+
 footer {
-  margin-top: 2rem;
+  margin-top: 35px;
+  background-color: #f8f8f8; /* Fundo claro */
+  color: #333; /* Texto escuro para contraste */
+  padding: 30px 0;
+  border-top: 3px solid #3498db; /* Borda superior azul clara */
+  border-bottom: 3px solid #3498db; /* Borda inferior azul clara */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff; /* Fundo das seções */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.footer-section {
+  flex: 1;
+  padding: 10px 20px;
+  background-color: #ffffff; /* Fundo das seções */
+}
+
+.footer-section h3 {
+  color: #333; /* Título escuro */
+  border-bottom: 2px solid #3498db; /* Borda inferior azul clara */
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+/* Removendo os marcadores da lista na seção de links úteis */
+.footer-section.links ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Estilizando os links úteis */
+.footer-section.links ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section.links a {
+  color: inherit; /* Retira as cores dos links úteis */
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section.links a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
   text-align: center;
-  color: #777;
+  padding: 15px;
+  background-color: #ecf0f1; /* Fundo cinza claro */
+  color: #333; /* Texto escuro */
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.footer-bottom p {
+  margin: 0;
 }

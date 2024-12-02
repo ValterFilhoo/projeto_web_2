@@ -43,7 +43,7 @@
     </div>
     
     <ul class="navegacao-topicos">
-        <li><a href="./index.php">Página Inicial</a></li>
+        <li><a href="./index.php" class="navegacao-item">Página Inicial</a></li>
         <li><a href="./categoriaArduino.php" class="navegacao-item">Arduino</a></li>
         <li><a href="./categoriaDisplay.php" class="navegacao-item">Display</a></li>
         <li><a href="./categoriaMotor.php" class="navegacao-item">Motor</a></li>
@@ -150,11 +150,47 @@
     <button class="finalizar-compra" id="botao-finalizar">Finalizar Compra</button>
 </div>
 
+      <!-- Modal do Perfil -->
+    <section>
+      <div id="perfil-modal" class="modal-perfil">
+        <div class="modal-content-perfil">
+          <span class="close-perfil">&times;</span>
+          <div id="modal-content-dynamic">
+          </div>
+        </div>
+      </div>
+    </section>
+
 <div id="notificacao" class="notificacao"></div>
 
 <footer>
-    <p>&copy; 2024 Minha Loja - Todos os direitos reservados.</p>
-</footer>
+      <div class="footer-content">
+        <div class="footer-section about">
+            <h3>Sobre Nós</h3>
+            <p>Somos uma empresa dedicada a fornecer soluções inovadoras para melhorar o dia a dia dos nossos clientes. Comprometidos com a qualidade e excelência.</p>
+        </div>
+        <div class="footer-section links">
+            <h3>Links Úteis</h3>
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Serviços</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </div>
+   
+        <div class="footer-section contact">
+            <h3>Contato</h3>
+            <p>Email: contato@eletrowonka.com</p>
+            <p>Telefone: (71) 1234-5678</p>
+            <p>Endereço: Rua Exemplo, 123, Cidade, Estado</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 ELETROWONKA | Todos os direitos reservados.</p>
+    </div>
+    </footer>
+
 
 <script src="../js/finalizarCompra/finalizarCompra.js"></script>
 <script src="../js/paginaInicial/modalPerfil.js"></script>

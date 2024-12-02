@@ -57,7 +57,7 @@ function carregarItensDoCarrinhoNaPagina(userId) {
 
         // Itera sobre cada produto no carrinho e cria elementos HTML para exibi-los
         carrinho.forEach(produto => {
-            console.log('Produto encontrado no carrinho:', produto);
+
 
             if (produto && typeof produto.valorProduto === 'number' && typeof produto.quantidade === 'number') {
                 const produtoTr = document.createElement('tr');

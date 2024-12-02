@@ -53,10 +53,10 @@ h1 {
   background-color: #007BFF; /* Cor de fundo */
   color: #fff; /* Cor do texto */
   text-align: center; /* Alinhamento do texto */
-  border-radius: 5px; /* Cantos arredondados */
-  text-decoration: none; /* Sem sublinhado */
-  font-size: 18px; /* Tamanho da fonte */
-  transition: background-color 0.2s ease-in-out; /* Transição suave */
+  border-radius: 5px; 
+  text-decoration: none; 
+  font-size: 18px; 
+  transition: background-color 0.2s ease-in-out; 
 }
 
 .buy-btn:hover {
@@ -77,4 +77,8 @@ h1 {
 
 .produto-kit-item:last-child {
   border-bottom: none; /* Remove a borda inferior do último item */
+}
+
+.add-to-cart-btn {
+  background-color: #007BFF;
 }

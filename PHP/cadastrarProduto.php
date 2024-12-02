@@ -113,32 +113,44 @@
             <!-- Campos para quantidade e valor dos produtos do kit serão adicionados aqui -->
           </div>
         </div>
+        <div class="btn-container">
+          <a href="./index.php" class="btn-cancelar">Cancelar</a>
+          <button type="submit" class="btn-cadastrar">Cadastrar</button>
 
-        <button type="submit">Cadastrar</button>
+        </div>
+        
       </form>
     </div>
   </section>
 
   <footer>
-    <div class="footer-content">
-      <div class="footer-section about">
-          <h3>Sobre Nós</h3>
-          <p>Somos uma empresa dedicada a fornecer soluções inovadoras para melhorar o dia a dia dos nossos clientes. Comprometidos com a qualidade e excelência.</p>
-      </div>
-      <div class="footer-section links">
-          <h3>Links Úteis</h3>
-          <ul>
-              <li><a href="#">Início</a></li>
-              <li><a href="#">Sobre</a></li>
-              <li><a href="#">Serviços</a></li>
-              <li><a href="#">Contato</a></li>
-          </ul>
-      </div>
+      <div class="footer-content">
+        <div class="footer-section about">
+            <h3>Sobre Nós</h3>
+            <p>Somos uma empresa dedicada a fornecer soluções inovadoras para melhorar o dia a dia dos nossos clientes. Comprometidos com a qualidade e excelência.</p>
+        </div>
+        <div class="footer-section links">
+            <h3>Links Úteis</h3>
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Serviços</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </div>
+   
+        <div class="footer-section contact">
+            <h3>Contato</h3>
+            <p>Email: contato@eletrowonka.com</p>
+            <p>Telefone: (71) 1234-5678</p>
+            <p>Endereço: Rua Exemplo, 123, Cidade, Estado</p>
+        </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2024 Empresa | Todos os direitos reservados.</p>
+        <p>&copy; 2024 ELETROWONKA | Todos os direitos reservados.</p>
     </div>
-  </footer>
+    </footer>
+
 
   <script src="../js/cadastrarProduto/cadastrarProduto.js"></script>
   <script src="../js/cadastrarProduto/enviarFormulario.js"></script>

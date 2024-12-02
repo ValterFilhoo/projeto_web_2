@@ -253,15 +253,12 @@ nav {
 }
 
 .botoes-acoes .btn-remover:hover {
-  background-color: #D21717;  /* Use uma cor vermelha mais escura para o hover */
+  background-color: #D21717;  
 }
 
 .botoes-acoes .btn-editar:hover {
-  background-color: #28C72A;  /* Use uma cor verde mais escura para o hover */
+  background-color: #28cb31;  
 }
-
-
-
 
 .contact {
   background-color: #f9f9f9;
@@ -316,9 +313,6 @@ button {
   cursor: pointer;
   font-size: 16px;
 }
-
-
-
 
 
 /* Estilo para o modal do carrinho */
@@ -434,7 +428,7 @@ button {
 
 /* Estilo para botão de finalizar compra */
 #finalizar-compra {
-  background-color: #28a745;
+  background-color: #007BFF;
   color: white;
   border: none;
   padding: 1em 2em;
@@ -447,7 +441,7 @@ button {
 }
 
 #finalizar-compra:hover {
-  background-color: #218838;
+  background-color: #0468d3;
 }
 
 
